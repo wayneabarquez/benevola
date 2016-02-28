@@ -1,0 +1,47 @@
+$nav_bg: white;
+$nav_height: 50px;
+$grey-darken: #212121;
+$icon-color: $grey-darken;
+
+$form_height: $nav_height - 10px;
+
+  #app-top-nav {
+    background-color: $nav_bg;
+    color: $icon-color;
+    min-height: $nav_height;
+    max-height: $nav_height;
+    z-index: 6;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .26);
+
+    .md-toolbar-tools {
+      min-height: $nav_height;
+      max-height: $nav_height;
+      padding: 0px;
+
+      span > md-icon.search-icon {
+        padding-left: 15px;
+      }
+
+      form {
+        height: $form_height;
+        min-height: $form_height;
+
+        md-input-container {
+          height: inherit;
+          margin-top: 0px;
+          margin-bottom: 0px;
+          padding-right: 0px;
+
+          input {
+            height: inherit;
+            border-bottom: none;
+          }
+        }
+      }
+
+      md-icon {
+        color: $icon-color;
+      }
+    }
+}
+

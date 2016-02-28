@@ -1,0 +1,22 @@
+{% raw %}
+<md-toolbar id="app-top-nav">
+  <div class="md-toolbar-tools">
+
+      <span>
+        <md-button ng-click="adminCtl.addSection()"><md-icon>add</md-icon>New Section</md-button>
+        <md-button ng-click="adminCtl.addBlock()"><md-icon>add</md-icon>New Block</md-button>
+        <md-button ng-click="adminCtl.addLot()"><md-icon>add</md-icon>New Lot</md-button>
+      </span>
+
+      <span flex></span>
+
+      <span>
+        <md-button aria-label="Back">
+            <a href="/index">
+            Back to Main <md-icon>arrow_forward</md-icon>
+            </a>
+        </md-button>
+      </span>
+  </div>
+</md-toolbar>
+{% endraw %}

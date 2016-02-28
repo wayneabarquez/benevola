@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% raw %}
+    <div id="index-container" ng-controller="indexController as indexCtl">
+        <treasure-overlay-spinner active='spinner.active'>
+    {% endraw %}
+        <div ng-controller="gmapController as gmapCtl">
+            <!-- map canvas dimensions will be computed during map initialization -->
+            {% include "partials/_map.html" %}
+
+            <!-- Map Drawing Panel -->
+{#            {% include "partials/_layer_panel_controls.html" %}#}
+{#            {% include "partials/_layer_panel.html" %}#}
+        </div>
+    {% raw %}
+        </treasure-overlay-spinner>
+    </div>
+    {% endraw %}
+
+    <script src="js/vendor.min.js"></script>
+    <script src="js/app.min.js"></script>
+{% endblock %}

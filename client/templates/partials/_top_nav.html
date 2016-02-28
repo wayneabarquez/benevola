@@ -1,0 +1,36 @@
+{% raw %}
+<md-toolbar id="app-top-nav">
+  <div class="md-toolbar-tools">
+
+      <span>
+        <md-icon class="search-icon">search</md-icon>
+      </span>
+
+      <form flex name="filter.form">
+        <md-input-container md-no-float class="md-block" style="padding-left:25px;">
+            <input type="text" ng-model="filter.query" placeholder="Search">
+        </md-input-container>
+      </form>
+
+      <span>
+           <md-menu md-position-mode="target-right target">
+               <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                   <md-icon md-menu-origin>more_vert</md-icon>
+               </md-button>
+               <md-menu-content width="2">
+                   <md-menu-item ng-repeat="item in mainCtl.menu">
+                       <md-button class="menu-button">
+                           <div layout="row">
+                               <a href="{{item.link}}" style="color:black;text-decoration:none;">
+                                   <md-icon md-menu-align-target>{{item.icon}}</md-icon>
+                                   <p flex>{{ item.title }}</p>
+                               </a>
+                           </div>
+                       </md-button>
+                   </md-menu-item>
+               </md-menu-content>
+           </md-menu>
+      </span>
+  </div>
+</md-toolbar>
+{% endraw %}

@@ -1,0 +1,25 @@
+<md-dialog class="form-modal" aria-label="Add Section" ng-cloak>
+    <form action="">
+        <md-toolbar>
+           <div class="md-toolbar-tools">
+               <h4>New Section</h4>
+               <span flex></span>
+               <md-button class="md-icon-button" ng-click="addSectionCtl.cancel()">
+                   <md-icon aria-label="Close dialog">clear</md-icon>
+               </md-button>
+           </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <!-- Section Name -->
+            <md-input-container class="md-block">
+                <input ng-model="addSectionCtl.section.name" placeholder="Section Name">
+            </md-input-container>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+                <md-button class="md-primary" ng-click="addSectionCtl.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+    </form>
+</md-dialog>
