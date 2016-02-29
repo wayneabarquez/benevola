@@ -2,12 +2,12 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('addSectionController', ['$mdDialog', 'area', 'Sections', addSectionController]);
+    .controller('addBlockController', ['$mdDialog', 'section', 'area', addBlockController]);
 
-    function addSectionController ($mdDialog, area, Sections) {
+    function addBlockController ($mdDialog, section, area) {
         var vm = this;
 
-        vm.section = {
+        vm.block = {
             area: area,
             name: ''
         };
@@ -18,12 +18,12 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function save () {
-            Sections.post(vm.section)
+            section.addBlock(vm.block)
                 .then(function(response){
+                    console.log('Success add block: ',response);
                     $mdDialog.hide(response);
                 }, function(error){
                     console.log('Error: ', error);
-                    // Show Errors
                 });
         }
 

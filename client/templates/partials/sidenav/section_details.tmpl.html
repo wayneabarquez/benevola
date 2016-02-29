@@ -1,0 +1,57 @@
+{% raw %}
+<section id="section-details-container" ng-controller="sectionDetailsController as sdCtl">
+    <md-sidenav id="section-details-sidenav"
+                class="md-sidenav-left md-whiteframe-z2 infowindow-dialog"
+                md-component-id="sectionDetailsSidenav">
+        <md-toolbar class="md-theme-light">
+            <div class="md-toolbar-tools" layout="column" layout-align="start start">
+                <div layout="row" layout-align="start start" style="width: 100%;">
+
+                    <md-input-container md-no-float
+                                        id="section-details-edit-input-container"
+                                        ng-show="sdCtl.editMode">
+                        <input ng-model="sdCtl.tempSection.name" placeholder="Section Name">
+                    </md-input-container>
+
+                    <h5 class="infowindow-title" ng-hide="sdCtl.editMode">{{ sdCtl.section.name }}</h5>
+                    <span flex></span>
+                    <md-button class="md-icon-button close-icon" ng-click="sdCtl.close()">
+                        <md-tooltip md-direction="top">Close</md-tooltip>
+                        <md-icon aria-label="Close">close</md-icon>
+                    </md-button>
+                </div>
+                <div class="infowindow-action-buttons">
+                    <md-button class="md-icon-button md-hue-1"
+                               ng-click="sdCtl.addBlock($event)">
+                        <md-tooltip md-direction="top">Add Block</md-tooltip>
+                        <md-icon>add</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button md-hue-1"
+                        ng-click="sdCtl.editSection()"
+                        ng-hide="sdCtl.editMode">
+                        <md-tooltip md-direction="top">Edit Section</md-tooltip>
+                        <md-icon>mode_edit</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button"
+                               ng-click="sdCtl.saveChanges()"
+                               ng-show="sdCtl.editMode">
+                        <md-tooltip md-direction="top">Save Changes</md-tooltip>
+                        <md-icon>save</md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <md-list>
+                <md-subheader class="md-no-sticky">{{ sdCtl.section.blocks.length > 0 ? sdCtl.section.blocks.length + ' blocks' : 'Currently No Blocks.'}} </md-subheader>
+                <md-list-item class="md-2-line" ng-repeat="blk in sdCtl.section.blocks">
+                    <div class="md-list-item-text" layout="column">
+                        <h4>{{ blk.name }}</h4>
+                        <p>{{ blk.lot_count > 0 ? blk.lot_count + ' Lots' : 'Unoccupied'}}</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+</section>
+{% endraw %}

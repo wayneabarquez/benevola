@@ -1,0 +1,2 @@
+class BlockNotFoundError(ValueError):
+    pass

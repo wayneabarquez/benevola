@@ -87,12 +87,14 @@
         service.updateCircle = updateCircle;
         service.initPolygon = initPolygon;
         service.createPolygon = createPolygon;
+        service.createCustomPolygon = createCustomPolygon;
         service.updatePolygon = updatePolygon;
         service.showPolygon = showPolygon;
         service.hidePolygon = hidePolygon;
         service.resetPolygonFill = resetPolygonFill;
         service.fillPolygon = fillPolygon;
         service.panToPolygon = panToPolygon;
+        service.setEditablePolygon = setEditablePolygon;
         service.createPolyline = createPolyline;
         service.createDashedPolyline = createDashedPolyline;
         service.updatePolyline = updatePolyline;
@@ -591,28 +593,37 @@
             }
         }
 
-        function initPolygon(path, _color) {
+        function initPolygon(path, color) {
             if (!service.apiAvailable()) return null;
 
-            var strokeColor = _color || '#0000ff';
-
+            var defaultColor = color || '#0000ff';
             var polygonOptions = {
                 path: path,
                 clickable: false,
                 draggable: false,
                 editable: false,
-                fillColor: strokeColor,
+                fillColor: defaultColor,
                 fillOpacity: 0,
-                strokeColor: strokeColor,
+                strokeColor: defaultColor,
                 strokeOpacity: 0.9,
                 strokeWeight: 2,
                 zIndex: 100
             };
+
             return new google.maps.Polygon(polygonOptions);
         }
 
-        function createPolygon(path, _color) {
-            var polygon = service.initPolygon(path, _color);
+        function createCustomPolygon(path, opts) {
+            var _opts = {
+                path: path,
+                map: service.map
+            };
+            angular.merge(_opts, opts);
+            return new google.maps.Polygon(_opts);
+        }
+
+        function createPolygon(path, color) {
+            var polygon = service.initPolygon(path, color);
 
             polygon.setMap(service.map);
 
@@ -653,6 +664,12 @@
             });
 
             service.panTo(bounds.getCenter());
+        }
+
+        function setEditablePolygon (polygon, flag) {
+            var isEditable = flag !== false;
+
+            polygon.setOptions({editable: isEditable, draggable: isEditable});
         }
 
         function createPolyline(path, lineColor) {

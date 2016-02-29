@@ -10,13 +10,13 @@ angular.module('demoApp')
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
 
         service.addSectionModal = null;
+        service.addBlockModal = null;
 
         service.showAddSection = showAddSection;
+        service.showAddBlock = showAddBlock;
 
         function showAddSection (event, sectionArea) {
             var dfd = $q.defer();
-
-            console.log('Section Area: ', sectionArea);
 
             if(service.addSectionModal) {
                 dfd.reject('Modal already opened');
@@ -42,6 +42,37 @@ angular.module('demoApp')
                     service.addSectionModal = null;
                     dfd.reject(reason);
                 });
+            }
+            return dfd.promise;
+        }
+
+        function showAddBlock(event, section, sectionArea) {
+            var dfd = $q.defer();
+
+            if (service.addBlockModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.addBlockModal = $mdDialog.show({
+                    controller: 'addBlockController',
+                    controllerAs: 'addBlockCtl',
+                    templateUrl: 'partials/modals/add_block_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    locals: {section: section, area: sectionArea},
+                    targetEvent: event,
+                    fullscreen: service.customFullscreen
+                });
+
+                service.addBlockModal.then(
+                    function (result) {
+                        service.addBlockModal = null;
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        service.addBlockModal = null;
+                        dfd.reject(reason);
+                    });
             }
             return dfd.promise;
         }

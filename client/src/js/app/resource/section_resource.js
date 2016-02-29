@@ -9,19 +9,11 @@
 
         Restangular.extendModel('sections', function (model) {
 
-            //model.deletePanel = function (panel_id) {
-            //    return model
-            //        .one('panels', panel_id)
-            //        .remove();
-            //};
-
-            //model.updatePhotoCaption = function (solarFile, newCaption) {
-            //    console.log('custom solar method : updatePhotoCaption');
-            //
-            //    return model
-            //        .one('photos', solarFile.id)
-            //        .customPUT({caption: newCaption});
-            //};
+            model.addBlock = function (block) {
+                return model
+                    .all('blocks')
+                    .customPOST(block);
+            };
 
             return model;
         });

@@ -29,6 +29,8 @@
 
             {% include "partials/_drawing_panel.html" %}
             {% include "partials/_admin_map.html" %}
+            {% include "partials/sidenav/section_details.tmpl.html" %}
+
 
             <md-button class="md-raised" id="admin-back-btn" aria-label="Back">
                 <a href="/index">
@@ -40,12 +42,14 @@
                 <md-button class="md-raised" ng-click="adminCtl.addSection($event)">
                     <md-icon>add</md-icon> Section
                 </md-button>
+                <!--
                 <md-button class="md-raised" ng-click="adminCtl.addBlock($event)">
                     <md-icon>add</md-icon> Block
                 </md-button>
                 <md-button class="md-raised" ng-click="adminCtl.addLot($event)">
                     <md-icon>add</md-icon> Lot
                 </md-button>
+                -->
             </div>
 
         </div>

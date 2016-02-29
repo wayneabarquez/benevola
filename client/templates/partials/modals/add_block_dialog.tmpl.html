@@ -1,21 +1,21 @@
-<md-dialog class="form-modal" aria-label="Add Section" ng-cloak>
-    <form name="addSectionForm">
+<md-dialog class="form-modal" aria-label="Add Block" ng-cloak>
+    <form name="addBlockForm">
         <md-toolbar>
            <div class="md-toolbar-tools">
-               <h4>New Section</h4>
+               <h4>New Block</h4>
                <span flex></span>
-               <md-button class="md-icon-button" ng-click="addSectionCtl.cancel()">
+               <md-button class="md-icon-button" ng-click="addBlockCtl.cancel()">
                    <md-icon aria-label="Close dialog">clear</md-icon>
                </md-button>
            </div>
         </md-toolbar>
         <md-dialog-content class="md-padding">
 
-            <!-- Section Name -->
+            <!-- Block Name -->
             <md-input-container class="md-block">
-                <input md-maxlength="20" md-minlength="3" ng-model="addSectionCtl.section.name" name="name" placeholder="Section Name">
+                <input md-maxlength="20" md-minlength="3" ng-model="addBlockCtl.block.name" name="name" placeholder="Block Name">
                 <!-- Error Messages -->
-                <div ng-messages="addSectionForm.name.$error" multiple>
+                <div ng-messages="addBlockForm.name.$error" multiple>
                     <!--<div ng-message="required">This is required.</div>-->
                     <div ng-message="md-minlength">The name is too short (atleast 3 characters)</div>
                     <div ng-message="md-maxlength">The name is too long (20 characters max)</div>
@@ -24,7 +24,7 @@
 
             <span layout="row" layout-align="end center">
                 <span flex></span>
-                <md-button class="md-primary" ng-click="addSectionCtl.save()">Save</md-button>
+                <md-button class="md-primary" ng-click="addBlockCtl.save()">Save</md-button>
             </span>
         </md-dialog-content>
     </form>

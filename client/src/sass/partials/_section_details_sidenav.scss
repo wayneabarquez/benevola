@@ -1,0 +1,27 @@
+#section-details-container {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .26);
+  border-radius: 10px;
+
+  #section-details-sidenav {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+
+    height: 70%;
+    position: absolute;
+    top: 18%;
+
+    #section-details-edit-input-container {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      height: 40px;
+      width: 80%;
+
+      input {
+        color: white;
+        border-bottom: rgba(255, 255, 255, 0.2) solid 1px;
+        font-size: 90%;
+      }
+    }
+  }
+
+}

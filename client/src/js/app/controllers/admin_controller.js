@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('adminController', ['$rootScope', '$scope', 'drawingServices', 'modalServices', adminController]);
+    .controller('adminController', ['$rootScope', '$scope', 'drawingServices', 'modalServices', 'sectionList', adminController]);
 
-    function adminController ($rootScope, $scope, drawingServices, modalServices) {
+    function adminController ($rootScope, $scope, drawingServices, modalServices, sectionList) {
         var vm = this;
 
         // drawing tools
@@ -16,16 +16,18 @@ angular.module('demoApp')
 
         // save listeners
         var saveListeners = {
-            section: null,
-            block: null,
-            lot: null
+            section: null
+            //block: null,
+            //lot: null
         };
+
+        $rootScope.sections = [];
 
         vm.initialize = initialize;
 
         vm.addSection = addSection;
-        vm.addBlock = addBlock;
-        vm.addLot = addLot;
+        //vm.addBlock = addBlock;
+        //vm.addLot = addLot;
 
         vm.stopDrawing = stopDrawing;
         vm.saveArea = saveArea;
@@ -36,6 +38,10 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function initialize () {
+
+            $rootScope.$on('start-drawing', function(){
+               vm.drawBtn.cancel = true;
+            });
 
             $rootScope.$on('overlay-complete', function () {
                 $scope.$apply(function(){
@@ -49,31 +55,30 @@ angular.module('demoApp')
             startDrawing();
 
             saveListeners.section = $scope.$on('save-area', function(event, param){
-               //console.log('save area for section', param.area);
                 modalServices.showAddSection(ev, param.area)
                     .then(function(result){
-                        console.log('success: ',result);
+                        sectionList.add(result.section);
                     }, function(reason){
                         console.log('failed: ',reason);
                     });
             });
         }
 
-        function addBlock(ev) {
-            startDrawing();
-
-            saveListeners.block = $scope.$on('save-area', function (event, param) {
-                console.log('save area for block', param.area);
-            });
-        }
-
-        function addLot(ev) {
-            startDrawing();
-
-            saveListeners.lot = $scope.$on('save-area', function (event, param) {
-                console.log('save area for lot', param.area);
-            });
-        }
+        //function addBlock(ev) {
+        //    startDrawing();
+        //
+        //    saveListeners.block = $scope.$on('save-area', function (event, param) {
+        //        console.log('save area for block', param.area);
+        //    });
+        //}
+        //
+        //function addLot(ev) {
+        //    startDrawing();
+        //
+        //    saveListeners.lot = $scope.$on('save-area', function (event, param) {
+        //        console.log('save area for lot', param.area);
+        //    });
+        //}
 
         function saveArea() {
             if (!drawingServices.overlay) {
@@ -83,18 +88,7 @@ angular.module('demoApp')
 
             var area = drawingServices.overlayDataArray;
 
-            $scope.$broadcast('save-area', {area: area});
-
-            //if (vm.areaPolygon) {
-            //    if (!vm.areaPolygon.getMap()) {
-            //        vm.areaPolygon.setMap(gmapServices.map);
-            //    }
-            //    gmapServices.updatePolygon(vm.areaPolygon, vm.solar.area);
-            //} else {
-            //    vm.areaPolygon = gmapServices.createPolygon(vm.solar.area);
-            //}
-
-            // send ajax request to server to save section
+            $rootScope.$broadcast('save-area', {area: area});
 
             vm.stopDrawing();
         }

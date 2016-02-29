@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('mainController', [mainController]);
+    .controller('mainController', ['sectionList', 'blockList', mainController]);
 
-    function mainController () {
+    function mainController (sectionList, blockList) {
         var vm = this;
 
         vm.menu = [
@@ -19,6 +19,15 @@ angular.module('demoApp')
                 icon: 'exit_to_app'
             }
         ];
+
+        vm.initialize = initialize;
+
+        vm.initialize();
+
+        function initialize () {
+            sectionList.loadSections();
+            blockList.loadBlocks();
+        }
 
     }
 }());

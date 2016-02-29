@@ -11,6 +11,7 @@ gulp.task('vendor-scripts', function () {
         paths.bower + '/jquery/dist/jquery.min.js',
         paths.bower + '/underscore/underscore-min.js',
         paths.bower + '/angular/angular.min.js',
+        paths.bower + '/angular-messages/angular-messages.min.js',
         paths.bower + '/angular-animate/angular-animate.min.js',
         paths.bower + '/angular-aria/angular-aria.min.js',
         paths.bower + '/angular-cookies/angular-cookies.min.js',

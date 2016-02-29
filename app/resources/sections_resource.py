@@ -16,11 +16,11 @@ class SectionsResource(Resource):
     Resource for Section
     """
 
-    # @marshal_with(section_fields)
-    # def get(self):
-    #     """ GET /sections """
+    @marshal_with(section_fields)
+    def get(self):
+        """ GET /api/sections """
         # TODO check authenticated user
-        # TODO: Handle logins for 401s and get_solars_for_user
+        # TODO: Handle logins for 401s
         # try:
         # solars = solar_service.get_solars_for_user(current_user)
         # log.debug("Scips Resource Data: {0}".format(scips))
@@ -28,20 +28,59 @@ class SectionsResource(Resource):
         # except scip_service.UserNotAuthorizedError:
         # abort(401, message="Requires user to login")
         # except scip_service.UserRoleInvalidError as err:
-        # abort(403, message=err.message)
-        # return solar_service.get_solars_for_user()
+        #     abort(403, message=err.message)
+        sections = section_service.get_sections()
+        log.debug("Sections Resource Data: {0}".format(sections))
+        return sections
 
     def post(self):
+        """ POST /api/sections """
         form_data = request.json
         log.debug('Add Section request: {0}'.format(form_data))
         # TODO check authenticated user
-        # Validation here
-        # form = AddSectionForm.from_json(form_data)
-        # if form.validate():
-        #     model_obj = section_service.create_from_dict(form_data)
-        #     result = dict(status=200, message='OK', section=model_obj)
-        #     return marshal(result, section_create_fields)
-        # else:
-        #     abort(400, message="Invalid Parameters", errors=form.errors)
+        form = AddSectionForm.from_json(form_data)
+        if form.validate():
+            section = section_service.create_from_dict(form_data)
+            result = dict(status=200, message='OK', section=section)
+            return marshal(result, section_create_fields)
+        else:
+            abort(400, message="Invalid Parameters", errors=form.errors)
+
+
+class SectionDetailResource(Resource):
+    """
+    Resource for Section Detail
+    """
+
+    @marshal_with(section_complete_fields)
+    def get(self, section_id):
+        log.debug('GET Section request id={0}: {1}'.format(section_id, request.json))
+        # TODO check authenticated user
+        # if current_user and current_user.is_authenticated:
+        section = section_service.get_section(section_id)
+        if section:
+            data = section.to_dict()
+            data['blocks'] = section.get_blocks()
+            return data
+        abort(404, message="Section id={0} not found".format(section_id))
+        # abort(401, message="Requires user to login")
+
+    def put(self, section_id):
+        """ PUT /api/sections/<section_id> """
+        form_data = request.json
+        log.debug('Update Section request id {0}: {1}'.format(section_id, form_data))
+        # TODO check authenticated user
+        form = AddSectionForm.from_json(form_data)
+        if form.validate():
+            try:
+                section = section_service.update_from_dict(section_id, form_data)
+                result = dict(status=200, message='OK', section=section)
+                return marshal(result, section_create_fields)
+            except SectionNotFoundError as err:
+                abort(404, message=err.message)
+        else:
+            abort(400, message="Invalid Parameters", errors=form.errors)
+
 
 rest_api.add_resource(SectionsResource, '/api/sections')
+rest_api.add_resource(SectionDetailResource, '/api/sections/<int:section_id>')
