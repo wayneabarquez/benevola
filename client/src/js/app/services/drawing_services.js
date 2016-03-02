@@ -37,6 +37,8 @@
 
         function initDrawingManager() {
             if (service.drawingManager) {
+                if(service.overlayStrokeColor) gmapServices.changeDrawingManagerStrokeColor(service.overlayStrokeColor);
+
                 // Reinitialize Drawing Listener
                 service.initDrawingListener();
                 return;

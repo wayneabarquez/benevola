@@ -83,6 +83,7 @@
         service.showDrawingManager = showDrawingManager;
         service.hideDrawingManager = hideDrawingManager;
         service.setEnableDrawingManager = setEnableDrawingManager;
+        service.changeDrawingManagerStrokeColor = changeDrawingManagerStrokeColor;
         service.createCircle = createCircle;
         service.updateCircle = updateCircle;
         service.initPolygon = initPolygon;
@@ -143,7 +144,8 @@
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.RIGHT_BOTTOM
                 },
-                panControl: false
+                panControl: false,
+                streetViewControl: false
             };
 
             $(myMapId).height($(window).height() - (_navHeight));
@@ -473,6 +475,22 @@
             });
             service.drawingManager = drawingManager;
             return drawingManager;
+        }
+
+        function changeDrawingManagerStrokeColor (color) {
+            if (!service.apiAvailable() && !service.drawingManager) return null;
+
+            var _color = color || '#0000ff';
+
+            service.drawingManager.setOptions({
+                polygonOptions: {
+                    strokeColor: _color
+                },
+                rectangleOptions: {
+                    strokeColor: _color
+                }
+            });
+
         }
 
         function createDrawingToolsManager() {

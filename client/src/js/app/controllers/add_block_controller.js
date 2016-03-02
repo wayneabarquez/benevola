@@ -18,13 +18,18 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function save () {
+            //if (typeof section.addBlock == 'function') {
+
             section.addBlock(vm.block)
                 .then(function(response){
-                    console.log('Success add block: ',response);
                     $mdDialog.hide(response);
                 }, function(error){
                     console.log('Error: ', error);
                 });
+
+            //} else {
+            //    console.log('function section.addBlock doesnt exist!');
+            //}
         }
 
         function cancel () {

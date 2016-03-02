@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('adminController', ['$rootScope', '$scope', 'drawingServices', 'modalServices', 'sectionList', adminController]);
+    .controller('adminController', ['$rootScope', '$scope', 'Sections', 'drawingServices', 'modalServices', 'sectionList', adminController]);
 
-    function adminController ($rootScope, $scope, drawingServices, modalServices, sectionList) {
+    function adminController ($rootScope, $scope, Sections, drawingServices, modalServices, sectionList) {
         var vm = this;
 
         // drawing tools
@@ -17,8 +17,6 @@ angular.module('demoApp')
         // save listeners
         var saveListeners = {
             section: null
-            //block: null,
-            //lot: null
         };
 
         $rootScope.sections = [];
@@ -26,8 +24,6 @@ angular.module('demoApp')
         vm.initialize = initialize;
 
         vm.addSection = addSection;
-        //vm.addBlock = addBlock;
-        //vm.addLot = addLot;
 
         vm.stopDrawing = stopDrawing;
         vm.saveArea = saveArea;
@@ -57,28 +53,20 @@ angular.module('demoApp')
             saveListeners.section = $scope.$on('save-area', function(event, param){
                 modalServices.showAddSection(ev, param.area)
                     .then(function(result){
-                        sectionList.add(result.section);
+                        // Restangularized Object
+                        Sections.get(result.section.id)
+                            .then(function (response) {
+                                sectionList.add(response);
+                            });
                     }, function(reason){
                         console.log('failed: ',reason);
+                    })
+                    .finally(function(){
+                        saveListeners.section();
+                        saveListeners.section = null;
                     });
             });
         }
-
-        //function addBlock(ev) {
-        //    startDrawing();
-        //
-        //    saveListeners.block = $scope.$on('save-area', function (event, param) {
-        //        console.log('save area for block', param.area);
-        //    });
-        //}
-        //
-        //function addLot(ev) {
-        //    startDrawing();
-        //
-        //    saveListeners.lot = $scope.$on('save-area', function (event, param) {
-        //        console.log('save area for lot', param.area);
-        //    });
-        //}
 
         function saveArea() {
             if (!drawingServices.overlay) {

@@ -11,9 +11,11 @@ angular.module('demoApp')
 
         service.addSectionModal = null;
         service.addBlockModal = null;
+        service.addLotModal = null;
 
         service.showAddSection = showAddSection;
         service.showAddBlock = showAddBlock;
+        service.showAddLot = showAddLot;
 
         function showAddSection (event, sectionArea) {
             var dfd = $q.defer();
@@ -35,12 +37,13 @@ angular.module('demoApp')
 
                 service.addSectionModal.then(
                    function(result) {
-                    service.addSectionModal = null;
                     dfd.resolve(result);
                 }, function (reason) {
                     $rootScope.$broadcast('modal-dismissed');
-                    service.addSectionModal = null;
                     dfd.reject(reason);
+                })
+                .finally(function () {
+                    service.addSectionModal = null;
                 });
             }
             return dfd.promise;
@@ -66,13 +69,46 @@ angular.module('demoApp')
 
                 service.addBlockModal.then(
                     function (result) {
-                        service.addBlockModal = null;
                         dfd.resolve(result);
                     }, function (reason) {
                         $rootScope.$broadcast('modal-dismissed');
-                        service.addBlockModal = null;
                         dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.addBlockModal = null;
                     });
+            }
+            return dfd.promise;
+        }
+
+        function showAddLot(event, block, area) {
+            var dfd = $q.defer();
+
+            if (service.addLotModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.addLotModal = $mdDialog.show({
+                    controller: 'addLotController',
+                    controllerAs: 'addLotCtl',
+                    templateUrl: 'partials/modals/add_lot_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    locals: {block: block, area: area},
+                    targetEvent: event,
+                    fullscreen: service.customFullscreen
+                });
+
+                service.addLotModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function(){
+                        service.addLotModal = null;
+                    })
             }
             return dfd.promise;
         }

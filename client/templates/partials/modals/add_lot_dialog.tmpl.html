@@ -1,0 +1,31 @@
+<md-dialog class="form-modal" aria-label="Add Lot" ng-cloak>
+    <form name="addLotForm">
+        <md-toolbar>
+           <div class="md-toolbar-tools">
+               <h4>New Lot</h4>
+               <span flex></span>
+               <md-button class="md-icon-button" ng-click="addLotCtl.cancel()">
+                   <md-icon aria-label="Close dialog">clear</md-icon>
+               </md-button>
+           </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <!-- Lot Name -->
+            <md-input-container class="md-block">
+                <input md-maxlength="20" md-minlength="3" ng-model="addLotCtl.lot.name" name="name" placeholder="Lot Name">
+                <!-- Error Messages -->
+                <div ng-messages="addLotForm.name.$error" multiple>
+                    <!--<div ng-message="required">This is required.</div>-->
+                    <div ng-message="md-minlength">The name is too short (atleast 3 characters)</div>
+                    <div ng-message="md-maxlength">The name is too long (20 characters max)</div>
+                </div>
+            </md-input-container>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+                <md-button class="md-primary" ng-click="addLotCtl.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+    </form>
+</md-dialog>

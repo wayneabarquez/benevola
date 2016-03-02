@@ -8,6 +8,7 @@ success_fields = dict(
 
 block_fields = dict(
     id=fields.Integer,
+    section_id=fields.Integer,
     name=fields.String,
     area=PolygonToLatLng(attribute='area'),
     date_created=fields.DateTime("iso8601"),

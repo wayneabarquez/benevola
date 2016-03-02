@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('blockList', ['$rootScope', 'gmapServices', 'Blocks', '$mdSidenav', blockList]);
+    .factory('blockList', ['gmapServices', blockList]);
 
-    function blockList ($rootScope, gmapServices, Blocks, $mdSidenav) {
+    function blockList (gmapServices) {
         var service = {};
 
         service.polygoncolor = '#e74c3c';
@@ -18,26 +18,37 @@ angular.module('demoApp')
             zIndex: 101
         };
 
-        service.blocks = [];
+        service.blocks = {};
 
-        service.loadBlocks = loadBlocks;
+        //service.loadBlocks = loadBlocks;
+        service.loadBlocksForSection = loadBlocksForSection;
         service.add = add;
 
-        function loadBlocks () {
-            Blocks.getList()
-                .then(function(response){
-                    response.forEach(function(blk){
-                        service.add(blk);
-                    });
-                }, function(error){
-                    console.log('Error loading blocks list: ', error);
-                });
+        //function loadBlocks () {
+        //    Blocks.getList()
+        //        .then(function(response){
+        //            response.forEach(function(blk){
+        //                service.add(blk);
+        //            });
+        //        }, function(error){
+        //            console.log('Error loading blocks list: ', error);
+        //        });
+        //}
+
+        function loadBlocksForSection (section) {
+            if(!section.blocks) return;
+
+            section.blocks.forEach(function(block){
+                service.add(section.id, block);
+            });
         }
 
-        function add (data) {
+        function add (sectionId, data) {
+            if (!service.blocks[sectionId]) service.blocks[sectionId] = [];
+
             data.polygon = createPolygon(data);
-            service.blocks.push(data);
-            return data;
+
+            service.blocks[sectionId].push(data);
         }
 
         function createPolygon(block) {
@@ -51,7 +62,8 @@ angular.module('demoApp')
                 //            .open()
                 //            .then(function () {
                 //                $rootScope.$broadcast('show-section-details', {section: sectionResponseObject});
-                                gmapServices.panToPolygon(polygon);
+                gmapServices.setZoomIfGreater(21);
+                gmapServices.panToPolygon(polygon);
                     //        });
                     //});
 

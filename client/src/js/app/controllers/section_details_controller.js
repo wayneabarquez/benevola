@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('sectionDetailsController', ['$rootScope', '$mdSidenav', 'sectionList', 'gmapServices', 'drawingServices', 'modalServices', sectionDetailsController]);
+    .controller('sectionDetailsController', ['$rootScope', '$mdSidenav', 'sectionList', 'blockList', 'gmapServices', 'drawingServices', 'modalServices', sectionDetailsController]);
 
-    function sectionDetailsController ($rootScope, $mdSidenav, sectionList, gmapServices, drawingServices, modalServices) {
+    function sectionDetailsController ($rootScope, $mdSidenav, sectionList, blockList, gmapServices, drawingServices, modalServices) {
         var vm = this;
 
         vm.lastPolygon = null;
@@ -16,7 +16,10 @@ angular.module('demoApp')
             area: []
         };
 
-        var saveListener = null;
+        var saveListener = {
+            block: null,
+            lot: null
+        };
 
         vm.section = {
           id: '',
@@ -25,11 +28,17 @@ angular.module('demoApp')
           area: []
         };
 
+
         vm.initialize = initialize;
-        vm.addBlock = addBlock;
+        vm.close = close;
+
         vm.editSection = editSection;
         vm.saveChanges = saveChanges;
-        vm.close = close;
+
+        vm.addBlock = addBlock;
+        vm.showBlock = showBlock;
+
+        vm.addLot = addLot;
 
         vm.initialize();
 
@@ -39,7 +48,6 @@ angular.module('demoApp')
             $rootScope.$on('show-section-details', function(event, params){
                 vm.editMode = false;
                 vm.section = params.section;
-                //vm.section.blocks = blocks;
                 vm.tempSection.name = params.section.name;
 
                 gmapServices.hidePolygon(vm.section.polygon);
@@ -60,20 +68,7 @@ angular.module('demoApp')
             });
         }
 
-        function addBlock (ev) {
-            $rootScope.$broadcast('start-drawing');
-            drawingServices.startDrawingMode('#e74c3c');
-
-            saveListener = $rootScope.$on('save-area', function (event, param) {
-                console.log('save area for block', param.area);
-                modalServices.showAddBlock(ev, vm.section, param.area)
-                    .then(function (result) {
-                        sectionList.add(result.section);
-                    }, function (reason) {
-                        console.log('failed: ', reason);
-                    });
-            });
-        }
+        /* Section Functions */
 
         function editSection () {
             toggle(true);
@@ -102,10 +97,75 @@ angular.module('demoApp')
                 });
         }
 
+        /* End Section Functions */
+
+
+        /* Block Functions */
+
+        function addBlock(ev) {
+            $rootScope.$broadcast('start-drawing');
+            drawingServices.startDrawingMode('#e74c3c');
+
+            saveListener.block = $rootScope.$on('save-area', function (event, param) {
+                modalServices.showAddBlock(ev, vm.section, param.area)
+                    .then(function (result) {
+                        blockList.add(result.block.section_id, result.block);
+                        vm.section.blocks.push(result.block);
+                    }, function (reason) {
+                        console.log('failed: ', reason);
+                    })
+                    .finally(function(){
+                        // destroy listener
+                        saveListener.block();
+                        saveListener.block = null;
+                    });
+            });
+        }
+
+        function showBlock(block) {
+            gmapServices.setZoomIfGreater(21);
+            gmapServices.panToPolygon(block.polygon);
+        }
+
+        /* End of Block Functions */
+
+        /* Lot Functions */
+
+        function addLot(ev, block) {
+            $rootScope.$broadcast('start-drawing');
+            drawingServices.startDrawingMode('#2ecc71');
+
+            saveListener.lot = $rootScope.$on('save-area', function (event, param) {
+                modalServices.showAddLot(ev, block, param.area)
+                    .then(function (result) {
+                        blockList.add(result.block.section_id, result.block);
+                        vm.section.blocks.push(result.block);
+                    }, function (reason) {
+                        console.log('failed: ', reason);
+                    })
+                    .finally(function () {
+                        // destroy listener
+                        saveListener.lot();
+                        saveListener.lot = null;
+                    });
+            });
+        }
+
+        /* End of Lot Functions */
+
+
         function toggle(flag) {
             vm.editMode = flag;
             gmapServices.setEditablePolygon(vm.tempSection.polygon, flag);
         }
+
+        vm.openBlockMenu = openBlockMenu;
+        var originatorEv;
+
+        function openBlockMenu($mdOpenMenu, ev) {
+            originatorEv = ev;
+            $mdOpenMenu(ev);
+        };
 
         function close () {
             $mdSidenav('sectionDetailsSidenav')

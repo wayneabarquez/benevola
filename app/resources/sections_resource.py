@@ -16,7 +16,7 @@ class SectionsResource(Resource):
     Resource for Section
     """
 
-    @marshal_with(section_fields)
+    @marshal_with(section_complete_fields)
     def get(self):
         """ GET /api/sections """
         # TODO check authenticated user

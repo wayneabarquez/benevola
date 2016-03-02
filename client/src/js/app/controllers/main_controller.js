@@ -26,7 +26,6 @@ angular.module('demoApp')
 
         function initialize () {
             sectionList.loadSections();
-            blockList.loadBlocks();
         }
 
     }

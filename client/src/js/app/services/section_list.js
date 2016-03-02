@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('sectionList', ['$rootScope', 'gmapServices', 'Sections', '$mdSidenav', sectionList]);
+    .factory('sectionList', ['$rootScope', '$mdSidenav', 'gmapServices', 'Sections', 'blockList', sectionList]);
 
-    function sectionList ($rootScope, gmapServices, Sections, $mdSidenav) {
+    function sectionList ($rootScope, $mdSidenav, gmapServices, Sections, blockList) {
         var service = {};
 
         service.polygoncolor = '#3498db';
@@ -34,31 +34,28 @@ angular.module('demoApp')
                 });
         }
 
+
         function add (sectionData) {
-            //var section = {
-            //    id: sectionData.id,
-            //    name: sectionData.name,
-            //    area: sectionData.area
-            //};
-            //section.polygon = createPolygon(sectionData);
             sectionData.polygon = createPolygon(sectionData);
+
+            blockList.loadBlocksForSection(sectionData);
+
             service.sections.push(sectionData);
             return sectionData;
         }
 
         function createPolygon(section) {
             var polygon = gmapServices.createCustomPolygon(section.area, service.polygonOptions);
+                polygon.section = section;
 
             gmapServices.addListener(polygon, 'click', function() {
-                section.get()
-                    .then(function(sectionResponseObject){
-                        console.log('sectionResponseObject: ', sectionResponseObject);
-                        $mdSidenav('sectionDetailsSidenav')
-                            .open()
-                            .then(function () {
-                                $rootScope.$broadcast('show-section-details', {section: sectionResponseObject});
-                                gmapServices.panToPolygon(polygon);
-                            });
+                var section = this.section;
+
+                $mdSidenav('sectionDetailsSidenav')
+                    .open()
+                    .then(function () {
+                        $rootScope.$broadcast('show-section-details', {section: section});
+                        gmapServices.panToPolygon(polygon);
                     });
 
             });
