@@ -2,12 +2,15 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', modalServices]);
+    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', modalServices]);
 
-    function modalServices ($mdDialog, $mdMedia, $rootScope, $q) {
+    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings) {
         var service = {};
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
+
+        service.settingsModal = null;
+        service.showSettings = showSettings;
 
         service.addSectionModal = null;
         service.addBlockModal = null;
@@ -16,6 +19,46 @@ angular.module('demoApp')
         service.showAddSection = showAddSection;
         service.showAddBlock = showAddBlock;
         service.showAddLot = showAddLot;
+
+        function showSettings(event) {
+            var dfd = $q.defer();
+
+            if (service.settingsModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                Settings.customGET('last_lot_price')
+                    .then(function(lastLot){
+                        console.log('get last lot price: ',lastLot);
+
+                        service.settingsModal = $mdDialog.show({
+                            controller: 'settingsController',
+                            controllerAs: 'settingsCtl',
+                            templateUrl: 'partials/modals/settings_dialog.tmpl.html',
+                            parent: angular.element(document.body),
+                            targetEvent: event,
+                            locals: {lastLot: lastLot},
+                            fullscreen: service.customFullscreen
+                        });
+
+                        service.settingsModal.then(
+                            function (result) {
+                                dfd.resolve(result);
+                            }, function (reason) {
+                                $rootScope.$broadcast('modal-dismissed');
+                                dfd.reject(reason);
+                            })
+                            .finally(function () {
+                                service.settingsModal = null;
+                            });
+
+                    }, function(er){
+                        console.log('er: ',er);
+                    });
+            }
+            return dfd.promise;
+        }
 
         function showAddSection (event, sectionArea) {
             var dfd = $q.defer();

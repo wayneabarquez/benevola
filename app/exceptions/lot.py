@@ -1,0 +1,2 @@
+class LotNotFoundError(ValueError):
+    pass

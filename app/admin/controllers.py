@@ -4,6 +4,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
+
 @admin.route('/admin', methods=['GET'])
-def index():
+def admin():
     return render_template('/admin.html')

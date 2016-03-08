@@ -11,16 +11,21 @@
         </md-toolbar>
         <md-dialog-content class="md-padding">
 
-            <!-- Lot Name -->
-            <md-input-container class="md-block">
-                <input md-maxlength="20" md-minlength="3" ng-model="addLotCtl.lot.name" name="name" placeholder="Lot Name">
-                <!-- Error Messages -->
-                <div ng-messages="addLotForm.name.$error" multiple>
-                    <!--<div ng-message="required">This is required.</div>-->
-                    <div ng-message="md-minlength">The name is too short (atleast 3 characters)</div>
-                    <div ng-message="md-maxlength">The name is too long (20 characters max)</div>
-                </div>
-            </md-input-container>
+            <div layout="row">
+                <label>Dimension</label>
+                <!-- Lot Dimension -->
+                <md-input-container>
+                    <label>Width</label>
+                    <input type="number" name="width" ng-model="addLotCtl.lot.dimension_width" placeholder="Width">
+                </md-input-container>
+                x
+                <md-input-container>
+                    <label>Height</label>
+                    <input type="number" name="height" ng-model="addLotCtl.lot.dimension_height" placeholder="Height">
+                </md-input-container>
+            </div>
+
+            <p style="margin-top:5px;" ng-show="addLotCtl.lot.lot_area"><b>Lot Area: </b> {{ addLotCtl.lot.lot_area }} sq.meters</p>
 
             <span layout="row" layout-align="end center">
                 <span flex></span>

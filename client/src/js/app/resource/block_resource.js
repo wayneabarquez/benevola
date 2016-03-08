@@ -5,19 +5,13 @@
         .factory('Blocks', ['Restangular', Blocks]);
 
     function Blocks(Restangular) {
-        var resourceModel = Restangular.all('blocks');
+        var model = Restangular.all('blocks');
 
-        Restangular.extendModel('blocks', function (model) {
-
-            //model.addBlock = function (block) {
-            //    return model
-            //        .all('blocks')
-            //        .customPOST(block);
-            //};
-
-            return model;
+        return angular.extend(model, {
+            cast: function(block) {
+              block.polygon = null;
+              return Restangular.restangularizeElement(null, block, 'blocks');
+            }
         });
-
-        return resourceModel;
     }
 }());

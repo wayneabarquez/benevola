@@ -1,0 +1,33 @@
+<md-dialog class="form-modal" aria-label="Settings Dialog" ng-cloak>
+    <form name="settingsForm">
+        <md-toolbar>
+           <div class="md-toolbar-tools">
+               <h4>Settings</h4>
+               <span flex></span>
+               <md-button class="md-icon-button" ng-click="settingsCtl.cancel()">
+                   <md-icon aria-label="Close dialog">clear</md-icon>
+               </md-button>
+           </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <md-card style="margin-bottom: 30px;" ng-show="settingsCtl.lastLotPrice.date_price_effective !== null">
+                <md-card-content>
+                    <p>Price Per Sq. Meter as of {{ settingsCtl.lastLotPrice.date_price_effective }}</p>
+                    <p>{{ settingsCtl.lastLotPrice.price_per_sq_mtr }}</p>
+                </md-card-content>
+            </md-card>
+
+            <!-- Section Name -->
+            <md-input-container class="md-block">
+                <input type="number" ng-model="settingsCtl.settings.price_per_sq_mtr" name="pricePerSqMeters" placeholder="Price Per sq.mtr ">
+                <!-- Error Messages -->
+            </md-input-container>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+                <md-button class="md-primary" ng-click="settingsCtl.save()">Update Settings</md-button>
+            </span>
+        </md-dialog-content>
+    </form>
+</md-dialog>

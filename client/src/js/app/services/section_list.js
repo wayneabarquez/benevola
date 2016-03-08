@@ -23,42 +23,57 @@ angular.module('demoApp')
         service.loadSections = loadSections;
         service.add = add;
 
-        function loadSections () {
+        function loadSections (loadForIndex) {
+            var forIndex = loadForIndex || false;
+
             Sections.getList()
                 .then(function(response){
                     response.forEach(function(section){
-                        service.add(section);
+                        service.add(section, forIndex);
                     });
                 }, function(error){
                     console.log('Error loading sections list: ',error);
                 });
         }
 
+        function add (sectionData, forIndex) {
+            sectionData.polygon = createPolygon(sectionData, forIndex);
 
-        function add (sectionData) {
-            sectionData.polygon = createPolygon(sectionData);
-
-            blockList.loadBlocksForSection(sectionData);
+            blockList.loadBlocksForSection(sectionData, forIndex);
 
             service.sections.push(sectionData);
             return sectionData;
         }
 
-        function createPolygon(section) {
+        function createPolygon(section, forIndex) {
             var polygon = gmapServices.createCustomPolygon(section.area, service.polygonOptions);
                 polygon.section = section;
 
-            gmapServices.addListener(polygon, 'click', function() {
+            var adminHandler = function () {
                 var section = this.section;
-
                 $mdSidenav('sectionDetailsSidenav')
-                    .open()
+                    .toggle()
                     .then(function () {
                         $rootScope.$broadcast('show-section-details', {section: section});
-                        gmapServices.panToPolygon(polygon);
                     });
 
-            });
+            };
+
+            var indexHandler = function () {
+                console.log('section polygon is clicked handler for index');
+            };
+
+            var handler = forIndex ? indexHandler : adminHandler;
+
+            gmapServices.addListener(
+                polygon,
+                'click',
+                function() {
+                    gmapServices.setZoomIfGreater(21);
+                    gmapServices.panToPolygon(polygon);
+                    handler();
+                }
+            );
 
             return polygon;
         }

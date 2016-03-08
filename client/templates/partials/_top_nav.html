@@ -21,7 +21,7 @@
                    <md-menu-item ng-repeat="item in mainCtl.menu">
                        <md-button class="menu-button">
                            <div layout="row">
-                               <a href="{{item.link}}" style="color:black;text-decoration:none;">
+                               <a ng-click="mainCtl.redirect($event, item.link)" href="javascript:void();" style="color:black;text-decoration:none;">
                                    <md-icon md-menu-align-target>{{item.icon}}</md-icon>
                                    <p flex>{{ item.title }}</p>
                                </a>

@@ -138,8 +138,9 @@ angular.module('demoApp')
             saveListener.lot = $rootScope.$on('save-area', function (event, param) {
                 modalServices.showAddLot(ev, block, param.area)
                     .then(function (result) {
-                        blockList.add(result.block.section_id, result.block);
-                        vm.section.blocks.push(result.block);
+                        console.log('Success Adding Lot: ', result);
+                        //blockList.add(result.block.section_id, result.block);
+                        //vm.section.blocks.push(result.block);
                     }, function (reason) {
                         console.log('failed: ', reason);
                     })
@@ -170,13 +171,14 @@ angular.module('demoApp')
         function close () {
             $mdSidenav('sectionDetailsSidenav')
                 .close()
-                .then(function(){
-                    vm.section = {
-                        id: '',
-                        name: '',
-                        area: []
-                    };
-                });
+                //.then(function(){
+                //    vm.section = {
+                //        id: '',
+                //        name: '',
+                //        area: []
+                //    };
+                //})
+            ;
         }
 
     }

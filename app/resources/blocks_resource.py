@@ -1,7 +1,7 @@
 from flask.ext.restful import Resource, abort, marshal, marshal_with
 from flask import request
 from app.fields.block_fields import *
-from app import app, rest_api
+from app import rest_api
 from app.services import block_service
 from app.exceptions.section import SectionNotFoundError
 from app.home.forms import AddBlockForm

@@ -126,3 +126,152 @@
 2016-03-02 22:16:54,630 INFO - run.py <module>: Starting app
 2016-03-03 00:05:47,781 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
 2016-03-03 00:05:48,047 INFO - run.py <module>: Starting app
+2016-03-05 23:12:53,573 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-05 23:13:01,320 INFO - run.py <module>: Starting app
+2016-03-05 23:17:27,965 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-05 23:17:29,590 INFO - run.py <module>: Starting app
+2016-03-06 00:37:08,211 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 00:56:07,502 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 00:57:58,498 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:05:01,151 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:05:42,544 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:07:52,939 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:08:09,349 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:12:19,902 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:12:23,698 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:12:29,670 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:16:09,385 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:16:53,905 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:17:59,311 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:18:50,175 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:22:05,482 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:25:23,094 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:31:59,485 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:42:29,623 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:43:23,384 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:46:41,996 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 01:53:37,521 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:03:33,005 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:04:03,138 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:04:38,406 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:19:27,830 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:37:37,137 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:38:01,821 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:40:15,489 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:45:38,725 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:45:46,305 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:45:59,146 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:46:06,167 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:46:38,416 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:47:07,877 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:49:38,589 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:49:59,504 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 02:50:23,702 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:00:24,887 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:00:43,578 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:01:01,888 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:01:43,713 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:04:44,689 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:04:49,394 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:04:52,917 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:05:29,792 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:05:40,780 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:06:32,979 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:08:00,571 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:08:16,183 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:08:34,747 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:08:51,057 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:09:41,893 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:10:13,133 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:10:25,023 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:10:34,572 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:10:56,937 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:11:00,861 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:11:29,768 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:11:46,767 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:11:52,930 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:12:32,651 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:12:41,312 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:13:34,911 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:17:38,016 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:17:53,952 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:28:42,497 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:28:46,848 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:29:45,595 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:35:21,750 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 03:35:21,962 INFO - run.py <module>: Starting app
+2016-03-06 05:34:13,817 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:34:14,739 INFO - run.py <module>: Starting app
+2016-03-06 05:34:47,510 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:35:41,698 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:42:50,681 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:42:50,882 INFO - run.py <module>: Starting app
+2016-03-06 05:44:07,349 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:44:07,545 INFO - run.py <module>: Starting app
+2016-03-06 05:46:00,381 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:46:00,626 INFO - run.py <module>: Starting app
+2016-03-06 05:47:20,391 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:47:20,634 INFO - run.py <module>: Starting app
+2016-03-06 05:50:25,440 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 05:50:25,646 INFO - run.py <module>: Starting app
+2016-03-06 06:16:54,066 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 06:16:57,021 INFO - run.py <module>: Starting app
+2016-03-06 16:56:32,172 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 16:56:34,820 INFO - run.py <module>: Starting app
+2016-03-06 23:04:00,816 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 23:04:01,091 INFO - run.py <module>: Starting app
+2016-03-06 23:05:11,562 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 23:05:11,709 INFO - run.py <module>: Starting app
+2016-03-06 23:06:39,951 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 23:06:40,118 INFO - run.py <module>: Starting app
+2016-03-06 23:07:36,879 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 23:07:37,026 INFO - run.py <module>: Starting app
+2016-03-06 23:11:24,654 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-06 23:11:24,793 INFO - run.py <module>: Starting app
+2016-03-07 00:56:26,708 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-07 00:56:27,142 INFO - run.py <module>: Starting app
+2016-03-07 00:56:50,874 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-07 00:56:51,047 INFO - run.py <module>: Starting app
+2016-03-07 00:58:25,058 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-07 00:58:25,233 INFO - run.py <module>: Starting app
+2016-03-08 22:35:30,230 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:35:45,086 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:40:08,205 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:44:15,821 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:47:56,244 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:50:10,424 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 22:50:10,693 INFO - run.py <module>: Starting app
+2016-03-08 23:08:24,421 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:08:25,188 INFO - run.py <module>: Starting app
+2016-03-08 23:09:37,033 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:09:37,206 INFO - run.py <module>: Starting app
+2016-03-08 23:10:58,074 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:10:58,247 INFO - run.py <module>: Starting app
+2016-03-08 23:14:00,115 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:14:00,336 INFO - run.py <module>: Starting app
+2016-03-08 23:41:14,425 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:41:55,537 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:48:50,398 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-08 23:48:50,569 INFO - run.py <module>: Starting app
+2016-03-09 00:26:49,732 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 00:27:35,370 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 00:30:54,296 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 00:30:54,466 INFO - run.py <module>: Starting app
+2016-03-09 01:47:59,115 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 01:47:59,283 INFO - run.py <module>: Starting app
+2016-03-09 02:15:52,053 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:15:52,273 INFO - run.py <module>: Starting app
+2016-03-09 02:21:13,288 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:21:13,448 INFO - run.py <module>: Starting app
+2016-03-09 02:22:07,559 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:22:07,750 INFO - run.py <module>: Starting app
+2016-03-09 02:22:34,484 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:22:34,655 INFO - run.py <module>: Starting app
+2016-03-09 02:25:12,529 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:25:12,689 INFO - run.py <module>: Starting app
+2016-03-09 02:27:36,304 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:27:36,462 INFO - run.py <module>: Starting app
+2016-03-09 02:29:10,883 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:29:11,041 INFO - run.py <module>: Starting app
+2016-03-09 02:51:35,024 INFO - __init__.py <module>: Will output log to /var/www/benevola/logs/app.log
+2016-03-09 02:51:35,313 INFO - run.py <module>: Starting app

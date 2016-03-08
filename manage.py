@@ -1,9 +1,7 @@
 from flask.ext.script import Manager, prompt_bool
 from flask.ext.migrate import Migrate, MigrateCommand
-
 from app import app
 from app.home.models import *
-
 
 manager = Manager(app)
 migrate = Migrate(app, db)

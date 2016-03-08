@@ -7,43 +7,27 @@ angular.module('demoApp')
     function alertServices($mdToast, SweetAlert) {
         var service = {};
 
-        service.showBottomLeftToast = showBottomLeftToast;
-        service.showNoDataAvailablePrompt = showNoDataAvailablePrompt;
-        service.showEntityNotFound = showEntityNotFound;
-        service.showFilterSelectionEmpty = showFilterSelectionEmpty;
-        service.showQueryIsEmpty = showQueryIsEmpty;
+        service.showTopRightToast = showTopRightToast;
+        service.showLotAdded = showLotAdded;
+        service.settingsSuccessfullySaved = settingsSuccessfullySaved;
 
-        function showBottomLeftToast(message) {
+        function showTopRightToast(message) {
             $mdToast.show(
                 $mdToast.simple()
                     .textContent(message)
-                    .position('bottom left')
+                    .position('top right')
                     .hideDelay(2000)
             );
         }
 
-        function showNoDataAvailablePrompt (entityName) {
-            service.showBottomLeftToast('No '+ entityName +' data available for this area.');
+        function showLotAdded () {
+            service.showTopRightToast('Lot Added.');
         }
 
-        function showEntityNotFound(entityName) {
+        function settingsSuccessfullySaved () {
             SweetAlert.swal({
-                title: entityName + ' not found.',
-                type: 'warning'
-            });
-        }
-
-        function showFilterSelectionEmpty() {
-            SweetAlert.swal({
-                title: 'Please select filter type.',
-                type: 'warning'
-            });
-        }
-
-        function showQueryIsEmpty () {
-            SweetAlert.swal({
-                title: 'Please fill in search query.',
-                type: 'info'
+                title: 'Settings Updated!',
+                type: 'success'
             });
         }
 

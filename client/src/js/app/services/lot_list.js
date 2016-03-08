@@ -2,12 +2,12 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('blockList', ['gmapServices', 'lotList', blockList]);
+    .factory('lotList', ['gmapServices', lotList]);
 
-    function blockList (gmapServices, lotList) {
+    function lotList (gmapServices) {
         var service = {};
 
-        service.polygoncolor = '#e74c3c';
+        service.polygoncolor = '#2ecc71';
         service.polygonOptions = {
             clickable: true,
             fillColor: service.polygoncolor,
@@ -18,38 +18,39 @@ angular.module('demoApp')
             zIndex: 101
         };
 
-        service.blocks = {};
+        service.lots = {};
 
-        service.loadBlocksForSection = loadBlocksForSection;
+        service.loadLotsForBlock = loadLotsForBlock;
         service.add = add;
 
-        function loadBlocksForSection (section, forIndex) {
-            if(!section.blocks) return;
 
-            section.blocks.forEach(function(block){
-                service.add(section.id, block, forIndex);
+        function loadLotsForBlock (block, forIndex) {
+            console.log('load lots for block: ',block);
+
+            if(!block.lots) return;
+
+            block.lots.forEach(function(lot){
+                service.add(block.id, lot, forIndex);
             });
         }
 
-        function add (sectionId, data, forIndex) {
-            if (!service.blocks[sectionId]) service.blocks[sectionId] = [];
+        function add (blockId, data, forIndex) {
+            if (!service.lots[blockId]) service.lots[blockId] = [];
 
             data.polygon = createPolygon(data, forIndex);
 
-            lotList.loadLotsForBlock(data, forIndex);
-
-            service.blocks[sectionId].push(data);
+            service.lots[blockId].push(data);
         }
 
-        function createPolygon(block, forIndex) {
-            var polygon = gmapServices.createCustomPolygon(block.area, service.polygonOptions);
+        function createPolygon(lot, forIndex) {
+            var polygon = gmapServices.createCustomPolygon(lot.area, service.polygonOptions);
 
             var adminHandler = function () {
-                console.log('admin handler for polygon click block');
+                console.log('admin handler for polygon click lot');
             };
 
             var indexHandler = function () {
-                console.log('index handler for polygon click block');
+                console.log('index handler for polygon click lot');
             };
 
             var handler = forIndex ? indexHandler : adminHandler;

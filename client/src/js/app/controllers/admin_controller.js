@@ -34,6 +34,7 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function initialize () {
+            sectionList.loadSections();
 
             $rootScope.$on('start-drawing', function(){
                vm.drawBtn.cancel = true;
