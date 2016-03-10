@@ -55,6 +55,7 @@ angular.module('demoApp')
                     alertServices.showLotAdded();
                 }, function(error){
                     console.log('Error: ', error);
+                    alertServices.showErrorMessage(error.data.message);
                 });
         }
 

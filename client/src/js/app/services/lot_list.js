@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('lotList', ['gmapServices', 'modalServices', lotList]);
+    .factory('lotList', ['gmapServices', 'Lots', 'modalServices', lotList]);
 
-    function lotList (gmapServices, modalServices) {
+    function lotList (gmapServices, Lots, modalServices) {
         var service = {};
 
         service.polygoncolor = '#2ecc71';
@@ -45,6 +45,9 @@ angular.module('demoApp')
         function createPolygon(lot, forIndex) {
             var polygon = gmapServices.createCustomPolygon(lot.area, service.polygonOptions);
 
+
+            var restangularizedLot = Lots.cast(lot);
+
             var adminHandler = function () {
                 console.log('admin handler for polygon click lot');
             };
@@ -53,7 +56,7 @@ angular.module('demoApp')
                 console.log('index handler for polygon click lot');
                 // Show Lot Details
                 // and option to change status and select client
-                modalServices.showLotDetail(lot)
+                modalServices.showLotDetail(restangularizedLot)
                     .then( function (response) {
 
                     }, function(err) {

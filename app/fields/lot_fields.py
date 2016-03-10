@@ -1,5 +1,9 @@
 from flask.ext.restful import fields
 from app.utils.gis_json_fields import PolygonToLatLng
+from app.fields.deceased_fields import deceased_fields
+from app.fields.client_fields import client_fields
+from copy import copy
+
 
 lot_fields = dict(
     id=fields.Integer,
@@ -10,6 +14,7 @@ lot_fields = dict(
     dimension_height=fields.Float,
     lot_area=fields.Float,
     price_per_sq_mtr=fields.Float,
+    amount=fields.Float,
     date_purchased=fields.DateTime("iso8601"),
     status=fields.String,
     date_created=fields.DateTime("iso8601"),
@@ -21,3 +26,7 @@ lot_create_fields = dict(
     message=fields.String,
     lot=fields.Nested(lot_fields, allow_null=False)
 )
+
+lot_complete_fields = copy(lot_fields)
+lot_complete_fields['deceased'] = fields.Nested(deceased_fields)
+lot_complete_fields['client'] = fields.Nested(client_fields)

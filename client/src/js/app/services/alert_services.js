@@ -10,6 +10,7 @@ angular.module('demoApp')
         service.showTopRightToast = showTopRightToast;
         service.showLotAdded = showLotAdded;
         service.settingsSuccessfullySaved = settingsSuccessfullySaved;
+        service.showErrorMessage = showErrorMessage;
 
         function showTopRightToast(message) {
             $mdToast.show(
@@ -28,6 +29,13 @@ angular.module('demoApp')
             SweetAlert.swal({
                 title: 'Settings Updated!',
                 type: 'success'
+            });
+        }
+
+        function showErrorMessage (error) {
+            SweetAlert.swal({
+                title: error,
+                type: 'error'
             });
         }
 

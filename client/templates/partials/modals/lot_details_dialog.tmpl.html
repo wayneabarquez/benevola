@@ -11,9 +11,26 @@
         </md-toolbar>
         <md-dialog-content class="md-padding">
 
+            <span layout="row" layout-align="end center">
+
+                <!-- Add Occupant Button -->
+                <md-button class="md-hue-1"
+                           ng-show="lotDetsCtl.lot.status !== 'vacant'"
+                           ng-click="lotDetsCtl.addOccupant()">
+                    <md-icon>add</md-icon>Occupant
+                </md-button>
+
+                <!-- Mark Lot as Sold Button -->
+                <md-button class="md-hue-2"
+                           ng-show="lotDetsCtl.lot.status === 'vacant'"
+                           ng-click="lotDetsCtl.markSold()">
+                    <md-icon>attach_money</md-icon>Mark Sold
+                </md-button>
+            </span>
+
             <md-card>
                 <md-card-content>
-                    // Dimension (Editable)
+                <!--    // Dimension (Editable)
                     // Area
                     // Price/Sq.Mtr.
                     // Amount
@@ -25,13 +42,34 @@
                     // Show a button to add deceased (occupant) when status is sold or occupied
 
                     // when reverting back status to vacant. clear all cascaded data
+                    -->
+
+                    <!-- TODO: func to update widht and height -->
+                    <p>Dimension: <span>{{ lotDetsCtl.lot.dimension_width }} x {{ lotDetsCtl.lot.dimension_height }}</span></p>
+                    <p>Area: <span>{{ lotDetsCtl.lot.lot_area }}</span></p>
+
+                    <!-- TODO: functionality to update lot price per sq mtr -->
+                    <p>Price Per S/M: <span>{{ lotDetsCtl.lot.price_per_sq_mtr | currency: "PHP ":0 }}</span></p>
+
+                    <p>Amount: <span>{{ lotDetsCtl.lot.amount | currency: "PHP ":0 }}</span></p>
+
+                    <!-- TODO: functionality to revert status and data cascades -->
+                    <p>Status: <span ng-click="lotDetsCtl.lotParam.status.showMenu = !lotDetsCtl.lotParam.status.showMenu" ng-hide="lotDetsCtl.lotParam.status.showMenu">{{ lotDetsCtl.lot.status }}</span></p>
+
+                        <!--  TODO add a watch for change on status and update to server
+                              if status changed to sold - show modal to select client
+                              note: status occupied shown only when deceased added
+                        -->
+                        <md-select placeholder="Status"
+                                   ng-model="lotDetsCtl.lot.status"
+                                   ng-change="lotDetsCtl.lotParam.status.showMenu = !lotDetsCtl.lotParam.status.showMenu"
+                                   ng-show="lotDetsCtl.lotParam.status.showMenu">
+                            <md-option ng-repeat="status in lotDetsCtl.lotParam.status.data" value="{{ status }}">{{ status }}</md-option>
+                        </md-select>
+
                 </md-card-content>
             </md-card>
 
-            <span layout="row" layout-align="end center">
-                <span flex></span>
-                <md-button class="md-primary" ng-click="lotDetsCtl.save()">Save</md-button>
-            </span>
         </md-dialog-content>
     </form>
 </md-dialog>

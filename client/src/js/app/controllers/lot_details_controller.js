@@ -2,15 +2,24 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', 'LOT_STATUSES', '$mdDialog', 'lot', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot) {
+    function lotDetailsController ($scope, LOT_STATUSES, $mdDialog, lot) {
         var vm = this;
 
-        vm.lot = lot;
+        vm.lot = null;
+
+        vm.lotParam = {
+            status: {
+                selected: '',
+                showMenu: false,
+                data: LOT_STATUSES.splice(0, 2)
+            }
+        };
 
         vm.initialize = initialize;
-        vm.save = save;
+        vm.markSold = markSold;
+        vm.addOccupant = addOccupant;
         vm.cancel = cancel;
 
         vm.initialize();
@@ -18,7 +27,12 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function initialize () {
+            console.log('lot details controller initialized');
+
+            vm.lot = lot;
+
             console.log('lot details: ', vm.lot);
+
             // Restangularized
             //vm.block = Blocks.cast(block);
 
@@ -30,18 +44,20 @@ angular.module('demoApp')
             //});
         }
 
-        function save () {
-            console.log('save lot');
-            //vm.block.post('lots', vm.lot)
-            //    .then(function(response){
-            //        $mdDialog.hide(response);
-            //        alertServices.showLotAdded();
-            //    }, function(error){
-            //        console.log('Error: ', error);
-            //    });
+        function markSold () {
+            // TODO show modal to select or add new client and a datepicker to select date sold
+            // add functionality to update database
+            console.log('mark sold lot');
+            vm.lot.status = 'sold';
         }
 
-        function cancel () {
+        function addOccupant () {
+            console.log('add occupant');
+            // TODO show mddialog hacky style in solar
+            // add functionality to update database
+        }
+
+               function cancel () {
             $mdDialog.cancel();
         }
 
