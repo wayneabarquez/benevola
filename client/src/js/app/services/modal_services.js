@@ -20,6 +20,9 @@ angular.module('demoApp')
         service.showAddBlock = showAddBlock;
         service.showAddLot = showAddLot;
 
+        service.showLotDetailModal = null;
+        service.showLotDetail = showLotDetail;
+
         function showSettings(event) {
             var dfd = $q.defer();
 
@@ -151,6 +154,37 @@ angular.module('demoApp')
                     })
                     .finally(function(){
                         service.addLotModal = null;
+                    })
+            }
+            return dfd.promise;
+        }
+
+        function showLotDetail(lot) {
+            var dfd = $q.defer();
+
+            if (service.showLotDetailModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.showLotDetailModal = $mdDialog.show({
+                    controller: 'lotDetailsController',
+                    controllerAs: 'lotDetsCtl',
+                    templateUrl: 'partials/modals/lot_details_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    locals: {lot: lot},
+                    fullscreen: service.customFullscreen
+                });
+
+                service.showLotDetailModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.showLotDetailModal = null;
                     })
             }
             return dfd.promise;

@@ -50,9 +50,9 @@ angular.module('demoApp')
                 polygon.section = section;
 
             var adminHandler = function () {
-                var section = this.section;
+                var section = polygon.section;
                 $mdSidenav('sectionDetailsSidenav')
-                    .toggle()
+                    .open()
                     .then(function () {
                         $rootScope.$broadcast('show-section-details', {section: section});
                     });

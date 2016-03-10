@@ -1,0 +1,37 @@
+<md-dialog class="form-modal" aria-label="Lot Details" ng-cloak>
+    <form name="lotDetailsForm">
+        <md-toolbar>
+           <div class="md-toolbar-tools">
+               <h4>Lot Information</h4>
+               <span flex></span>
+               <md-button class="md-icon-button" ng-click="lotDetsCtl.cancel()">
+                   <md-icon aria-label="Close dialog">clear</md-icon>
+               </md-button>
+           </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <md-card>
+                <md-card-content>
+                    // Dimension (Editable)
+                    // Area
+                    // Price/Sq.Mtr.
+                    // Amount
+                    // Status (Editable)
+
+                    // Show Owner only when Status is sold or occupied
+                    // trigger select client and date purchased(datepicker) when changing status to sold
+
+                    // Show a button to add deceased (occupant) when status is sold or occupied
+
+                    // when reverting back status to vacant. clear all cascaded data
+                </md-card-content>
+            </md-card>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+                <md-button class="md-primary" ng-click="lotDetsCtl.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+    </form>
+</md-dialog>

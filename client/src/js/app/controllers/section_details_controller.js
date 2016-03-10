@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('sectionDetailsController', ['$rootScope', '$mdSidenav', 'sectionList', 'blockList', 'gmapServices', 'drawingServices', 'modalServices', sectionDetailsController]);
+    .controller('sectionDetailsController', ['$rootScope', '$mdSidenav', 'sectionList', 'blockList', 'lotList', 'gmapServices', 'drawingServices', 'modalServices', sectionDetailsController]);
 
-    function sectionDetailsController ($rootScope, $mdSidenav, sectionList, blockList, gmapServices, drawingServices, modalServices) {
+    function sectionDetailsController ($rootScope, $mdSidenav, sectionList, blockList, lotList, gmapServices, drawingServices, modalServices) {
         var vm = this;
 
         vm.lastPolygon = null;
@@ -135,12 +135,13 @@ angular.module('demoApp')
             $rootScope.$broadcast('start-drawing');
             drawingServices.startDrawingMode('#2ecc71');
 
+            console.log('Block: ',block);
+
             saveListener.lot = $rootScope.$on('save-area', function (event, param) {
                 modalServices.showAddLot(ev, block, param.area)
                     .then(function (result) {
-                        console.log('Success Adding Lot: ', result);
-                        //blockList.add(result.block.section_id, result.block);
-                        //vm.section.blocks.push(result.block);
+                        lotList.add(block.id, result.lot);
+                        block.lots.push(result.lot);
                     }, function (reason) {
                         console.log('failed: ', reason);
                     })

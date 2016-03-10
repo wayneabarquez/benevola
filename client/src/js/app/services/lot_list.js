@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('lotList', ['gmapServices', lotList]);
+    .factory('lotList', ['gmapServices', 'modalServices', lotList]);
 
-    function lotList (gmapServices) {
+    function lotList (gmapServices, modalServices) {
         var service = {};
 
         service.polygoncolor = '#2ecc71';
@@ -51,6 +51,14 @@ angular.module('demoApp')
 
             var indexHandler = function () {
                 console.log('index handler for polygon click lot');
+                // Show Lot Details
+                // and option to change status and select client
+                modalServices.showLotDetail(lot)
+                    .then( function (response) {
+
+                    }, function(err) {
+
+                    });
             };
 
             var handler = forIndex ? indexHandler : adminHandler;
