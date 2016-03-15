@@ -45,6 +45,7 @@ angular.module('demoApp')
         vm.showBlock = showBlock;
 
         vm.addLot = addLot;
+        vm.onLotClick = onLotClick;
 
         vm.initialize();
 
@@ -171,6 +172,11 @@ angular.module('demoApp')
             });
         }
 
+        function onLotClick (lot) {
+            var foundLot = lotList.findLot(lot.block_id, lot.id);
+            if (foundLot) gmapServices.triggerEvent(foundLot.polygon, 'click');
+        }
+
         /* End of Lot Functions */
 
 
@@ -188,7 +194,7 @@ angular.module('demoApp')
         };
 
         function close () {
-            $mdSidenav('sectionDetailsSidenav')
+            $mdSidenav('sectionDetailsIndexSidenav')
                 .close()
                 //.then(function(){
                 //    vm.section = {

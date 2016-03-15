@@ -24,11 +24,36 @@ angular.module('demoApp')
         service.findLot = findLot;
 
         function init() {
-            $rootScope.$on('lot-status-updated', function(event, params) {
-                var lot = params.lot;
-                var searchLot = _.where(service.lots[lot.block_id], {id: lot.id});
-                //searchLot = lot;
-                console.log('searchlot: ',searchLot);
+            //$rootScope.$on('lot-status-updated', function(event, params) {
+            //    var lot = params.lot;
+            //    var searchLot = _.where(service.lots[lot.block_id], {id: lot.id});
+            //    //searchLot = lot;
+            //    console.log('searchlot: ',searchLot);
+            //});
+
+            $rootScope.$on('update-lot-detail', function(event, params) {
+               var lot = params.lot;
+
+                console.log('Update Lot Detail Event: ', lot);
+
+                var foundLot = service.findLot(lot.block_id, lot.id);
+                foundLot.status = lot.status;
+
+                var polygonColor = service.polygonColor[lot.status];
+                var polygonOpts = angular.extend({}, service.polygonOptions, {
+                    fillColor: polygonColor
+                });
+                foundLot.polygon.setOptions(polygonOpts);
+
+               //lot.get()
+               //    .then(function(response){
+               //        modalServices.showLotDetail(response)
+               //            .then(function (response) {
+               //
+               //            }, function (err) {
+               //
+               //            });
+               //    });
             });
         }
         init();

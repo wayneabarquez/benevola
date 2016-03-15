@@ -80,11 +80,12 @@
                         <!-- Lots List -->
                         <md-list ng-repeat="blk in sdCtl.section.blocks">
                             <md-subheader class="md-no-sticky">Block {{ blk.name }}</md-subheader>
-                            <md-list-item class="md-3-line" ng-repeat="lot in blk.lots" style="margin: 10px;">
+                            <md-list-item class="md-3-line" ng-repeat="lot in blk.lots"
+                                          style="margin: 10px;"
+                                          ng-click="sdCtl.onLotClick(lot)">
                                 <div class="md-list-item-text" layout="row">
                                     <div layout="column">
                                         <h4>{{ lot.dimension_width }} x {{ lot.dimension_height }}</h4>
-
                                         <p>{{ lot.lot_area }} sq. meters</p>
                                         <span flex class="subtitle">{{ lot.status }}</span>
                                     </div>

@@ -62,7 +62,7 @@
                 console.log('Select Client: ', response);
                 $mdDialog.hide();
                 // TODO fetch new lot info via http request
-                $rootScope.$broadcast('show-lot-detail', {lot: Lots.cast(response.lot)});
+                $rootScope.$broadcast('update-lot-detail', {lot: Lots.cast(response.lot)});
             }, function (err) {
                 console.log('Error adding new client: ', err);
             });

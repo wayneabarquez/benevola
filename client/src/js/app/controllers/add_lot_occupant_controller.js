@@ -33,7 +33,8 @@
                         console.log('New Deceased: ', response);
                         $mdDialog.hide();
                         // TODO fetch new lot info via http request
-                        $rootScope.$broadcast('show-lot-detail', {lot: vm.lot});
+                        vm.lot.status = 'occupied'; // TODO extract to constant
+                        $rootScope.$broadcast('update-lot-detail', {lot: vm.lot});
                     }, function (err) {
                         console.log('Error adding new deceased: ', err);
                     });

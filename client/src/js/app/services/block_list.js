@@ -7,13 +7,13 @@ angular.module('demoApp')
     function blockList ($rootScope, gmapServices, $mdSidenav, lotList) {
         var service = {};
 
-        service.polygoncolor = '#ecf0f1';
+        service.polygoncolor = '#ffffff';
         service.polygonOptions = {
             clickable: true,
             fillColor: service.polygoncolor,
             fillOpacity: 0,
             strokeColor: service.polygoncolor,
-            strokeOpacity: 0.9,
+            strokeOpacity: 1,
             strokeWeight: 2,
             zIndex: 101
         };

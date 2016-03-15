@@ -13,7 +13,7 @@ angular.module('demoApp')
             fillColor: service.polygoncolor,
             fillOpacity: 0,
             strokeColor: service.polygoncolor,
-            strokeOpacity: 0.9,
+            strokeOpacity: 0.8,
             strokeWeight: 4,
             zIndex: 100
         };
