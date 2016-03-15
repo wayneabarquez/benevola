@@ -77,8 +77,17 @@ angular.module('demoApp')
             });
         }
 
+        function resetSectionInfo() {
+            for (var key in vm.sectionInfo) {
+                vm.sectionInfo[key] = 0;
+            }
+        }
+
         function updateSectionDetails (section) {
             console.log('section details: ',section);
+
+            resetSectionInfo();
+
             section.blocks.forEach(function(blk){
                 vm.sectionInfo.lotCount += blk.lots.length;
                 vm.sectionInfo.soldLot += _.where(blk.lots, {status: 'sold'}).length;

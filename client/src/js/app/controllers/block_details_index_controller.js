@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('blockDetailsIndexController', ['$rootScope', '$mdSidenav', 'sectionList', 'blockList', 'lotList', 'gmapServices', 'drawingServices', 'modalServices', blockDetailsIndexController]);
+    .controller('blockDetailsIndexController', ['$rootScope', '$mdSidenav', 'sectionList', 'blockList', 'lotList', 'gmapServices', 'drawingServices', blockDetailsIndexController]);
 
-    function blockDetailsIndexController ($rootScope, $mdSidenav, sectionList, blockList, lotList, gmapServices, drawingServices, modalServices) {
+    function blockDetailsIndexController ($rootScope, $mdSidenav, sectionList, blockList, lotList, gmapServices, drawingServices) {
         var vm = this;
 
         vm.lastPolygon = null;
@@ -70,7 +70,15 @@ angular.module('demoApp')
             });
         }
 
+        function resetBlockInfo() {
+            for (var key in vm.blockInfo) {
+                vm.blockInfo[key] = 0;
+            }
+        }
+
         function updateBlockDetails (blk) {
+            resetBlockInfo();
+
             vm.blockInfo.lotCount += blk.lots.length;
             vm.blockInfo.soldLot += _.where(blk.lots, {status: 'sold'}).length;
             vm.blockInfo.soldLot += _.where(blk.lots, {status: 'occupied'}).length;
