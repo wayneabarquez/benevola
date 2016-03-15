@@ -7,7 +7,7 @@ angular.module('demoApp')
     function sectionList ($rootScope, $mdSidenav, gmapServices, Sections, blockList) {
         var service = {};
 
-        service.polygoncolor = '#3498db';
+        service.polygoncolor = '#2c3e50';
         service.polygonOptions = {
             clickable: true,
             fillColor: service.polygoncolor,

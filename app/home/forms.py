@@ -1,4 +1,4 @@
-from .models import Section, Block, Lot
+from .models import Section, Block, Lot, Client, Deceased
 from wtforms_alchemy import ModelForm
 from wtforms.fields import StringField, TextAreaField, IntegerField
 from wtforms import validators
@@ -32,3 +32,21 @@ class AddLotForm(ModelForm):
     dimension_width = IntegerField(validators=[validators.required()])
     dimension_height = IntegerField(validators=[validators.required()])
     # lot_area = IntegerField(validators=[validators.required()])
+
+
+class AddClientForm(ModelForm):
+    class Meta:
+        model = Client
+
+    first_name = StringField(validators=[validators.required()])
+    last_name = StringField(validators=[validators.required()])
+
+
+class AddDeceasedForm(ModelForm):
+    class Meta:
+        model = Deceased
+
+    first_name = StringField(validators=[validators.required()])
+    last_name = StringField(validators=[validators.required()])
+    date_of_death = StringField(validators=[validators.required()])
+

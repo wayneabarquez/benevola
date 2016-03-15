@@ -27,6 +27,13 @@ lot_create_fields = dict(
     lot=fields.Nested(lot_fields, allow_null=False)
 )
 
+lot_client_create_fields = dict(
+    status=fields.String,
+    message=fields.String,
+    client=fields.Nested(client_fields),
+    lot=fields.Nested(lot_fields),
+)
+
 lot_complete_fields = copy(lot_fields)
 lot_complete_fields['deceased'] = fields.Nested(deceased_fields)
 lot_complete_fields['client'] = fields.Nested(client_fields)

@@ -38,11 +38,11 @@ class Block(BaseModel):
 class Client(Person):
     address = db.Column(db.String(100))
 
-    def get_lots(self):
-        lots = []
-        for lot in self.lots:
-            lots.append(lot.to_dict())
-        return lots
+    # def get_lots(self):
+    #     lots = []
+    #     for lot in self.lots:
+    #         lots.append(lot.to_dict())
+    #     return lots
 
 
 class LotPrice(BaseModel):
@@ -66,7 +66,7 @@ class Lot(BaseModel):
     status = db.Column(db.String(20), index=True, default='vacant')  # [vacant, sold, occupied]
 
     block = db.relationship(Block, backref='lots')
-    client = db.relationship(Client, backref='lots')
+    client = db.relationship(Client)
 
     def get_deceased(self):
         deceased = []

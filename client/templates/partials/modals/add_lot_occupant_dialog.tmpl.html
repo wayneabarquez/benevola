@@ -1,0 +1,85 @@
+<md-dialog id="lot-client-select-modal" class="form-modal" aria-label="Select Lot Client" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h4>Add Occupant</h4>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="addLotOcptCtl.cancel()">
+                    <md-icon aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <md-card>
+                <md-card-content>
+
+                    <div layout-gt-sm="row">
+                        <form name="newForm">
+                            <div>
+                                <!-- Firstname -->
+                                <md-input-container>
+                                    <label>Firstname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="firstname"
+                                           ng-model="addLotOcptCtl.occupant.first_name">
+                                    <div ng-messages="newForm.firstname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Lastname -->
+                                <md-input-container>
+                                    <label>Lastname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="lastname"
+                                           ng-model="addLotOcptCtl.occupant.last_name">
+
+                                    <div ng-messages="newForm.lastname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Middlename -->
+                                <md-input-container>
+                                    <label>Middlename</label>
+                                    <input md-minlength="2" md-no-asterisk name="middlename"
+                                           ng-model="addLotOcptCtl.occupant.middle_name">
+
+                                    <div ng-messages="newForm.middlename.$error">
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row" layout-align="center center">
+                                <!-- Date of Death -->
+                                <h4>Date of Death</h4>
+                                <md-datepicker required name="date_of_death"
+                                               md-max-date="maxDate"
+                                               ng-model="addLotOcptCtl.occupant.date_of_death"
+                                               md-placeholder="Select Date">
+                                </md-datepicker>
+                                <div class="validation-messages" ng-messages="newForm.date_of_death.$error"
+                                     style="color: red;">
+                                    <div ng-message="required">This is required.</div>
+                                    <div ng-message="maxDate">Date is invalid.</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </md-card-content>
+            </md-card>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+
+                <md-button ng-click="addLotOcptCtl.clearForm()">
+                    <md-icon>clear</md-icon>
+                    Clear Form
+                </md-button>
+
+                <md-button class="md-primary" ng-click="addLotOcptCtl.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,76 @@
+{% raw %}
+<section class="bottom_list_panel"
+         ng-controller="lotListController as listCtl"
+         ng-show="indexCtl.showList"
+         ng-cloak>
+    <div class="container">
+
+        <!-- Table Toolbar -->
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="listCtl.filter.show">
+            <div class="md-toolbar-tools">
+                <span class="table-header-title">Benevola Lot List</span>
+
+                <div flex="" class="flex"></div>
+                <md-button class="md-icon-button" ng-click="listCtl.filter.show = true">
+                    <md-tooltip md-direction="left">Filter List</md-tooltip>
+                    <md-icon>filter_list</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="indexCtl.showList = false">
+                    <md-tooltip md-direction="left">Close Table</md-tooltip>
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <!-- Filter Toolbar -->
+        <md-toolbar class="md-table-toolbar md-default filter-toolbar"
+                    ng-show="listCtl.filter.show">
+            <div class="md-toolbar-tools">
+                <md-icon>search</md-icon>
+                <form flex name="listCtl.filter.form">
+                    <md-input-container md-no-float class="md-block" style="max-height: 30px !important;">
+                        <input type="text" ng-model="listCtl.query.filter" placeholder="search">
+                    </md-input-container>
+                </form>
+                <md-button ng-click="listCtl.removeFilter()">
+                    Back
+                    <md-icon>arrow_forward</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+
+                <md-table-container>
+                    <table md-table md-progress="">
+                        <thead md-head md-order="listCtl.query.order" md-on-reorder="listCtl.onReorder">
+                        <tr md-row>
+                            <th md-column ng-repeat="col in listCtl.columns">{{col}}</th>
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row
+                            ng-repeat="rows in listCtl.rowData
+                            | filter: listCtl.query.filter
+                            | orderBy: listCtl.query.order
+                            | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit">
+                            <td ng-repeat="data in rows track by $index" md-cell>{{data}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+
+                <md-toolbar class="md-table-toolbar md-default table-footer">
+                    <div layout="row" layout-align="start center" flex>
+                        <md-table-pagination
+                                md-limit="listCtl.query.limit"
+                                md-page="listCtl.query.page"
+                                md-total="{{listCtl.rowData.length}}"
+                                md-page-select>
+                        </md-table-pagination>
+                    </div>
+                </md-toolbar>
+
+
+    </div>
+</section>
+{% endraw %}

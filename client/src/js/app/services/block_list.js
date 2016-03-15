@@ -7,7 +7,7 @@ angular.module('demoApp')
     function blockList (gmapServices, lotList) {
         var service = {};
 
-        service.polygoncolor = '#e74c3c';
+        service.polygoncolor = '#ecf0f1';
         service.polygonOptions = {
             clickable: true,
             fillColor: service.polygoncolor,

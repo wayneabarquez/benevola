@@ -2,19 +2,18 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('lotList', ['gmapServices', 'Lots', 'modalServices', lotList]);
+    .factory('lotList', ['$rootScope', 'gmapServices', 'LOT_COLORS', 'Lots', 'modalServices', lotList]);
 
-    function lotList (gmapServices, Lots, modalServices) {
+    function lotList ($rootScope, gmapServices, LOT_COLORS, Lots, modalServices) {
         var service = {};
 
-        service.polygoncolor = '#2ecc71';
+        service.polygonColor = LOT_COLORS;
         service.polygonOptions = {
             clickable: true,
-            fillColor: service.polygoncolor,
-            fillOpacity: 0,
-            strokeColor: service.polygoncolor,
-            strokeOpacity: 0.9,
-            strokeWeight: 2,
+            fillOpacity: 0.8,
+            strokeColor: '#000000',
+            strokeOpacity: 0.6,
+            strokeWeight: 1,
             zIndex: 101
         };
 
@@ -23,6 +22,16 @@ angular.module('demoApp')
         service.loadLotsForBlock = loadLotsForBlock;
         service.add = add;
 
+
+        function init() {
+            $rootScope.$on('lot-status-updated', function(event, params) {
+                var lot = params.lot;
+                var searchLot = _.where(service.lots[lot.block_id], {id: lot.id});
+                //searchLot = lot;
+                console.log('searchlot: ',searchLot);
+            });
+        }
+        init();
 
         function loadLotsForBlock (block, forIndex) {
             console.log('load lots for block: ',block);
@@ -43,8 +52,11 @@ angular.module('demoApp')
         }
 
         function createPolygon(lot, forIndex) {
-            var polygon = gmapServices.createCustomPolygon(lot.area, service.polygonOptions);
-
+            var polygonColor = service.polygonColor[lot.status];
+            var polygonOpts = angular.extend({}, service.polygonOptions, {
+               fillColor: polygonColor
+            });
+            var polygon = gmapServices.createCustomPolygon(lot.area, polygonOpts);
 
             var restangularizedLot = Lots.cast(lot);
 

@@ -2,7 +2,7 @@ from app.utils import forms_helper
 from app.exceptions.lot import *
 from app import db
 from app.services import setting_service
-from app.home.models import Lot
+from app.home.models import Lot, Deceased
 import logging
 
 log = logging.getLogger(__name__)
@@ -25,6 +25,9 @@ def get_details(lot_id):
     data = lot.to_dict()
     amount = compute_lot_amount(lot.lot_area, lot.price_per_sq_mtr)
     data['amount'] = float(amount)
+    data['client'] = lot.client.to_dict()
+    data['deceased'] = lot.get_deceased()
+    log.debug("Lot Details: {0}".format(data))
     # log.debug("Compute: {0} x {1} = {2}".format(lot.lot_area, lot.price_per_sq_mtr, amount))
 
     return data
@@ -67,3 +70,36 @@ def update_from_dict(lot_id, data):
 
     return lot
 
+
+def sold_lot(lot_id, client_id):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.client_id = client_id
+    # TODO Replace with constant value
+    lot.status = 'sold'
+
+    db.session.commit()
+
+    return lot
+
+
+def add_occupant(lot_id, data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    # TODO get from constant
+    lot.status = 'occupied'
+
+    # Prepare Data
+    deceased = Deceased.from_dict(data)
+    deceased.lot_id = lot.id
+
+    db.session.add(deceased)
+    db.session.commit()
+
+    return deceased

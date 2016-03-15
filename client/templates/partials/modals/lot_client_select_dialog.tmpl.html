@@ -1,0 +1,110 @@
+<md-dialog id="lot-client-select-modal" class="form-modal" aria-label="Select Lot Client" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h4>Select Client</h4>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="clientSelectCtl.cancel()">
+                    <md-icon aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <md-card>
+                <md-card-content>
+
+
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Select Client</label>
+                            <md-select ng-model="clientSelectCtl.selectedClient.client_id">
+                                <md-option ng-repeat="client in clientSelectCtl.clients" value="{{ client.id }}">
+                                    {{ client.last_name + ', ' + client.first_name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    OR
+                    <md-divider style="margin: 15px;"></md-divider>
+
+                    <md-button ng-click="clientSelectCtl.showNewClientForm = !clientSelectCtl.showNewClientForm">
+                        <md-icon>add</md-icon>
+                        New Client
+                    </md-button>
+
+                    <md-divider style="margin: 15px;"></md-divider>
+
+                    <div layout-gt-sm="row">
+                        <h4>Date Sold</h4>
+                        <md-datepicker ng-model="clientSelectCtl.dateSold" md-placeholder="Enter date"></md-datepicker>
+
+                        <form name="newClientForm" ng-show="clientSelectCtl.showNewClientForm">
+                            <div>
+                                <!-- Firstname -->
+                                <md-input-container>
+                                    <label>Firstname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="firstname"
+                                           ng-model="clientSelectCtl.client.first_name">
+                                    <div ng-messages="newClientForm.firstname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Lastname -->
+                                <md-input-container>
+                                    <label>Lastname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="lastname"
+                                           ng-model="clientSelectCtl.client.last_name">
+
+                                    <div ng-messages="newClientForm.lastname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Middlename -->
+                                <md-input-container>
+                                    <label>Middlename</label>
+                                    <input md-minlength="2" md-no-asterisk name="middlename"
+                                           ng-model="clientSelectCtl.client.middle_name">
+
+                                    <div ng-messages="newClientForm.middlename.$error">
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div>
+                                <!-- Address -->
+                                <md-input-container class="md-block">
+                                    <label>Address</label>
+                                    <input md-minlength="4" md-no-asterisk name="address"
+                                           ng-model="clientSelectCtl.client.address">
+
+                                    <div ng-messages="newClientForm.address.$error">
+                                        <div ng-message="md-minlength">Must be atleast 4 characters long.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </md-card-content>
+            </md-card>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+
+                <md-button ng-click="clientSelectCtl.clearForm()" ng-show="clientSelectCtl.showNewClientForm">
+                    <md-icon>clear</md-icon>
+                    Clear Form
+                </md-button>
+
+                <md-button class="md-primary" ng-click="clientSelectCtl.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+</md-dialog>

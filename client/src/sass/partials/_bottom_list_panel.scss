@@ -8,6 +8,24 @@ $list-footer-width: calc(100% - 40px);
 $list-content-height: calc(100% - 80px);
 $list-footer-height: 43px;
 
+#map-bottom-panel {
+  position: absolute;
+  bottom: 18px;
+  right: 45px;
+  z-index: 3;
+
+  .row {
+    margin: 0;
+
+    button {
+      margin: 5px;
+      padding: 2px;
+      span {
+        padding: 5px;
+      }
+    }
+  }
+}
 
 
 .bottom_list_panel {

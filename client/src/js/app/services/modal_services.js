@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', modalServices]);
+    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', 'Clients', modalServices]);
 
-    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings) {
+    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings, Clients) {
         var service = {};
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
@@ -22,6 +22,12 @@ angular.module('demoApp')
 
         service.showLotDetailModal = null;
         service.showLotDetail = showLotDetail;
+
+        service.showClientSelectionModal = null;
+        service.showClientSelection = showClientSelection;
+
+        service.showAddOccupantModal = null;
+        service.showAddOccupant = showAddOccupant;
 
         function showSettings(event) {
             var dfd = $q.defer();
@@ -164,7 +170,6 @@ angular.module('demoApp')
 
             console.log('Show Lot Detail: ', lot);
 
-
             if (service.showLotDetailModal) {
                 dfd.reject('Modal already opened');
             } else {
@@ -196,6 +201,82 @@ angular.module('demoApp')
                     console.log('Error: ',err);
                 });
 
+            }
+            return dfd.promise;
+        }
+
+        function showClientSelection (lot) {
+            var dfd = $q.defer();
+
+            if (service.showClientSelectionModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                Clients.getList()
+                    .then(function(resp) {
+
+                        var clients = [];
+                        resp.forEach(function(cl){
+                           clients.push(cl);
+                        });
+
+                        console.log('Clients: ',resp);
+
+                        service.showClientSelectionModal = $mdDialog.show({
+                            controller: 'clientSelectionController',
+                            controllerAs: 'clientSelectCtl',
+                            templateUrl: 'partials/modals/lot_client_select_dialog.tmpl.html',
+                            parent: angular.element(document.body),
+                            locals: {lot: lot, clients: clients},
+                            fullscreen: service.customFullscreen
+                        });
+
+                        service.showClientSelectionModal.then(
+                            function (result) {
+                                dfd.resolve(result);
+                            }, function (reason) {
+                                $rootScope.$broadcast('modal-dismissed');
+                                dfd.reject(reason);
+                            })
+                            .finally(function () {
+                                service.showClientSelectionModal = null;
+                            });
+
+                    }, function(err) {
+                        console.log('Error fetching clients: ',err);
+                    });
+            }
+            return dfd.promise;
+        }
+
+        function showAddOccupant(lot) {
+            var dfd = $q.defer();
+
+            if (service.showAddOccupantModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.showAddOccupantModal = $mdDialog.show({
+                    controller: 'addLotOccupantController',
+                    controllerAs: 'addLotOcptCtl',
+                    templateUrl: 'partials/modals/add_lot_occupant_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    locals: {lot: lot},
+                    fullscreen: service.customFullscreen
+                });
+
+                service.showAddOccupantModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.showAddOccupantModal = null;
+                    });
             }
             return dfd.promise;
         }
