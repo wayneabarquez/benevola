@@ -1,12 +1,13 @@
 {% raw %}
-<section class="bottom_list_panel"
+<section id="lot-list-table-container" class="bottom_list_panel"
          ng-controller="lotListController as listCtl"
          ng-show="indexCtl.showList"
          ng-cloak>
     <div class="container">
+        <md-content>
 
-        <!-- Table Toolbar -->
-        <md-toolbar class="md-table-toolbar md-default" ng-hide="listCtl.filter.show">
+        <!-- PRIMARY Toolbar -->
+        <md-toolbar class="md-table-toolbar md-default primary-table-toolbar" ng-hide="listCtl.filter.show">
             <div class="md-toolbar-tools">
                 <span class="table-header-title">Benevola Lot List</span>
 
@@ -22,13 +23,13 @@
             </div>
         </md-toolbar>
 
-        <!-- Filter Toolbar -->
-        <md-toolbar class="md-table-toolbar md-default filter-toolbar"
+        <!-- FILTER Toolbar -->
+        <md-toolbar class="md-table-toolbar md-default toolbar-search"
                     ng-show="listCtl.filter.show">
             <div class="md-toolbar-tools">
                 <md-icon>search</md-icon>
                 <form flex name="listCtl.filter.form">
-                    <md-input-container md-no-float class="md-block" style="max-height: 30px !important;">
+                    <md-input-container md-no-float class="md-block" style="max-height: 30px; margin-top: 25px;">
                         <input type="text" ng-model="listCtl.query.filter" placeholder="search">
                     </md-input-container>
                 </form>
@@ -39,38 +40,74 @@
             </div>
         </md-toolbar>
 
+        <!-- TABLE -->
+        <md-table-container>
+            <table md-table md-progress="">
 
-                <md-table-container>
-                    <table md-table md-progress="">
-                        <thead md-head md-order="listCtl.query.order" md-on-reorder="listCtl.onReorder">
-                        <tr md-row>
-                            <th md-column ng-repeat="col in listCtl.columns">{{col}}</th>
-                        </tr>
-                        </thead>
-                        <tbody md-body>
-                        <tr md-row
-                            ng-repeat="rows in listCtl.rowData
-                            | filter: listCtl.query.filter
-                            | orderBy: listCtl.query.order
-                            | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit">
-                            <td ng-repeat="data in rows track by $index" md-cell>{{data}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </md-table-container>
+                <!-- TABLE HEAD -->
+                <thead md-head md-order="listCtl.query.order" md-on-reorder="listCtl.onReorder">
+                    <tr md-row>
+                        <th md-column ng-repeat="col in listCtl.tableHeaderList">{{col}}</th>
+                    </tr>
+                </thead>
 
-                <md-toolbar class="md-table-toolbar md-default table-footer">
-                    <div layout="row" layout-align="start center" flex>
-                        <md-table-pagination
-                                md-limit="listCtl.query.limit"
-                                md-page="listCtl.query.page"
-                                md-total="{{listCtl.rowData.length}}"
-                                md-page-select>
-                        </md-table-pagination>
-                    </div>
-                </md-toolbar>
+                <!-- TABLE BODY -->
+                <tbody md-body>
+                    <tr md-row
+                        ng-repeat="lot in lots
+                        | filter: listCtl.query.filter
+                        | orderBy: listCtl.query.order
+                        | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit"
+                        ng-click="listCtl.onClickRow(lot)">
 
+                        <!-- Lot No. -->
+                        <td md-cell>{{lot.id}}</td>
 
+                        <!-- Dimension -->
+                        <td md-cell>{{lot.dimension_width}} x {{ lot.dimension_height }}</td>
+
+                        <!-- Area -->
+                        <td md-cell>{{lot.lot_area}}</td>
+
+                        <!-- Price/SM -->
+                        <td md-cell>{{lot.price_per_sq_mtr | currency: "PHP ":0}}</td>
+
+                        <!-- Amount -->
+                        <td md-cell>{{lot.lot_area*lot.price_per_sq_mtr | currency: "PHP ":0}}</td>
+
+                        <!-- Remarks -->
+                        <td md-cell
+                            ng-style="lot.status == 'vacant' && {'color': 'green'}
+                            || lot.status == 'sold' && {'color': 'red'}
+                            || lot.status == 'occupied' && {'color': 'violet'}">
+                            <b>{{lot.status}}</b>
+                        </td>
+
+                        <!-- Owner -->
+                        <td md-cell>{{lot.client.last_name ? (lot.client.first_name + ' ' + lot.client.last_name) : ''}}</td>
+
+                        <!-- Date Purchased -->
+                        <td md-cell>{{lot.date_purchased | amDateFormat:'MMMM DD, YYYY'}}</td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </md-table-container>
+
+        <!-- FOOTER -->
+        <md-toolbar class="md-table-toolbar md-default table-footer">
+            <div layout="row" layout-align="start center" flex>
+                <md-table-pagination
+                        md-limit="listCtl.query.limit"
+                        md-page="listCtl.query.page"
+                        md-total="{{listCtl.rowData.length}}"
+                        md-page-select>
+                </md-table-pagination>
+            </div>
+        </md-toolbar>
+
+        </md-content>
     </div>
 </section>
 {% endraw %}

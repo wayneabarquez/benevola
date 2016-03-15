@@ -12,6 +12,17 @@ import logging
 log = logging.getLogger(__name__)
 
 
+class LotsResource(Resource):
+    """
+    Resource for Lots
+    """
+
+    @marshal_with(lot_complete_fields)
+    def get(self):
+        # TODO check authenticated user
+        return lot_service.get_lots()
+
+
 class LotDetailResource(Resource):
     """
     Resource for Lot Detail
@@ -84,6 +95,8 @@ class LotDeceasedResource(Resource):
         except LotPriceNullError as err:
             abort(403, message=err.message)
 
+
+rest_api.add_resource(LotsResource, '/api/lots')
 rest_api.add_resource(LotDetailResource, '/api/lots/<int:lot_id>')
 rest_api.add_resource(BlockLotResource, '/api/blocks/<int:block_id>/lots')
 rest_api.add_resource(LotDeceasedResource, '/api/lots/<int:lot_id>/deceased')

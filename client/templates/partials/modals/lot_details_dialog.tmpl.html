@@ -1,4 +1,4 @@
-<md-dialog class="form-modal" aria-label="Lot Details" flex="40" ng-cloak>
+<md-dialog id="lot-details-dialog" class="form-modal" aria-label="Lot Details" flex="25" ng-cloak>
     <form name="lotDetailsForm">
         <md-toolbar>
            <div class="md-toolbar-tools">
@@ -31,7 +31,7 @@
             <md-tabs md-dynamic-height md-border-bottom>
                 <!-- Lot Info Tab -->
                 <md-tab label="Lot Info">
-                    <md-content>
+                    <md-content id="lot-info-content">
                         <md-card>
                             <md-card-content>
                                 <!--    // Dimension (Editable)
@@ -48,7 +48,7 @@
                                     // when reverting back status to vacant. clear all cascaded data
                                     -->
                                 <!-- TODO: func to update widht and height -->
-                                <p>Owner:
+                                <p ng-if="lotDetsCtl.lot.status != 'vacant'">Owner:
                                     <span>{{ lotDetsCtl.lot.client.last_name + ', ' + lotDetsCtl.lot.client.first_name }}</span>
                                 </p>
 
@@ -60,27 +60,32 @@
 
                                 <!-- TODO: functionality to update lot price per sq mtr -->
                                 <p>Price Per S/M:
-                                    <span>{{ lotDetsCtl.lot.price_per_sq_mtr | currency: "PHP ":0 }}</span></p>
+                                    <span inline-edit="lotDetsCtl.lot.price_per_sq_mtr"
+                                          inline-edit-callback="lotDetsCtl.updateLotPricePerSqMtr(newValue)"
+                                          inline-edit-placeholder="Type your value here"
+                                          inline-edit-btn-edit=""
+                                          inline-edit-filter="currency:'PHP '"
+                                          inline-edit-on-blur="save"
+                                          inline-edit-on-click>
+                                        <!-- lotDetsCtl.lot.price_per_sq_mtr | currency: "PHP ":0 -->
+                                    </span>
+                                </p>
 
                                 <p>Amount: <span>{{ lotDetsCtl.lot.amount | currency: "PHP ":0 }}</span></p>
 
                                 <!-- TODO: functionality to revert status and data cascades -->
-                                <p>Status: <span
-                                        ng-click="lotDetsCtl.lotParam.status.showMenu = !lotDetsCtl.lotParam.status.showMenu"
-                                        ng-hide="lotDetsCtl.lotParam.status.showMenu">{{ lotDetsCtl.lot.status }}</span>
+                                <p>Status:
+                                    <span ng-style="lotDetsCtl.lot.status == 'vacant' && {'color': 'green'}
+                                            || lotDetsCtl.lot.status == 'sold' && {'color': 'red'}
+                                            || lotDetsCtl.lot.status == 'occupied' && {'color': 'violet'}">
+                                        {{ lotDetsCtl.lot.status }}
+                                    </span>
                                 </p>
 
                                 <!--  TODO add a watch for change on status and update to server
                                       if status changed to sold - show modal to select client
                                       note: status occupied shown only when deceased added
                                 -->
-                                <md-select placeholder="Status"
-                                           ng-model="lotDetsCtl.lot.status"
-                                           ng-change="lotDetsCtl.lotParam.status.showMenu = !lotDetsCtl.lotParam.status.showMenu"
-                                           ng-show="lotDetsCtl.lotParam.status.showMenu">
-                                    <md-option ng-repeat="status in lotDetsCtl.lotParam.status.data"
-                                               value="{{ status }}">{{ status }}</md-option>
-                                </md-select>
 
                             </md-card-content>
                         </md-card>
@@ -90,7 +95,7 @@
                 </md-tab>
 
                 <!-- Occupants Tab : Show only if lot is occupied -->
-                <md-tab label="Occupants/Deceased" ng-if="lotDetsCtl.lot.status = 'occupied'">
+                <md-tab label="Occupants/Deceased" ng-if="lotDetsCtl.lot.status == 'occupied'">
                     <md-content>
                         <md-list flex>
                             <md-subheader class="md-no-sticky">{{ lotDetsCtl.lot.deceased.length }} occupants</md-subheader>

@@ -1,0 +1,68 @@
+{% raw %}
+<section class="section-details-container" ng-controller="blockDetailsIndexController as sdCtl">
+    <md-sidenav class="section-details-sidenav md-sidenav-left md-whiteframe-z2 infowindow-dialog"
+                md-component-id="blockDetailsIndexSidenav">
+        <md-toolbar class="md-theme-light md-tall">
+            <div class="md-toolbar-tools" layout="column" layout-align="start start">
+                <div layout="row" layout-align="start start" style="width: 100%;margin-bottom: 15px;">
+                    <md-input-container md-no-float
+                                        class="section-details-edit-input-container"
+                                        ng-show="sdCtl.editMode">
+                        <input ng-model="sdCtl.tempSection.name" placeholder="Block Name">
+                    </md-input-container>
+
+                    <h5 class="infowindow-title" ng-hide="sdCtl.editMode">{{ sdCtl.block.name }}</h5>
+                    <span flex></span>
+                    <md-button class="md-icon-button close-icon" ng-click="sdCtl.close()">
+                        <md-tooltip md-direction="top">Close</md-tooltip>
+                        <md-icon aria-label="Close">close</md-icon>
+                    </md-button>
+                </div>
+
+                <div layout="column" layout-align="start start" style="width: 100%;" style="padding-top:10px;">
+                    <p>Total Lots: <span>{{ sdCtl.blockInfo.lotCount }}</span></p>
+                    <p>SOLD Lots: <span>{{ sdCtl.blockInfo.soldLot }}</span></p>
+                    <p>UNSOLD Lots: <span>{{ sdCtl.blockInfo.unsoldLot }}</span></p>
+                </div>
+
+                <div class="infowindow-action-buttons">
+                    <md-button class="md-icon-button md-hue-1"
+                               ng-click="sdCtl.editSection()"
+                               ng-hide="sdCtl.editMode">
+                        <md-tooltip md-direction="top">Edit Section</md-tooltip>
+                        <md-icon>mode_edit</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button"
+                               ng-click="sdCtl.saveChanges()"
+                               ng-show="sdCtl.editMode">
+                        <md-tooltip md-direction="top">Save Changes</md-tooltip>
+                        <md-icon>save</md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content>
+
+            <md-tabs md-border-bottom>
+                <!--  LOTS TAB -->
+                <md-tab label="Lots">
+                    <md-content>
+                        <!-- Lots List -->
+                            <md-list-item class="md-3-line" ng-repeat="lot in sdCtl.block.lots" style="margin: 10px;">
+                                <div class="md-list-item-text" layout="row">
+                                    <div layout="column">
+                                        <h4>{{ lot.dimension_width }} x {{ lot.dimension_height }}</h4>
+
+                                        <p>{{ lot.lot_area }} sq. meters</p>
+                                        <span flex class="subtitle">{{ lot.status }}</span>
+                                    </div>
+                                </div>
+                            </md-list-item>
+                    </md-content>
+                </md-tab>
+
+            </md-tabs>
+        </md-content>
+    </md-sidenav>
+</section>
+{% endraw %}

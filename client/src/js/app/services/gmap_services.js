@@ -933,7 +933,7 @@
         }
 
         function triggerEvent (obj, event) {
-            google.maps.event.trigger(obj, 'click');
+            google.maps.event.trigger(obj, event);
         }
 
         return service;

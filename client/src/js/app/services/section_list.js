@@ -50,17 +50,20 @@ angular.module('demoApp')
                 polygon.section = section;
 
             var adminHandler = function () {
-                var section = polygon.section;
                 $mdSidenav('sectionDetailsSidenav')
                     .open()
                     .then(function () {
                         $rootScope.$broadcast('show-section-details', {section: section});
                     });
-
             };
 
             var indexHandler = function () {
                 console.log('section polygon is clicked handler for index');
+                $mdSidenav('sectionDetailsIndexSidenav')
+                    .open()
+                    .then(function () {
+                        $rootScope.$broadcast('show-section-details', {section: section});
+                    });
             };
 
             var handler = forIndex ? indexHandler : adminHandler;

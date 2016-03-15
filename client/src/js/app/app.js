@@ -2,7 +2,10 @@
     'use strict';
 
     angular
-        .module('demoApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'restangular', 'oitozero.ngSweetAlert', 'treasure-overlay-spinner'])
+        .module('demoApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'restangular',
+            'oitozero.ngSweetAlert', 'treasure-overlay-spinner', 'md.data.table',
+            'angularMoment', 'angularInlineEdit'
+        ])
 
         .constant('BASE_URL', window.location.origin)
         .constant('NAV_HEIGHT', 50)

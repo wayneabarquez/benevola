@@ -21,7 +21,7 @@ angular.module('demoApp')
 
         service.loadLotsForBlock = loadLotsForBlock;
         service.add = add;
-
+        service.findLot = findLot;
 
         function init() {
             $rootScope.$on('lot-status-updated', function(event, params) {
@@ -41,6 +41,10 @@ angular.module('demoApp')
             block.lots.forEach(function(lot){
                 service.add(block.id, lot, forIndex);
             });
+        }
+
+        function findLot(blockId, lotId) {
+            return _.findWhere(service.lots[blockId], {id: lotId});
         }
 
         function add (blockId, data, forIndex) {

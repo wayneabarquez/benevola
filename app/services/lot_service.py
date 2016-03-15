@@ -2,7 +2,7 @@ from app.utils import forms_helper
 from app.exceptions.lot import *
 from app import db
 from app.services import setting_service
-from app.home.models import Lot, Deceased
+from app.home.models import Lot, Deceased, Client
 import logging
 
 log = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ def compute_lot_amount(area, price_per_sq_mtr):
 
 
 def get_lots():
-    return Lot.query.all()
+    return Lot.query.outerjoin(Client).all()
 
 
 def get_details(lot_id):
@@ -25,7 +25,10 @@ def get_details(lot_id):
     data = lot.to_dict()
     amount = compute_lot_amount(lot.lot_area, lot.price_per_sq_mtr)
     data['amount'] = float(amount)
-    data['client'] = lot.client.to_dict()
+
+    if lot.client is not None:
+        data['client'] = lot.client.to_dict()
+
     data['deceased'] = lot.get_deceased()
     log.debug("Lot Details: {0}".format(data))
     # log.debug("Compute: {0} x {1} = {2}".format(lot.lot_area, lot.price_per_sq_mtr, amount))

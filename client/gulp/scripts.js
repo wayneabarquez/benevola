@@ -19,7 +19,11 @@ gulp.task('vendor-scripts', function () {
         paths.bower + '/restangular/dist/restangular.min.js',
         paths.bower + '/sweetalert/dist/sweetalert.min.js',
         paths.bower + '/ngSweetAlert/SweetAlert.min.js',
-        paths.bower + '/angular-treasure-overlay-spinner/dist/treasure-overlay-spinner.min.js'
+        paths.bower + '/angular-treasure-overlay-spinner/dist/treasure-overlay-spinner.min.js',
+        paths.bower + '/angular-material-data-table/dist/md-data-table.min.js',
+        paths.bower + '/moment/min/moment.min.js',
+        paths.bower + '/angular-moment/angular-moment.min.js',
+        paths.bower + '/ng-inline-edit/dist/ng-inline-edit.min.js'
     ])
         .pipe($.concat('vendor.min.js'))
         .pipe($.uglify({mangle: false}).on('error', $.util.log))

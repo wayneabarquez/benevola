@@ -2,20 +2,12 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', 'LOT_STATUSES', '$mdDialog', 'lot', 'modalServices', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', lotDetailsController]);
 
-    function lotDetailsController ($scope, LOT_STATUSES, $mdDialog, lot, modalServices) {
+    function lotDetailsController ($scope, $mdDialog, lot, modalServices) {
         var vm = this;
 
         vm.lot = null;
-
-        vm.lotParam = {
-            status: {
-                selected: '',
-                showMenu: false,
-                data: LOT_STATUSES.splice(0, 2)
-            }
-        };
 
         vm.initialize = initialize;
         vm.markSold = markSold;
@@ -28,10 +20,7 @@ angular.module('demoApp')
 
         function initialize () {
             vm.lot = lot;
-
             console.log('lot details: ', vm.lot);
-            // Restangularized
-            //vm.block = Blocks.cast(block);
 
             //$scope.$watch(function () {
             //    return vm.lot.dimension_height;
@@ -57,7 +46,6 @@ angular.module('demoApp')
 
         function addOccupant () {
             console.log('add occupant');
-            // TODO show mddialog hacky style in solar
             // add functionality to update database
             modalServices.showAddOccupant(vm.lot)
                 .then(function (success) {
@@ -67,7 +55,12 @@ angular.module('demoApp')
                 });
         }
 
-               function cancel () {
+        vm.updateLotPricePerSqMtr = updateLotPricePerSqMtr;
+        function updateLotPricePerSqMtr (newPrice) {
+            console.log('new Price: ',newPrice);
+        }
+
+        function cancel () {
             $mdDialog.cancel();
         }
 

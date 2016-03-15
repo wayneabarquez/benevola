@@ -1,8 +1,8 @@
-#section-details-container {
+.section-details-container {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .26);
   border-radius: 10px;
 
-  #section-details-sidenav {
+  .section-details-sidenav {
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
     overflow: hidden;
@@ -10,7 +10,20 @@
     position: absolute;
     top: 18%;
 
-    #section-details-edit-input-container {
+    md-toolbar.md-tall {
+      p {
+        color: #ddd;
+        font-size: 13px;
+        margin: 3px 0px 3px 0px;
+
+        span {
+          color: $primary-font-color;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .section-details-edit-input-container {
       margin-top: 0px;
       margin-bottom: 0px;
       height: 40px;

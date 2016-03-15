@@ -1,11 +1,10 @@
 {% raw %}
-<section class="section-details-container" ng-controller="sectionDetailsController as sdCtl">
+<section class="section-details-container" ng-controller="sectionDetailsIndexController as sdCtl">
     <md-sidenav class="section-details-sidenav md-sidenav-left md-whiteframe-z2 infowindow-dialog"
-                md-component-id="sectionDetailsSidenav">
-        <md-toolbar class="md-theme-light">
+                md-component-id="sectionDetailsIndexSidenav">
+        <md-toolbar class="md-theme-light md-tall">
             <div class="md-toolbar-tools" layout="column" layout-align="start start">
-                <div layout="row" layout-align="start start" style="width: 100%;">
-
+                <div layout="row" layout-align="start start" style="width: 100%;margin-bottom: 15px;">
                     <md-input-container md-no-float
                                         class="section-details-edit-input-container"
                                         ng-show="sdCtl.editMode">
@@ -19,15 +18,18 @@
                         <md-icon aria-label="Close">close</md-icon>
                     </md-button>
                 </div>
+
+                <div layout="column" layout-align="start start" style="width: 100%;" style="padding-top:10px;">
+                    <p>Total Blocks: <span>{{ sdCtl.section.blocks.length }}</span></p>
+                    <p>Total Lots: <span>{{ sdCtl.sectionInfo.lotCount }}</span></p>
+                    <p>SOLD Lots: <span>{{ sdCtl.sectionInfo.soldLot }}</span></p>
+                    <p>UNSOLD Lots: <span>{{ sdCtl.sectionInfo.unsoldLot }}</span></p>
+                </div>
+
                 <div class="infowindow-action-buttons">
                     <md-button class="md-icon-button md-hue-1"
-                               ng-click="sdCtl.addBlock($event)">
-                        <md-tooltip md-direction="top">Add Block</md-tooltip>
-                        <md-icon>add</md-icon>
-                    </md-button>
-                    <md-button class="md-icon-button md-hue-1"
-                        ng-click="sdCtl.editSection()"
-                        ng-hide="sdCtl.editMode">
+                               ng-click="sdCtl.editSection()"
+                               ng-hide="sdCtl.editMode">
                         <md-tooltip md-direction="top">Edit Section</md-tooltip>
                         <md-icon>mode_edit</md-icon>
                     </md-button>
@@ -51,28 +53,19 @@
                             <md-subheader class="md-no-sticky">{{ sdCtl.section.blocks.length > 0 ?
                                 sdCtl.section.blocks.length + ' blocks' : 'Currently No Blocks.'}}
                             </md-subheader>
-                            <md-list-item class="md-2-line" ng-repeat="blk in sdCtl.section.blocks" ng-click="sdCtl.showBlock(blk)">
+                            <md-list-item class="md-2-line" ng-repeat="blk in sdCtl.section.blocks"
+                                          ng-click="sdCtl.showBlock(blk)">
                                 <div class="md-list-item-text" layout="row">
                                     <div layout="column">
                                         <h4>{{ blk.name }}</h4>
                                         <span flex class="subtitle">{{ blk.lot_count > 0 ? blk.lot_count + ' Lots' : 'Unoccupied'}}</span>
                                     </div>
                                     <span flex></span>
+
                                     <div layout="row">
-                                        <md-menu>
-                                            <md-button aria-label="Open Block Menu" class="md-icon-button"
-                                                       ng-click="sdCtl.openBlockMenu($mdOpenMenu, $event)">
-                                                <md-icon md-menu-origin>more_vert</md-icon>
-                                            </md-button>
-                                            <md-menu-content width="1">
-                                                <md-menu-item>
-                                                    <md-button>More Info</md-button>
-                                                </md-menu-item>
-                                                <md-menu-item ng-click="sdCtl.addLot($event, blk)">
-                                                    <md-button>Add Lot</md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
+                                        <md-button class="md-icon-button">
+                                            <md-icon>visibility</md-icon>
+                                        </md-button>
                                     </div>
                                 </div>
                             </md-list-item>
@@ -87,15 +80,16 @@
                         <!-- Lots List -->
                         <md-list ng-repeat="blk in sdCtl.section.blocks">
                             <md-subheader class="md-no-sticky">Block {{ blk.name }}</md-subheader>
-                               <md-list-item class="md-3-line" ng-repeat="lot in blk.lots" style="margin: 10px;">
-                                    <div class="md-list-item-text" layout="row">
-                                        <div layout="column">
-                                            <h4>{{ lot.dimension_width }} x {{ lot.dimension_height }}</h4>
-                                            <p>{{ lot.lot_area }} sq. meters</p>
-                                            <span flex class="subtitle">{{ lot.status }}</span>
-                                        </div>
+                            <md-list-item class="md-3-line" ng-repeat="lot in blk.lots" style="margin: 10px;">
+                                <div class="md-list-item-text" layout="row">
+                                    <div layout="column">
+                                        <h4>{{ lot.dimension_width }} x {{ lot.dimension_height }}</h4>
+
+                                        <p>{{ lot.lot_area }} sq. meters</p>
+                                        <span flex class="subtitle">{{ lot.status }}</span>
                                     </div>
-                                </md-list-item>
+                                </div>
+                            </md-list-item>
                         </md-list>
                     </md-content>
                 </md-tab>

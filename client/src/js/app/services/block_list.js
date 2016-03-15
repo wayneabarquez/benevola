@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('blockList', ['gmapServices', 'lotList', blockList]);
+    .factory('blockList', ['$rootScope', 'gmapServices', '$mdSidenav', 'lotList', blockList]);
 
-    function blockList (gmapServices, lotList) {
+    function blockList ($rootScope, gmapServices, $mdSidenav, lotList) {
         var service = {};
 
         service.polygoncolor = '#ecf0f1';
@@ -50,6 +50,11 @@ angular.module('demoApp')
 
             var indexHandler = function () {
                 console.log('index handler for polygon click block');
+                $mdSidenav('blockDetailsIndexSidenav')
+                    .open()
+                    .then(function () {
+                        $rootScope.$broadcast('show-block-details', {block: block});
+                    });
             };
 
             var handler = forIndex ? indexHandler : adminHandler;

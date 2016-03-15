@@ -1,0 +1,13 @@
+md-dialog#lot-details-dialog {
+  form {
+    md-dialog-content {
+          md-content#lot-info-content md-card md-card-content {
+            p span {
+              font-weight: 600;
+              float:right;
+            }
+          }
+    }
+
+  }
+}
