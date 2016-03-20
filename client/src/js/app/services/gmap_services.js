@@ -94,6 +94,7 @@
         service.hidePolygon = hidePolygon;
         service.resetPolygonFill = resetPolygonFill;
         service.fillPolygon = fillPolygon;
+        service.getPolygonCenter = getPolygonCenter;
         service.panToPolygon = panToPolygon;
         service.setEditablePolygon = setEditablePolygon;
         service.createPolyline = createPolyline;
@@ -672,16 +673,22 @@
             });
         }
 
-        function panToPolygon(polygon) {
+        function getPolygonCenter(polygon) {
             if (!service.map || !polygon) return;
 
             var bounds = new google.maps.LatLngBounds();
 
-            polygon.getPath().forEach( function(path){
+            polygon.getPath().forEach(function (path) {
                 bounds.extend(path);
             });
 
-            service.panTo(bounds.getCenter());
+            return bounds.getCenter();
+        }
+
+        function panToPolygon(polygon) {
+            var center = service.getPolygonCenter(polygon);
+
+            service.panTo(center);
         }
 
         function setEditablePolygon (polygon, flag) {

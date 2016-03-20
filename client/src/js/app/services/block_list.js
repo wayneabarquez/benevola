@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('blockList', ['$rootScope', 'gmapServices', '$mdSidenav', 'lotList', blockList]);
+    .factory('blockList', ['lotList', blockList]);
 
-    function blockList ($rootScope, gmapServices, $mdSidenav, lotList) {
+    function blockList (lotList) {
         var service = {};
 
         service.polygoncolor = '#ffffff';
@@ -34,39 +34,40 @@ angular.module('demoApp')
         function add (sectionId, data, forIndex) {
             if (!service.blocks[sectionId]) service.blocks[sectionId] = [];
 
-            data.polygon = createPolygon(data, forIndex);
+            // #Note: Remove Polygon for blocks
+            //data.polygon = createPolygon(data, forIndex);
 
             lotList.loadLotsForBlock(data, forIndex);
 
             service.blocks[sectionId].push(data);
         }
 
-        function createPolygon(block, forIndex) {
-            var polygon = gmapServices.createCustomPolygon(block.area, service.polygonOptions);
-
-            var adminHandler = function () {
-                console.log('admin handler for polygon click block');
-            };
-
-            var indexHandler = function () {
-                console.log('index handler for polygon click block');
-                $mdSidenav('blockDetailsIndexSidenav')
-                    .open()
-                    .then(function () {
-                        $rootScope.$broadcast('show-block-details', {block: block});
-                    });
-            };
-
-            var handler = forIndex ? indexHandler : adminHandler;
-
-            gmapServices.addListener(polygon, 'click', function() {
-                gmapServices.setZoomIfGreater(21);
-                gmapServices.panToPolygon(polygon);
-                handler();
-            });
-
-            return polygon;
-        }
+        //function createPolygon(block, forIndex) {
+        //    var polygon = gmapServices.createCustomPolygon(block.area, service.polygonOptions);
+        //
+        //    var adminHandler = function () {
+        //        console.log('admin handler for polygon click block');
+        //    };
+        //
+        //    var indexHandler = function () {
+        //        console.log('index handler for polygon click block');
+        //        $mdSidenav('blockDetailsIndexSidenav')
+        //            .open()
+        //            .then(function () {
+        //                $rootScope.$broadcast('show-block-details', {block: block});
+        //            });
+        //    };
+        //
+        //    var handler = forIndex ? indexHandler : adminHandler;
+        //
+        //    gmapServices.addListener(polygon, 'click', function() {
+        //        gmapServices.setZoomIfGreater(21);
+        //        gmapServices.panToPolygon(polygon);
+        //        handler();
+        //    });
+        //
+        //    return polygon;
+        //}
 
         return service;
     }

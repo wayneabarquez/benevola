@@ -140,7 +140,7 @@ angular.module('demoApp')
             saveListener.lot = $rootScope.$on('save-area', function (event, param) {
                 modalServices.showAddLot(ev, block, param.area)
                     .then(function (result) {
-                        lotList.add(block.id, result.lot);
+                        lotList.add(block, result.lot);
                         block.lots.push(result.lot);
                     }, function (reason) {
                         console.log('failed: ', reason);

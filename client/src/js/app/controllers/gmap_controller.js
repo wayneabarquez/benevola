@@ -8,6 +8,7 @@ angular.module('demoApp')
 
         var vm = this;
 
+        vm.showLotLegend = true;
         vm.lotColors = LOT_COLORS;
 
         $rootScope.spinner = {
@@ -15,11 +16,16 @@ angular.module('demoApp')
         };
 
         vm.initialize = initialize;
+        vm.toggleLotLegend = toggleLotLegend;
 
         vm.initialize();
 
         function initialize () {
             gmapServices.createMap('map-canvas', NAV_HEIGHT);
+        }
+
+        function toggleLotLegend () {
+            vm.showLotLegend = !vm.showLotLegend;
         }
     }
 }());

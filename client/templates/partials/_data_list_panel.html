@@ -1,8 +1,8 @@
 {% raw %}
 <section id="lot-list-table-container" class="bottom_list_panel"
-         ng-controller="lotListController as listCtl"
-         ng-show="indexCtl.showList"
+         ng-show="listCtl.showList"
          ng-cloak>
+
     <div class="container">
         <md-content>
 
@@ -16,7 +16,7 @@
                     <md-tooltip md-direction="left">Filter List</md-tooltip>
                     <md-icon>filter_list</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="indexCtl.showList = false">
+                <md-button class="md-icon-button" ng-click="listCtl.showList = false">
                     <md-tooltip md-direction="left">Close Table</md-tooltip>
                     <md-icon>close</md-icon>
                 </md-button>
@@ -55,10 +55,15 @@
                 <tbody md-body>
                     <tr md-row
                         ng-repeat="lot in lots
-                        | filter: listCtl.query.filter
                         | orderBy: listCtl.query.order
                         | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit"
                         ng-click="listCtl.onClickRow(lot)">
+
+                        <!-- Section No. -->
+                        <td md-cell>{{lot.section_id}}</td>
+
+                        <!-- Block No. -->
+                        <td md-cell>{{lot.block_id}}</td>
 
                         <!-- Lot No. -->
                         <td md-cell>{{lot.id}}</td>
@@ -69,25 +74,24 @@
                         <!-- Area -->
                         <td md-cell>{{lot.lot_area}}</td>
 
-                        <!-- Price/SM -->
-                        <td md-cell>{{lot.price_per_sq_mtr | currency: "PHP ":0}}</td>
-
-                        <!-- Amount -->
-                        <td md-cell>{{lot.lot_area*lot.price_per_sq_mtr | currency: "PHP ":0}}</td>
+                        <!-- Amount (Price/SM) -->
+                        <td md-cell>{{lot.amount | currency: "PHP ":0}} ({{lot.price_per_sq_mtr | currency: "PHP ":0}}/SM)</td>
 
                         <!-- Remarks -->
                         <td md-cell
-                            ng-style="lot.status == 'vacant' && {'color': 'green'}
-                            || lot.status == 'sold' && {'color': 'red'}
-                            || lot.status == 'occupied' && {'color': 'violet'}">
+                            ng-class="{'vacant': lot.status == 'vacant',
+                                       'sold': lot.status == 'sold',
+                                       'occupied': lot.status == 'occupied'}">
                             <b>{{lot.status}}</b>
                         </td>
 
                         <!-- Owner -->
-                        <td md-cell>{{lot.client.last_name ? (lot.client.first_name + ' ' + lot.client.last_name) : ''}}</td>
+                        <td md-cell>{{lot.client_name}}</td>
 
                         <!-- Date Purchased -->
-                        <td md-cell>{{lot.date_purchased | amDateFormat:'MMMM DD, YYYY'}}</td>
+                        <td md-cell>{{lot.date_purchased_formatted}}</td>
+
+                        <td md-cell><md-button class="md-raised" ng-click="listCtl.showLotDetails(lot)">View Details</md-button></td>
 
                     </tr>
                 </tbody>

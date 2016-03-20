@@ -2,13 +2,16 @@
 
 {% block content %}
     {% raw %}
-    <div id="index-container" ng-controller="indexController as indexCtl">
+    <div id="index-container" ng-controller="lotListController as listCtl">
         <treasure-overlay-spinner active='spinner.active'>
     {% endraw %}
-        <div ng-controller="gmapController as gmapCtl">
-            <!-- map canvas dimensions will be computed during map initialization -->
-            {% include "partials/_map.html" %}
-        </div>
+            {% include "partials/_top_nav.html" %}
+
+            <div ng-controller="gmapController as gmapCtl">
+                <!-- map canvas dimensions will be computed during map initialization -->
+                {% include "partials/_map.html" %}
+                {% include "partials/_lot_legend.html" %}
+            </div>
             <!-- Lot List Panel -->
             {% include "partials/_data_list_panel.html" %}
             <!-- Map Bottom Panel -->

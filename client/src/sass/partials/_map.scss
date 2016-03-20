@@ -1,26 +1,24 @@
-#map-canvas {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-}
 
-#map-bottom-panel {
-  position: absolute;
-  bottom: 18px;
-  right: 45px;
-  z-index: 3;
+.gm-style {
 
-  .row {
-    margin: 0;
+  .gm-bundled-control {
+    .gmnoprint {
 
-    button {
-      margin: 5px;
-      padding: 2px;
-      span {
-        padding: 5px;
+      // Hide Rotate Map Control
+      div[title="Rotate map 90 degrees"] {
+        display: none !important;
       }
+
+      // Hide Tilt button on google map
+      .gm-tilt {
+        display: none !important;
+      }
+
     }
   }
+
+  a[title="Click to see this area on Google Maps"] {
+    display: none !important;
+  }
+
 }

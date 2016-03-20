@@ -1,0 +1,45 @@
+button#lot-legend-button {
+  position: absolute;
+  bottom: 5px;
+  left: 3px;
+}
+
+section#lot-legend {
+  position:absolute;
+  bottom: 5px;
+  left: 3px;
+
+  width: 100px;
+  height: 90px;
+
+  md-card {
+    margin:3px;
+
+    md-card-content {
+      padding: 5px;
+
+      h4 {
+        display: inline-block;
+        margin: 2px;
+      }
+
+      ul {
+        margin: 0px;
+        padding-left: 20px;
+        list-style-type: square;
+
+        li {
+          font-size: 15px;
+          //font-weight: 600;
+
+          p {
+            text-transform: capitalize;
+            font-size: 13px;
+            margin: 0px;
+            color: rgba(0, 0, 0, .87);
+          }
+        }
+      }
+    }
+  }
+}

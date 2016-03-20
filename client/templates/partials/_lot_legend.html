@@ -1,0 +1,28 @@
+{% raw %}
+<md-button class="md-primary md-icon-button md-raised"
+           id="lot-legend-button"
+           ng-hide="gmapCtl.showLotLegend"
+           ng-click="gmapCtl.toggleLotLegend()">
+    <md-icon>library_books</md-icon>
+</md-button>
+
+<section id="lot-legend" ng-show="gmapCtl.showLotLegend">
+    <md-card>
+        <md-card-content>
+            <h4>Legend</h4>
+            <md-button class="md-icon-button tiny-button"
+                ng-click="gmapCtl.toggleLotLegend()">
+                <md-icon>lens</md-icon>
+            </md-button>
+            <ul>
+                <li ng-repeat="(lotStatus, colorHex) in gmapCtl.lotColors"
+                    ng-style="{color: colorHex}">
+                    <p>
+                        {{ lotStatus }}
+                    </p>
+                </li>
+            </ul>
+        </md-card-content>
+    </md-card>
+</section>
+{% endraw %}

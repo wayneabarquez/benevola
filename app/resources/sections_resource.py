@@ -21,14 +21,6 @@ class SectionsResource(Resource):
         """ GET /api/sections """
         # TODO check authenticated user
         # TODO: Handle logins for 401s
-        # try:
-        # solars = solar_service.get_solars_for_user(current_user)
-        # log.debug("Scips Resource Data: {0}".format(scips))
-        # return solars
-        # except scip_service.UserNotAuthorizedError:
-        # abort(401, message="Requires user to login")
-        # except scip_service.UserRoleInvalidError as err:
-        #     abort(403, message=err.message)
         sections = section_service.get_sections()
         log.debug("Sections Resource Data: {0}".format(sections))
         return sections

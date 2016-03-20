@@ -11,6 +11,16 @@
   text-align: center;
 }
 
+/* Status Colors */
+.occupied {
+  color: violet !important;
+}
+.sold {
+  color: red !important;
+}
+.vacant {
+  color: green !important;
+}
 
 .full-height {
   height:100%;

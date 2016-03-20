@@ -1,6 +1,6 @@
 from flask.ext.restful import fields
 from app.utils.gis_json_fields import PolygonToLatLng
-from app.fields.lot_fields import lot_fields
+from app.fields.lot_fields import lot_complete_fields
 
 
 success_fields = dict(
@@ -15,7 +15,7 @@ block_fields = dict(
     area=PolygonToLatLng(attribute='area'),
     date_created=fields.DateTime("iso8601"),
     date_modified=fields.DateTime("iso8601"),
-    lots=fields.Nested(lot_fields)
+    lots=fields.Nested(lot_complete_fields)
 )
 
 block_create_fields = dict(

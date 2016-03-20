@@ -17,19 +17,14 @@ angular.module('demoApp')
             zIndex: 101
         };
 
-        service.lots = {};
+        //service.lots = {};
+        service.lots = [];
 
         service.loadLotsForBlock = loadLotsForBlock;
         service.add = add;
         service.findLot = findLot;
 
-        function init() {
-            //$rootScope.$on('lot-status-updated', function(event, params) {
-            //    var lot = params.lot;
-            //    var searchLot = _.where(service.lots[lot.block_id], {id: lot.id});
-            //    //searchLot = lot;
-            //    console.log('searchlot: ',searchLot);
-            //});
+        function initialize() {
 
             $rootScope.$on('update-lot-detail', function(event, params) {
                var lot = params.lot;
@@ -44,40 +39,38 @@ angular.module('demoApp')
                     fillColor: polygonColor
                 });
                 foundLot.polygon.setOptions(polygonOpts);
-
-               //lot.get()
-               //    .then(function(response){
-               //        modalServices.showLotDetail(response)
-               //            .then(function (response) {
-               //
-               //            }, function (err) {
-               //
-               //            });
-               //    });
             });
         }
-        init();
+
+        initialize();
 
         function loadLotsForBlock (block, forIndex) {
-            console.log('load lots for block: ',block);
-
             if(!block.lots) return;
 
             block.lots.forEach(function(lot){
-                service.add(block.id, lot, forIndex);
+                service.add(block, lot, forIndex);
             });
         }
 
         function findLot(blockId, lotId) {
-            return _.findWhere(service.lots[blockId], {id: lotId});
+            return _.findWhere(service.lots, {id: lotId, block_id: blockId});
         }
 
-        function add (blockId, data, forIndex) {
-            if (!service.lots[blockId]) service.lots[blockId] = [];
+        function add (block, data, forIndex) {
+            //if (!service.lots[blockId]) service.lots[blockId] = [];
+
+            //var blockId = block.id;
+            data.section_id = block.section_id;
+            data.amount = data.lot_area * data.price_per_sq_mtr;
+            data.client_name = data.client.last_name
+                               ? (data.client.first_name + ' ' + data.client.last_name)
+                               : '';
+            data.date_purchased_formatted = moment(data.date_purchased).format("MMM DD, YYYY");
 
             data.polygon = createPolygon(data, forIndex);
 
-            service.lots[blockId].push(data);
+            //service.lots[blockId].push(data);
+            service.lots.push(data);
         }
 
         function createPolygon(lot, forIndex) {
