@@ -45,7 +45,44 @@ class LotDetailResource(Resource):
         log.debug('Update Lot request id {0}: {1}'.format(lot_id, form_data))
         # TODO check authenticated user
         try:
-            lot = lot_service.sold_lot(lot_id, form_data['client_id'])
+            lot = lot_service.sold_lot(lot_id, form_data)
+            result = dict(status=200, message='OK', lot=lot)
+            return marshal(result, lot_create_fields)
+        except LotNotFoundError as err:
+            abort(404, message=err.message)
+
+
+class LotDimensionResource(Resource):
+    """
+    Resource for Lot Dimension
+    """
+
+    def put(self, lot_id):
+        """ PUT /api/lots/<lot_id>/dimension """
+        form_data = request.json
+        log.debug('Update Lot Dimension request id {0}: {1}'.format(lot_id, form_data))
+        # TODO check authenticated user
+        try:
+            lot = lot_service.update_lot_dimension(lot_id, form_data)
+            result = dict(status=200, message='OK', lot=lot)
+            return marshal(result, lot_create_fields)
+        except LotNotFoundError as err:
+            abort(404, message=err.message)
+
+
+class LotPriceResource(Resource):
+
+    """
+    Resource for Lot Price
+    """
+
+    def put(self, lot_id):
+        """ PUT /api/lots/<lot_id>/price """
+        form_data = request.json
+        log.debug('Update Lot Price request id {0}: {1}'.format(lot_id, form_data))
+        # TODO check authenticated user
+        try:
+            lot = lot_service.update_lot_price(lot_id, form_data)
             result = dict(status=200, message='OK', lot=lot)
             return marshal(result, lot_create_fields)
         except LotNotFoundError as err:
@@ -98,5 +135,7 @@ class LotDeceasedResource(Resource):
 
 rest_api.add_resource(LotsResource, '/api/lots')
 rest_api.add_resource(LotDetailResource, '/api/lots/<int:lot_id>')
+rest_api.add_resource(LotDimensionResource, '/api/lots/<int:lot_id>/dimension')
+rest_api.add_resource(LotPriceResource, '/api/lots/<int:lot_id>/price')
 rest_api.add_resource(BlockLotResource, '/api/blocks/<int:block_id>/lots')
 rest_api.add_resource(LotDeceasedResource, '/api/lots/<int:lot_id>/deceased')

@@ -46,26 +46,34 @@
 
             var promise = null;
 
-            if(vm.selectedClient) {
-                // update lot with this client id
-                vm.lot.client_id = vm.selectedClient.client_id;
-                promise = vm.lot.put();
+            if( !$scope.selectClientDateForm.$valid) {
+
+                // Show error messages
+
+
             } else {
-                if($scope.newClientForm.$valid) {
-                    vm.client.lot_id = vm.lot.id;
+                if (vm.selectedClient) {
+                    // update lot with this client id
+                    vm.lot.client_id = vm.selectedClient.client_id;
+                    promise = vm.lot.put();
+                } else {
+                    if ($scope.newClientForm.$valid) {
+                        vm.client.lot_id = vm.lot.id;
 
-                    promise = Clients.post(vm.client);
+                        vm.lot.client = vm.client;
+                        promise = vm.lot.put();
+                    }
                 }
-            }
 
-            promise.then(function (response) {
-                console.log('Select Client: ', response);
-                $mdDialog.hide();
-                // TODO fetch new lot info via http request
-                $rootScope.$broadcast('update-lot-detail', {lot: Lots.cast(response.lot)});
-            }, function (err) {
-                console.log('Error adding new client: ', err);
-            });
+                promise.then(function (response) {
+                    console.log('Select Client: ', response);
+                    $mdDialog.hide();
+                    // TODO fetch new lot info via http request
+                    $rootScope.$broadcast('update-lot-detail', {lot: Lots.cast(response.lot)});
+                }, function (err) {
+                    console.log('Error adding new client: ', err);
+                });
+            }
         }
 
         function cancel() {

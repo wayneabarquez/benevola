@@ -7,6 +7,12 @@
         'occupied'
     ];
 
+    var lotStatusJson = {
+        VACANT: 'vacant',
+        SOLD: 'sold',
+        OCCUPIED: 'occupied'
+    };
+
     var lotColorByStatus = {
         vacant: '#2ecc71',
         sold: '#e74c3c',
@@ -21,6 +27,7 @@
 
     angular.module('demoApp')
         .value('LOT_STATUSES', lotStatuses)
+        .value('LOT_STATUSES_JSON', lotStatusJson)
         .value('LOT_DIMENSIONS', lotDimensions)
         .value('LOT_COLORS', lotColorByStatus)
     ;

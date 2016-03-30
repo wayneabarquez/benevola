@@ -135,8 +135,6 @@ angular.module('demoApp')
             $rootScope.$broadcast('start-drawing');
             drawingServices.startDrawingMode('#2ecc71');
 
-            console.log('Block: ',block);
-
             saveListener.lot = $rootScope.$on('save-area', function (event, param) {
                 modalServices.showAddLot(ev, block, param.area)
                     .then(function (result) {

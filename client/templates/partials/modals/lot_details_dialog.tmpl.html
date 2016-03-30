@@ -1,4 +1,4 @@
-<md-dialog id="lot-details-dialog" class="form-modal" aria-label="Lot Details" flex="25" ng-cloak>
+<md-dialog id="lot-details-dialog" flex="40" class="form-modal" aria-label="Lot Details" flex="25" ng-cloak>
     <form name="lotDetailsForm">
         <md-toolbar>
            <div class="md-toolbar-tools">
@@ -52,23 +52,87 @@
                                     <span>{{ lotDetsCtl.lot.client.last_name + ', ' + lotDetsCtl.lot.client.first_name }}</span>
                                 </p>
 
-                                <p>Dimension:
-                                    <span>{{ lotDetsCtl.lot.dimension_width }} x {{ lotDetsCtl.lot.dimension_height }}</span>
+                                <p ng-mouseenter="showEditLotDimensionBtn = true"
+                                   ng-mouseleave="showEditLotDimensionBtn = false"
+                                   ng-hide="showEditLotDimensionForm">Dimension:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotDimensionBtn"
+                                                   ng-click="showEditLotDimensionForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        {{ lotDetsCtl.lot.dimension_width }} x {{ lotDetsCtl.lot.dimension_height }}
+                                    </span>
+
+                                    <section ng-show="showEditLotDimensionForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">Dimension</label>
+                                                <!-- Lot Dimension -->
+                                                <md-input-container>
+                                                    <label>Width</label>
+                                                    <input type="number" name="width"
+                                                           ng-model="lotDetsCtl.lot_copy.dimension_width" placeholder="Width">
+                                                </md-input-container>
+                                                x
+                                                <md-input-container>
+                                                    <label>Height</label>
+                                                    <input type="number" name="height"
+                                                           ng-model="lotDetsCtl.lot_copy.dimension_height"
+                                                           placeholder="Height">
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotDimensionForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotDimension()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
                                 </p>
 
                                 <p>Area: <span>{{ lotDetsCtl.lot.lot_area }}</span></p>
 
                                 <!-- TODO: functionality to update lot price per sq mtr -->
-                                <p>Price Per S/M:
-                                    <span inline-edit="lotDetsCtl.lot.price_per_sq_mtr"
-                                          inline-edit-callback="lotDetsCtl.updateLotPricePerSqMtr(newValue)"
-                                          inline-edit-placeholder="Type your value here"
-                                          inline-edit-btn-edit=""
-                                          inline-edit-filter="currency:'PHP '"
-                                          inline-edit-on-blur="save"
-                                          inline-edit-on-click>
-                                        <!-- lotDetsCtl.lot.price_per_sq_mtr | currency: "PHP ":0 -->
+                                <p ng-mouseenter="showEditLotPriceBtn = true"
+                                   ng-mouseleave="showEditLotPriceBtn = false"
+                                   ng-hide="showEditLotPriceForm">Price Per S/M:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotPriceBtn"
+                                                   ng-click="showEditLotPriceForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        {{ lotDetsCtl.lot.price_per_sq_mtr | currency: "PHP ":0 }}
                                     </span>
+
+                                    <section ng-show="showEditLotPriceForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">Price Per S/M:</label>
+                                                <span flex></span>
+                                                <!-- Lot Price -->
+                                                <md-input-container>
+                                                    <label>Price Per S/M:</label>
+                                                    <input type="number" name="width"
+                                                           ng-model="lotDetsCtl.lot_copy.price_per_sq_mtr">
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotPriceForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotPrice()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
                                 </p>
 
                                 <p>Amount: <span>{{ lotDetsCtl.lot.amount | currency: "PHP ":0 }}</span></p>

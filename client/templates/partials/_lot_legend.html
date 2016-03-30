@@ -7,18 +7,35 @@
 </md-button>
 
 <section id="lot-legend" ng-show="gmapCtl.showLotLegend">
+
     <md-card>
+        <h4>Legend</h4>
+
         <md-card-content>
-            <h4>Legend</h4>
             <md-button class="md-icon-button tiny-button"
                 ng-click="gmapCtl.toggleLotLegend()">
                 <md-icon>lens</md-icon>
             </md-button>
             <ul>
-                <li ng-repeat="(lotStatus, colorHex) in gmapCtl.lotColors"
-                    ng-style="{color: colorHex}">
+
+                <li>
                     <p>
-                        {{ lotStatus }}
+                        <span class="status-box"
+                              style="background-color: rgba(0,0,0,0);">&nbsp;</span>
+                        <md-checkbox class="md-primary" ng-model="gmapCtl.lotStatusFilters.all"></md-checkbox>
+                        <span>All</span>
+                        <span class="lot-count">{{ lotsDetail.count.all }}</span>
+                    </p>
+                </li>
+
+                <li ng-repeat="(lotStatus, colorHex) in gmapCtl.lotColors">
+
+                    <p>
+                        <span class="status-box"
+                              ng-style="{'background-color': colorHex}">&nbsp;</span>
+                        <md-checkbox class="md-primary" ng-model="gmapCtl.lotStatusFilters[lotStatus]"></md-checkbox>
+                        <span>{{ lotStatus }}</span>
+                        <span class="lot-count">{{ gmapCtl.getLotsCountByStatus(lotStatus) }}</span>
                     </p>
                 </li>
             </ul>

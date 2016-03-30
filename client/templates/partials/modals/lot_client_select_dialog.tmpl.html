@@ -1,4 +1,4 @@
-<md-dialog id="lot-client-select-modal" class="form-modal" aria-label="Select Lot Client" ng-cloak>
+<md-dialog id="lot-client-select-modal" flex="40" class="form-modal" aria-label="Select Lot Client" ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h4>Select Client</h4>
@@ -13,33 +13,44 @@
             <md-card>
                 <md-card-content>
 
+                    <form name="selectClientDateForm">
+                            <md-datepicker required name="dateSold" ng-model="clientSelectCtl.dateSold"
+                                           md-placeholder="Date Sold"></md-datepicker>
+                        <p ng-show="!selectClientDateForm.dateSold.$dirty && selectClientDateForm.dateSold.$error.required" class="error">This is required.</p>
+                    </form>
 
-                    <div>
-                        <md-input-container class="md-block">
-                            <label>Select Client</label>
-                            <md-select ng-model="clientSelectCtl.selectedClient.client_id">
-                                <md-option ng-repeat="client in clientSelectCtl.clients" value="{{ client.id }}">
-                                    {{ client.last_name + ', ' + client.first_name}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
+                    <form name="selectClientForm">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Select Client</label>
+                                <md-select ng-model="clientSelectCtl.selectedClient.client_id">
+                                    <md-option ng-repeat="client in clientSelectCtl.clients" value="{{ client.id }}">
+                                        {{ client.last_name + ', ' + client.first_name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </form>
+
+                    <div style="text-align:center;font-weight:600;">OR</div>
+
+                    <!--<md-divider style="margin: 15px;"></md-divider>-->
+
+                    <div style="text-align:center;">
+                        <md-button ng-click="clientSelectCtl.showNewClientForm = !clientSelectCtl.showNewClientForm">
+                            <md-icon>add</md-icon>
+                            New Client
+                        </md-button>
                     </div>
 
-                    OR
-                    <md-divider style="margin: 15px;"></md-divider>
 
-                    <md-button ng-click="clientSelectCtl.showNewClientForm = !clientSelectCtl.showNewClientForm">
-                        <md-icon>add</md-icon>
-                        New Client
-                    </md-button>
 
-                    <md-divider style="margin: 15px;"></md-divider>
+                    <div layout="row">
 
-                    <div layout-gt-sm="row">
-                        <h4>Date Sold</h4>
-                        <md-datepicker ng-model="clientSelectCtl.dateSold" md-placeholder="Enter date"></md-datepicker>
+                        <form flex name="newClientForm" ng-show="clientSelectCtl.showNewClientForm">
 
-                        <form name="newClientForm" ng-show="clientSelectCtl.showNewClientForm">
+                            <md-divider style="margin: 15px;"></md-divider>
+
                             <div>
                                 <!-- Firstname -->
                                 <md-input-container>
@@ -76,7 +87,7 @@
                                 </md-input-container>
                             </div>
 
-                            <div>
+                            <div flex>
                                 <!-- Address -->
                                 <md-input-container class="md-block">
                                     <label>Address</label>
@@ -104,7 +115,11 @@
                     Clear Form
                 </md-button>
 
-                <md-button class="md-primary" ng-click="clientSelectCtl.save()">Save</md-button>
+                <md-button class="md-primary"
+                           ng-disabled="selectClientDateForm.$invalid"
+                           ng-click="clientSelectCtl.save()">
+                    Save
+                </md-button>
             </span>
         </md-dialog-content>
 </md-dialog>

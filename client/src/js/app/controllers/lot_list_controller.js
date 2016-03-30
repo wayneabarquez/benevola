@@ -2,15 +2,24 @@
     'use strict';
 
     angular.module('demoApp')
-        .controller('lotListController', ['$rootScope', '$scope', 'sectionList', 'lotList', 'gmapServices', '$timeout', lotListController]);
+        .controller('lotListController', ['$rootScope', '$scope', 'sectionList', 'lotList', 'gmapServices', '$timeout', 'LOT_STATUSES_JSON', lotListController]);
 
-    function lotListController($rootScope, $scope, sectionList, lotList, gmapServices, $timeout) {
+    function lotListController($rootScope, $scope, sectionList, lotList, gmapServices, $timeout, LOT_STATUSES_JSON) {
         var vm = this;
 
         vm.showList = false;
 
         // complete list of Solars from the server
         $rootScope.lotList = [];
+
+        $rootScope.lotsDetail = {
+            count: {
+                all: 0,
+                sold: 0,
+                vacant: 0,
+                occupied: 0
+            }
+        };
 
         vm.query = {
             order: 'status',
@@ -71,10 +80,29 @@
             $scope.$watch(angular.bind(vm, function () {
                 return vm.query.filter;
             }), startFilter);
+
+            $rootScope.$watchCollection('lotList', updateLotsDetail);
+
+            $rootScope.$on('toggle-lot-polygons',function (event, params) {
+                var status = params.status,
+                    value = params.value
+                ;
+
+                lotList.togglePolygonByStatus(status, value);
+            });
         }
 
         function toggleList() {
             vm.showList = !vm.showList;
+        }
+
+        function updateLotsDetail (newList) {
+            $rootScope.lotsDetail.count.all = newList.length;
+            $rootScope.lotsDetail.count.vacant = _.where(newList, {status: LOT_STATUSES_JSON.VACANT}).length;
+            $rootScope.lotsDetail.count.sold = _.where(newList, {status: LOT_STATUSES_JSON.SOLD}).length;
+            $rootScope.lotsDetail.count.occupied = _.where(newList, {status: LOT_STATUSES_JSON.OCCUPIED}).length;
+
+            console.log('Lots Detail: ',$rootScope.lotsDetail.count);
         }
 
         /* Table Functions */

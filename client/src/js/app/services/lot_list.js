@@ -17,12 +17,12 @@ angular.module('demoApp')
             zIndex: 101
         };
 
-        //service.lots = {};
         service.lots = [];
 
         service.loadLotsForBlock = loadLotsForBlock;
         service.add = add;
         service.findLot = findLot;
+        service.togglePolygonByStatus = togglePolygonByStatus;
 
         function initialize() {
 
@@ -62,7 +62,7 @@ angular.module('demoApp')
             //var blockId = block.id;
             data.section_id = block.section_id;
             data.amount = data.lot_area * data.price_per_sq_mtr;
-            data.client_name = data.client.last_name
+            data.client_name = data.client && data.client.last_name
                                ? (data.client.first_name + ' ' + data.client.last_name)
                                : '';
             data.date_purchased_formatted = moment(data.date_purchased).format("MMM DD, YYYY");
@@ -108,6 +108,30 @@ angular.module('demoApp')
 
             return polygon;
         }
+
+        function togglePolygon(value, polygon) {
+            if (value) {
+                gmapServices.showPolygon(polygon);
+            } else {
+                gmapServices.hidePolygon(polygon);
+            }
+        }
+
+        function togglePolygonByStatus(_status, _value) {
+            if(_status === 'all') {
+                service.lots.forEach(function (lot) {
+                    togglePolygon(_value, lot.polygon);
+                });
+                return;
+            }
+
+            var lots = _.where(service.lots, {status: _status});
+
+            lots.forEach(function(lot){
+                togglePolygon(_value, lot.polygon);
+            });
+        }
+
 
         return service;
     }

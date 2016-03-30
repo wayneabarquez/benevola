@@ -1,8 +1,10 @@
 from app.utils import forms_helper
 from app.exceptions.lot import *
 from app import db
-from app.services import setting_service
+from app.services import setting_service, client_service
 from app.home.models import Lot, Deceased, Client
+from app.home.forms import AddClientForm
+from app.constants.lot_constants import SOLD
 import logging
 
 log = logging.getLogger(__name__)
@@ -10,6 +12,10 @@ log = logging.getLogger(__name__)
 
 def compute_lot_amount(area, price_per_sq_mtr):
     return area * price_per_sq_mtr
+
+
+def compute_lot_area(width, height):
+    return float(width * height)
 
 
 def get_lots():
@@ -74,15 +80,24 @@ def update_from_dict(lot_id, data):
     return lot
 
 
-def sold_lot(lot_id, client_id):
+def sold_lot(lot_id, form_data):
     lot = Lot.query.get(lot_id)
 
     if lot is None:
         raise LotNotFoundError("Lot id={0} not found".format(lot_id))
 
-    lot.client_id = client_id
-    # TODO Replace with constant value
-    lot.status = 'sold'
+    if form_data['client_id'] == 0:
+        client_data = form_data['client']
+        form = AddClientForm.from_json(client_data)
+        if form.validate():
+            client = client_service.create_from_dict(client_data)
+            lot.client_id = client.id
+            # else:
+            #     raise ValueError(form.errors)
+    else:
+        lot.client_id = form_data['client_id']
+
+    lot.status = SOLD
 
     db.session.commit()
 
@@ -106,3 +121,32 @@ def add_occupant(lot_id, data):
     db.session.commit()
 
     return deceased
+
+
+def update_lot_dimension(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.dimension_width = float(form_data['dimension_width'])
+    lot.dimension_height = float(form_data['dimension_height'])
+    lot.lot_area = compute_lot_area(lot.dimension_width, lot.dimension_height)
+
+    db.session.commit()
+
+    return lot
+
+
+def update_lot_price(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.price_per_sq_mtr = float(form_data['price_per_sq_mtr'])
+
+    db.session.commit()
+
+    return lot
+

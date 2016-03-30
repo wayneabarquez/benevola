@@ -26,26 +26,26 @@ class ClientsResource(Resource):
         log.debug("Clients Resource Data: {0}".format(clients))
         return clients
 
-    def post(self):
-        """ POST /api/clients """
-        form_data = request.json
-        log.debug('Add Client for lot request: {0}'.format(form_data))
+    # def post(self):  # TODO Get rid of these one, throw all on /api/lots/lot_id
+    #     """ POST /api/clients """
+    #     form_data = request.json
+    #     log.debug('Add Client for lot request: {0}'.format(form_data))
         # TODO check authenticated user
-        form = AddClientForm.from_json(form_data)
-        try:
-            if form.validate():
-                client = client_service.create_from_dict(form_data)
-
-                # Update Lot here
-                lot = lot_service.sold_lot(form_data['lot_id'], client.id)
-
-                result = dict(status=200, message='OK', client=client, lot=lot)
-
-                return marshal(result, lot_client_create_fields)
-            else:
-                abort(400, message="Invalid Parameters", errors=form.errors)
-        except ValueError as err:
-            abort(403, message=err.message)
+        # form = AddClientForm.from_json(form_data)
+        # try:
+        #     if form.validate():
+        #         client = client_service.create_from_dict(form_data)
+        #
+        #         # Update Lot here
+        #         lot = lot_service.sold_lot(form_data['lot_id'], client.id)
+        #
+        #         result = dict(status=200, message='OK', client=client, lot=lot)
+        #
+        #         return marshal(result, lot_client_create_fields)
+        #     else:
+        #         abort(400, message="Invalid Parameters", errors=form.errors)
+        # except ValueError as err:
+        #     abort(403, message=err.message)
 
 
 rest_api.add_resource(ClientsResource, '/api/clients')
