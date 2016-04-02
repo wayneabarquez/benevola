@@ -112,7 +112,7 @@ angular.module('demoApp')
             vm.section.area = vm.tempSection.area;
             vm.section.name = vm.tempSection.name;
 
-            vm.section.put()
+            vm.section.customPUT({area: vm.tempSection.area, name: vm.tempSection.name})
                 .then(function(response){
                     gmapServices.hidePolygon(vm.tempSection.polygon);
                     vm.tempSection.polygon = null;

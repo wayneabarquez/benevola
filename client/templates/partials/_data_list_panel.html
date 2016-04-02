@@ -77,13 +77,16 @@
                         <!-- Amount (Price/SM) -->
                         <td md-cell>{{lot.amount | currency: "PHP ":0}} ({{lot.price_per_sq_mtr | currency: "PHP ":0}}/SM)</td>
 
-                        <!-- Remarks -->
+                        <!-- Status -->
                         <td md-cell
                             ng-class="{'vacant': lot.status == 'vacant',
                                        'sold': lot.status == 'sold',
                                        'occupied': lot.status == 'occupied'}">
                             <b>{{lot.status}}</b>
                         </td>
+
+                        <!-- OR # -->
+                        <td md-cell>{{lot.or_no}}</td>
 
                         <!-- Owner -->
                         <td md-cell>{{lot.client_name}}</td>

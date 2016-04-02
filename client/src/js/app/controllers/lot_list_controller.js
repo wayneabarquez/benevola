@@ -48,7 +48,19 @@
         vm.searchInfowindow = gmapServices.createInfoWindow('');
 
         // Table Header
-        vm.tableHeaderList = ['Section No.', 'Block No.', 'Lot No.', 'Dimension', 'Area', 'Amount (Price/SM)', 'Remarks', 'Owner', 'Date Purchased', 'Action'];
+        vm.tableHeaderList = [
+            'Section No.',
+            'Block No.',
+            'Lot No.',
+            'Dimension',
+            'Area',
+            'Amount (Price/SM)',
+            'Status',
+            'OR #',
+            'Owner',
+            'Date Purchased',
+            'Action'
+        ];
 
         vm.initialize = initialize;
         vm.toggleList = toggleList;
@@ -101,8 +113,6 @@
             $rootScope.lotsDetail.count.vacant = _.where(newList, {status: LOT_STATUSES_JSON.VACANT}).length;
             $rootScope.lotsDetail.count.sold = _.where(newList, {status: LOT_STATUSES_JSON.SOLD}).length;
             $rootScope.lotsDetail.count.occupied = _.where(newList, {status: LOT_STATUSES_JSON.OCCUPIED}).length;
-
-            console.log('Lots Detail: ',$rootScope.lotsDetail.count);
         }
 
         /* Table Functions */

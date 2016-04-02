@@ -25,6 +25,22 @@
                     .customPUT(newPrice);
             };
 
+            model.updateORNo = function (ORNo) {
+                console.log('update lot or no: ', ORNo);
+
+                return model
+                    .all('or_no')
+                    .customPUT(ORNo);
+            };
+
+            model.updateRemarks = function (data) {
+                console.log('update remarks: ', data);
+
+                return model
+                    .all('remarks')
+                    .customPUT(data);
+            };
+
             return model;
         });
 

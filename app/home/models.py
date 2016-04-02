@@ -63,7 +63,9 @@ class Lot(BaseModel):
     lot_area = db.Column(db.Float)  # By Square meters (Computed by dimensions w x h)
     price_per_sq_mtr = db.Column(db.Float)  # copied from lot_price table
     date_purchased = db.Column(db.Date, default=db.func.current_date())
+    or_no = db.Column(db.String(10))
     status = db.Column(db.String(20), index=True, default='vacant')  # [vacant, sold, occupied]
+    remarks = db.Column(db.Text)
 
     block = db.relationship(Block, backref='lots')
     client = db.relationship(Client)

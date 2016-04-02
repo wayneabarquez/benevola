@@ -15,8 +15,10 @@ lot_fields = dict(
     lot_area=fields.Float,
     price_per_sq_mtr=fields.Float,
     amount=fields.Float,
+    or_no=fields.String,
     date_purchased=fields.DateTime("iso8601"),
     status=fields.String,
+    remarks=fields.String,
     date_created=fields.DateTime("iso8601"),
     date_modified=fields.DateTime("iso8601")
 )

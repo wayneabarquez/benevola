@@ -150,3 +150,30 @@ def update_lot_price(lot_id, form_data):
 
     return lot
 
+
+def update_lot_or_no(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.or_no = form_data['or_no']
+
+    db.session.commit()
+
+    return lot
+
+
+def update_remarks(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.remarks = form_data['remarks']
+
+    db.session.commit()
+
+    return lot
+
+

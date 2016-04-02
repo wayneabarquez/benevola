@@ -8,8 +8,10 @@ angular.module('demoApp')
         var vm = this;
 
 
+        $scope.showEditLotORNoForm = false;
         $scope.showEditLotDimensionForm = false;
         $scope.showEditLotPriceForm = false;
+        $scope.showEditLotRemarksForm = false;
 
         vm.lot = null;
 
@@ -18,8 +20,10 @@ angular.module('demoApp')
         vm.initialize = initialize;
         vm.markSold = markSold;
         vm.addOccupant = addOccupant;
+        vm.updateLotORNo = updateLotORNo;
         vm.updateLotDimension = updateLotDimension;
         vm.updateLotPrice = updateLotPrice;
+        vm.updateLotRemarks = updateLotRemarks;
         vm.cancel = cancel;
 
         vm.initialize();
@@ -29,7 +33,7 @@ angular.module('demoApp')
         function initialize () {
             vm.lot = lot;
             vm.lot_copy = angular.copy(vm.lot);
-            console.log('lot details: ', vm.lot);
+            console.log('lot details: ', vm.lot_copy);
 
             //$scope.$watch(function () {
             //    return vm.lot.dimension_height;
@@ -95,6 +99,25 @@ angular.module('demoApp')
                 });
         }
 
+        function updateLotORNo () {
+            console.log('update or no');
+
+            var newORNo = {or_no: vm.lot_copy.or_no};
+
+            vm.lot.updateORNo(newORNo)
+                .then(function (response) {
+                    //console.log('success: ',response);
+
+                    var lot = response.lot;
+                    vm.lot.or_no = lot.or_no;
+
+                    $scope.showEditLotORNoForm = false;
+
+                }, function (error) {
+                    console.log('error: ', error);
+                });
+        }
+
         function updateLotDimension () {
             var dimension = {
                 dimension_width: vm.lot_copy.dimension_width,
@@ -115,6 +138,25 @@ angular.module('demoApp')
 
                 }, function(error){
                     console.log('error: ',error);
+                });
+        }
+
+        function updateLotRemarks () {
+            console.log('update lot remarks');
+
+            var data = {remarks: vm.lot_copy.remarks};
+
+            vm.lot.updateRemarks(data)
+                .then(function (response) {
+                    //console.log('success: ',response);
+
+                    var lot = response.lot;
+                    vm.lot.remarks = lot.remarks;
+
+                    $scope.showEditLotRemarksForm = false;
+
+                }, function (error) {
+                    console.log('error: ', error);
                 });
         }
 

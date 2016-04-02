@@ -47,11 +47,51 @@
 
                                     // when reverting back status to vacant. clear all cascaded data
                                     -->
-                                <!-- TODO: func to update widht and height -->
+
+                                <!-- OR # -->
+                                <p ng-mouseenter="showEditLotORNoBtn = true"
+                                   ng-mouseleave="showEditLotORNoBtn = false"
+                                   ng-hide="showEditLotORNoForm">OR #:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotORNoBtn"
+                                                   ng-click="showEditLotORNoForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        # {{lotDetsCtl.lot.or_no}}
+                                    </span>
+
+                                    <section ng-show="showEditLotORNoForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">OR #:</label>
+                                                <span flex></span>
+                                                <!-- OR # -->
+                                                <md-input-container>
+                                                    <label>OR #</label>
+                                                    <input type="text" name="or_no"
+                                                           ng-model="lotDetsCtl.lot_copy.or_no">
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotORNoForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotORNo()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </p>
+
+                                <!-- LOT OWNER -->
                                 <p ng-if="lotDetsCtl.lot.status != 'vacant'">Owner:
                                     <span>{{ lotDetsCtl.lot.client.last_name + ', ' + lotDetsCtl.lot.client.first_name }}</span>
                                 </p>
 
+                                <!-- LOT DIMENSION -->
                                 <p ng-mouseenter="showEditLotDimensionBtn = true"
                                    ng-mouseleave="showEditLotDimensionBtn = false"
                                    ng-hide="showEditLotDimensionForm">Dimension:
@@ -118,7 +158,7 @@
                                                 <!-- Lot Price -->
                                                 <md-input-container>
                                                     <label>Price Per S/M:</label>
-                                                    <input type="number" name="width"
+                                                    <input type="number" name="price"
                                                            ng-model="lotDetsCtl.lot_copy.price_per_sq_mtr">
                                                 </md-input-container>
 
@@ -144,6 +184,45 @@
                                             || lotDetsCtl.lot.status == 'occupied' && {'color': 'violet'}">
                                         {{ lotDetsCtl.lot.status }}
                                     </span>
+                                </p>
+
+                                <!-- Remarks -->
+                                <p ng-mouseenter="showEditLotRemarksBtn = true"
+                                   ng-mouseleave="showEditLotRemarksBtn = false"
+                                   ng-hide="showEditLotRemarksForm">Remarks:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotRemarksBtn"
+                                                   ng-click="showEditLotRemarksForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        {{ lotDetsCtl.lot.remarks }}
+                                    </span>
+
+                                    <section ng-show="showEditLotRemarksForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">Remarks:</label>
+                                                <span flex></span>
+                                                <!-- OR # -->
+                                                <md-input-container>
+                                                    <label>Remarks</label>
+                                                    <textarea rows="3" cols="20" name="remarks"
+                                                           ng-model="lotDetsCtl.lot_copy.remarks">
+                                                    </textarea>
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotRemarksForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotRemarks()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
                                 </p>
 
                                 <!--  TODO add a watch for change on status and update to server
