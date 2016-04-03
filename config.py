@@ -15,6 +15,11 @@ class Config(object):
     TMP_DIR = '/var/www/benevola/tmp'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://benevolauser:youcantguess@localhost:5432/benevola'
+    REPORTS_FOLDER = STATIC_FOLDER + '/reports/'
+    LOT_LIST_REPORTS_FOLDER = REPORTS_FOLDER + 'lot_list/'
+    SALES_REPORTS_FOLDER = REPORTS_FOLDER + 'sales/'
+    CEMETERY_NAME = 'BENEVOLA MEMORIAL GARDEN'
+    CEMETERY_LOCATION = 'PULPOGAN, CONSOLACION'
 
 
 class DevelopmentConfig(Config):

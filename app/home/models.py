@@ -20,6 +20,12 @@ class Section(BaseModel):
             blocks.append(blk.to_dict())
         return blocks
 
+    def get_lots(self):
+        lots = []
+        for blk in self.blocks:
+            lots = lots + blk.get_lots()
+        return lots
+
 
 class Block(BaseModel):
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'), nullable=False)
@@ -27,6 +33,12 @@ class Block(BaseModel):
     area = db.Column(Geometry('POLYGON'), nullable=False)
 
     section = db.relationship(Section, backref='blocks')
+
+    def get_lots_obj(self):
+        lots = []
+        for lot in self.lots:
+            lots.append(lot)
+        return lots
 
     def get_lots(self):
         lots = []
@@ -37,6 +49,9 @@ class Block(BaseModel):
 
 class Client(Person):
     address = db.Column(db.String(100))
+
+    def get_full_name(self):
+        return self.last_name + ', ' + self.first_name
 
     # def get_lots(self):
     #     lots = []

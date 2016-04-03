@@ -1,4 +1,4 @@
-from app.home.models import Section
+from app.home.models import Section, Block, Lot
 from app.utils import forms_helper
 # from app.errors import exceptions
 from app.exceptions.section import *
@@ -6,6 +6,16 @@ from app import db
 import logging
 
 log = logging.getLogger(__name__)
+
+
+# def get_complete_sections():
+#     sections_result = []
+#     for section in Section.query.all():
+#         # section.blocks = section.get_blocks()
+#         # sections_result.append(section)
+#         log.debug("Blocks: {0}".format(section.blocks))
+#
+#     return sections_result
 
 
 def get_sections():

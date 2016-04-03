@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('mainController', ['$rootScope', 'BASE_URL', 'modalServices', mainController]);
+    .controller('mainController', ['$scope', '$rootScope', 'BASE_URL', 'modalServices', mainController]);
 
-    function mainController ($rootScope, BASE_URL, modalServices) {
+    function mainController ($scope, $rootScope, BASE_URL, modalServices) {
         var vm = this;
 
         $rootScope.spinner = {
@@ -28,15 +28,27 @@ angular.module('demoApp')
             }
         ];
 
-        //vm.initialize = initialize;
+        vm.isFabOpen = false;
+        vm.tooltipVisible = false;
+
+        vm.initialize = initialize;
         vm.redirect = redirect;
         vm.openSettings = openSettings;
 
-        //vm.initialize();
-        //
-        //function initialize () {
+        vm.generateLotListReport = generateLotListReport;
+        vm.generateSalesReport = generateSalesReport;
+
+        vm.initialize();
+
+        function initialize () {
+            $scope.$watch(function(){
+                return vm.isFabOpen;
+            }, function(newValue, oldValue){
+                if(newValue === oldValue) return;
+                vm.tooltipVisible = vm.isFabOpen;
+            });
         //    sectionList.loadSections(); // Transferred to Admin Controller
-        //}
+        }
 
         function redirect(e, link) {
             e.preventDefault();
@@ -52,6 +64,15 @@ angular.module('demoApp')
 
         function openSettings (e) {
             modalServices.showSettings(e);
+        }
+
+        function generateLotListReport () {
+            console.log('generate lot list report');
+            window.open(BASE_URL+'/reports/lot_list');
+        }
+
+        function generateSalesReport () {
+            console.log('generate sales report');
         }
 
     }

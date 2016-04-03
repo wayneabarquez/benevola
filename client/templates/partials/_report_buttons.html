@@ -1,0 +1,23 @@
+{% raw %}
+<md-fab-speed-dial md-open="mainCtl.isFabOpen" md-direction="left"
+                   id="report-buttons"
+                   class="md-scale"
+                   ng-mouseenter="mainCtl.isFabOpen=true" ng-mouseleave="mainCtl.isFabOpen=false" style="">
+    <md-fab-trigger>
+        <md-button aria-label="menu" class="md-primary md-icon-button md-raised">
+            <md-tooltip md-direction="top">Generate Report</md-tooltip>
+            <md-icon>assignment</md-icon>
+        </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button class="md-fab md-raised md-mini" ng-click="mainCtl.generateLotListReport()">
+            <md-tooltip md-direction="top" md-visible="mainCtl.tooltipVisible">Lot List</md-tooltip>
+            <md-icon>description</md-icon>
+        </md-button>
+        <md-button class="md-fab md-raised md-mini" ng-click="mainCtl.generateSalesReport()">
+            <md-tooltip md-direction="left" md-visible="mainCtl.tooltipVisible">Cremation & Lot Sales</md-tooltip>
+            <md-icon>monetization_on</md-icon>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>
+{% endraw %}
