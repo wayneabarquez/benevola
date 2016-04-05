@@ -18,6 +18,8 @@ thin_border = Border(left=Side(style='thin'),
                      top=Side(style='thin'),
                      bottom=Side(style='thin'))
 
+total_border = Border(bottom=Side(style='double'))
+
 
 def print_row_spacer(ctr, ws):
     for i in range(ctr):
@@ -167,17 +169,33 @@ def print_sales_content(lots, ws):
     r = [''] + table_header_cells
     ws.append(r)
 
+    sales_total = 0
     lot_remarks = 'Cemetery Lot'
     for l in lots:
         area = l.dimension_width * l.dimension_height
-        amount = 'P {:20,.2f}'.format(area * l.price_per_sq_mtr)
+        amount = area * l.price_per_sq_mtr
+        sales_total += amount
+        amount_formatted = 'P {:20,.2f}'.format(amount)
+        amount_formatted_cell = Cell(ws, value=amount_formatted)
+        amount_formatted_cell.style = Style(alignment=Alignment(horizontal='right'))
         # row_val = [b.id, l.id, dimen, area, price_formatted, amount, l.remarks, l.client.get_full_name(),
         #            l.date_purchased]
         # row_cells = []
         # for rv in row_val:
         #     row_cells.append(create_bordered_cell(rv, ws))
 
-        ws.append(['', l.date_purchased, l.or_no, l.client.get_full_name(), amount, lot_remarks])
+        ws.append(['', l.date_purchased, l.or_no, l.client.get_full_name(), amount_formatted_cell, lot_remarks])
+
+    # Sales Total
+    total_label_cell = Cell(ws, value='TOTAL')
+    total_label_cell.font = Font(size=12, color='FFFF0000')
+
+    total_cell = Cell(ws, value='P {:20,.2f}'.format(sales_total))
+    total_cell.font = Font(size=12, color='FFFF0000')
+    total_cell.border = total_border
+    total_cell.alignment = Alignment(horizontal='right')
+
+    ws.append(['', '', '', total_label_cell, total_cell])
 
 
 def generate_sales_report(start_date, end_date):
