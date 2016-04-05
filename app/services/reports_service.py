@@ -19,8 +19,37 @@ thin_border = Border(left=Side(style='thin'),
                      bottom=Side(style='thin'))
 
 
-def generate_file_name():
-    return 'LOT_LIST_' + datetime.datetime.now().strftime('%Y-%m-%d')
+def print_row_spacer(ctr, ws):
+    for i in range(ctr):
+        ws.append([])
+
+
+def create_bordered_cell(val, ws, is_bold=False):
+    c = Cell(ws, value=val)
+    c.font = Font(size=11, bold=is_bold)
+    c.border = thin_border
+    return c
+
+
+def underline_border_cell(val, ws):
+    underline_border = Border(bottom=Side(style='thin'))
+
+    c = Cell(ws, value=val)
+    c.font = Font(size=11, bold=True)
+    c.border = underline_border
+    return c
+
+
+def generate_file_name(report_type):
+    return report_type + datetime.datetime.now().strftime('%Y-%m-%d')
+
+
+def generate_lot_list_file_name():
+    return generate_file_name('LOT_LIST_')
+
+
+def generate_sales_file_name():
+    return generate_file_name('SALES_')
 
 
 def print_worksheet_header(ws):
@@ -34,25 +63,15 @@ def print_worksheet_header(ws):
     ws['D3'].style = Style(font=Font(bold=True), alignment=Alignment(horizontal="center"))
     ws['D3'] = CEMETERY_LOCATION
 
-
-def print_row_spacer(ctr, ws):
-    for i in range(ctr):
-        ws.append([])
+    print_row_spacer(2, ws)
 
 
-def create_bordered_cell(val, ws, is_bold=False):
-    c = Cell(ws, value=val)
-    c.font = Font(size=11, bold=is_bold)
-    c.border = thin_border
-    return c
+# LOT LIST REPORT FUNCTIONS
 
-
-def print_sections_data(ws):
+def print_lot_list_sections_data(ws):
     sections = section_service.get_sections()
 
     for section in sections:
-        print_row_spacer(2, ws)
-
         lots = section.get_lots()
         sold_lots = filter(lambda lot: lot['status'] == 'sold', lots)
         unsold_lots = filter(lambda lot: lot['status'] != 'sold', lots)
@@ -89,7 +108,8 @@ def print_sections_data(ws):
 
         ws.append([])
         # Table Header
-        table_headers = ['BLOCK', 'LOT NO.', 'DIMENSION', 'AREA', 'PRICE/SM', 'AMOUNT', 'REMARKS', 'OWNER', 'DATE PURCHASED']
+        table_headers = ['BLOCK', 'LOT NO.', 'DIMENSION', 'AREA', 'PRICE/SM', 'AMOUNT', 'REMARKS', 'OWNER',
+                         'DATE PURCHASED']
         table_header_cells = []
         for h in table_headers:
             c = create_bordered_cell(h, ws, True)
@@ -114,7 +134,7 @@ def print_sections_data(ws):
             # Total of Lots per block
             ws.append([len(b.lots)])
 
-        # print_row_spacer(2, ws)
+        print_row_spacer(2, ws)
 
 
 def generate_lotlist_report():
@@ -124,11 +144,55 @@ def generate_lotlist_report():
     ws.column_dimensions['C'].width = 15
 
     print_worksheet_header(ws)
-    print_sections_data(ws)
 
-    filename = generate_file_name() + ".xlsx"
+    print_lot_list_sections_data(ws)
+
+    filename = generate_lot_list_file_name() + ".xlsx"
     file_dict = {'name': filename, 'dir': LOT_LIST_FOLDER + filename}
+    # Save the file
+    wb.save(file_dict['dir'])
 
+    return file_dict
+
+
+# SALES REPORT FUNCTIONS
+
+def print_sales_content(lots, ws):
+    # Table Header
+    table_headers = ['Date', 'O.R. #', 'Name', 'Amount', 'Remarks']
+    table_header_cells = []
+    for h in table_headers:
+        c = underline_border_cell(h, ws)
+        table_header_cells.append(c)
+    r = [''] + table_header_cells
+    ws.append(r)
+
+    lot_remarks = 'Cemetery Lot'
+    for l in lots:
+        area = l.dimension_width * l.dimension_height
+        amount = 'P {:20,.2f}'.format(area * l.price_per_sq_mtr)
+        # row_val = [b.id, l.id, dimen, area, price_formatted, amount, l.remarks, l.client.get_full_name(),
+        #            l.date_purchased]
+        # row_cells = []
+        # for rv in row_val:
+        #     row_cells.append(create_bordered_cell(rv, ws))
+
+        ws.append(['', l.date_purchased, l.or_no, l.client.get_full_name(), amount, lot_remarks])
+
+
+def generate_sales_report(start_date, end_date):
+    from app.services import lot_service
+    lots = lot_service.get_lot_by_date(start_date, end_date)
+
+    wb = Workbook()
+    # grab the active worksheet
+    ws = wb.active
+    print_worksheet_header(ws)
+
+    print_sales_content(lots, ws)
+
+    filename = generate_sales_file_name() + ".xlsx"
+    file_dict = {'name': filename, 'dir': LOT_LIST_FOLDER + filename}
     # Save the file
     wb.save(file_dict['dir'])
 

@@ -67,12 +67,12 @@ angular.module('demoApp')
         }
 
         function generateLotListReport () {
-            console.log('generate lot list report');
-            window.open(BASE_URL+'/reports/lot_list');
+            window.open(BASE_URL + '/reports/lot_list');
         }
 
         function generateSalesReport () {
             console.log('generate sales report');
+            modalServices.showSalesReport();
         }
 
     }

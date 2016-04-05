@@ -177,3 +177,5 @@ def update_remarks(lot_id, form_data):
     return lot
 
 
+def get_lot_by_date(start_date, end_date):
+    return Lot.query.filter(Lot.date_purchased.between(start_date, end_date))

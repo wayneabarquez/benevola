@@ -29,6 +29,10 @@ angular.module('demoApp')
         service.showAddOccupantModal = null;
         service.showAddOccupant = showAddOccupant;
 
+        service.salesReportModal = null;
+        service.showSalesReport = showSalesReport;
+
+
         function showSettings(event) {
             var dfd = $q.defer();
 
@@ -276,6 +280,36 @@ angular.module('demoApp')
                     })
                     .finally(function () {
                         service.showAddOccupantModal = null;
+                    });
+            }
+            return dfd.promise;
+        }
+
+        function showSalesReport () {
+            var dfd = $q.defer();
+
+            if (service.showAddOccupantModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.salesReportModal = $mdDialog.show({
+                    controller: 'salesReportController',
+                    controllerAs: 'salesRepCtl',
+                    templateUrl: 'partials/modals/sales_report_dialog.tmpl.html',
+                    parent: angular.element(document.body),
+                    fullscreen: service.customFullscreen
+                });
+
+                service.salesReportModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.salesReportModal = null;
                     });
             }
             return dfd.promise;

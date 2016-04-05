@@ -1,0 +1,28 @@
+<md-dialog class="form-modal" aria-label="Sales Report Dialog" ng-cloak>
+    <form name="salesReportForm">
+        <md-toolbar>
+           <div class="md-toolbar-tools">
+               <h4>Generate Sales Report</h4>
+               <span flex></span>
+               <md-button class="md-icon-button" ng-click="salesRepCtl.cancel()">
+                   <md-icon aria-label="Close dialog">clear</md-icon>
+               </md-button>
+           </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <p>Please Specifiy Report Date Range here</p>
+
+            <md-datepicker ng-model="salesRepCtl.reportDate.start" md-placeholder="Start Date"
+                           md-max-date="salesRepCtl.maxDate"></md-datepicker>
+
+            <md-datepicker ng-model="salesRepCtl.reportDate.end" md-placeholder="End Date"
+                           md-max-date="salesRepCtl.maxDate"></md-datepicker>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+                <md-button class="md-primary" ng-click="salesRepCtl.generateReport()">Generate Report</md-button>
+            </span>
+        </md-dialog-content>
+    </form>
+</md-dialog>
