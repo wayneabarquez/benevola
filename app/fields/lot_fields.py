@@ -29,6 +29,11 @@ lot_create_fields = dict(
     lot=fields.Nested(lot_fields, allow_null=False)
 )
 
+ok_response = dict(
+    status=fields.String,
+    message=fields.String
+)
+
 lot_client_create_fields = dict(
     status=fields.String,
     message=fields.String,

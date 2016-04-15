@@ -51,6 +51,17 @@ class LotDetailResource(Resource):
         except LotNotFoundError as err:
             abort(404, message=err.message)
 
+    def delete(self, lot_id):
+        """ DELETE /api/lots/<lot_id> """
+        log.debug('Delete Lot request id = {0}'.format(lot_id))
+        # TODO check authenticated user
+        try:
+            lot_service.delete_lot(lot_id)
+            result = dict(status=200, message='OK')
+            return marshal(result, ok_response)
+        except LotNotFoundError as err:
+            abort(404, message=err.message)
+
 
 class LotDimensionResource(Resource):
     """

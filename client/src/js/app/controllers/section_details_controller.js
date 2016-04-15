@@ -78,8 +78,12 @@ angular.module('demoApp')
             toggle(false);
             vm.tempSection.area = drawingServices.getPolygonCoords(vm.tempSection.polygon);
 
+
+            console.log('vm.section: ', vm.section);
             // to avoid this error "TypeError: Converting circular structure to JSON"
             vm.section.polygon = null;
+            var tempBlocks = vm.section.blocks;
+            vm.section.blocks = [];
 
             vm.section.area = vm.tempSection.area;
             vm.section.name = vm.tempSection.name;
@@ -91,9 +95,12 @@ angular.module('demoApp')
                     vm.lastPolygon = null;
 
                     vm.section.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
-
                 }, function(error){
                     console.log('failed updating section: ',error);
+                    vm.section.polygon = vm.tempSection.polygon;
+                })
+                .finally(function(){
+                    vm.section.blocks = tempBlocks;
                 });
         }
 

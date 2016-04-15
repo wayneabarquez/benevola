@@ -96,4 +96,4 @@ class Deceased(Person):
     lot_id = db.Column(db.Integer, db.ForeignKey('lot.id'), index=True, nullable=False)
     date_of_death = db.Column(db.Date)
 
-    lot = db.relationship(Lot, backref='deceased')
+    lot = db.relationship(Lot, backref=db.backref('deceased', cascade="all, delete-orphan"))

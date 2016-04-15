@@ -179,3 +179,13 @@ def update_remarks(lot_id, form_data):
 
 def get_lot_by_date(start_date, end_date):
     return Lot.query.filter(Lot.date_purchased.between(start_date, end_date))
+
+
+def delete_lot(lot_id):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    db.session.delete(lot)
+    db.session.commit()

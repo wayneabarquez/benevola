@@ -7,6 +7,8 @@ angular.module('demoApp')
     function lotList ($rootScope, gmapServices, LOT_COLORS, Lots, modalServices) {
         var service = {};
 
+        service.selectedLotInfowindow = gmapServices.createInfoWindow('');
+
         service.polygonColor = LOT_COLORS;
         service.polygonOptions = {
             clickable: true,
@@ -40,6 +42,13 @@ angular.module('demoApp')
                 });
                 foundLot.polygon.setOptions(polygonOpts);
             });
+
+            $('body').on('click', '.admin-delete-lot-button', function () {
+                var lotId = $(this).data('lot-id');
+                console.log('delete lot with id = ', lotId);
+            });
+
+
         }
 
         initialize();
@@ -82,12 +91,44 @@ angular.module('demoApp')
 
             var restangularizedLot = Lots.cast(lot);
 
+
             var adminHandler = function () {
-                console.log('admin handler for polygon click lot');
+                //console.log('admin handler for polygon click lot');
+                //console.log('lot: ', lot);
+
+                var content = '<button data-lot-id="'+lot.id+'" class="md-raised md-button md-ink-ripple" id="admin-delete-lot-button" type="button">Delete Lot</button>';
+
+                var center = gmapServices.getPolygonCenter(lot.polygon);
+                gmapServices.showInfoWindow(service.selectedLotInfowindow);
+                service.selectedLotInfowindow.setPosition(center);
+                service.selectedLotInfowindow.setContent(content);
+
+                $('#admin-delete-lot-button').click(function () {
+                    var lotId = $(this).data('lot-id');
+                    //console.log('delete lot with id = ', lotId);
+
+                    var polygonTemp = lot.polygon;
+
+                    lot.polygon = null;
+
+                    lot.remove()
+                        .then(function(s){
+                            gmapServices.hidePolygon(polygonTemp);
+                            polygonTemp = null;
+                            //console.log('success deleting lot: ', s);
+                        },function(e){
+                           //console.log('failed to delete lot: ',e);
+                           lot.polygon = polygonTemp;
+                           alert('Failed to Delete Lot');
+                        })
+                        .finally(function(){
+                            gmapServices.hideInfoWindow(service.selectedLotInfowindow);
+                        });
+                });
             };
 
             var indexHandler = function () {
-                console.log('index handler for polygon click lot');
+                //console.log('index handler for polygon click lot');
                 // Show Lot Details
                 // and option to change status and select client
                 modalServices.showLotDetail(restangularizedLot)
