@@ -52,10 +52,12 @@ $list-footer-height: 43px;
         margin-bottom: 20px;
 
         table.md-table {
+          // Fixes last tr on tbody offset
+          padding-bottom: 80px !important;
 
           thead  {
             tr {
-              height: 40px !important;
+              height: 40px;
               text-align: center;
               border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
 
@@ -71,10 +73,22 @@ $list-footer-height: 43px;
 
           tbody {
             tr {
+              min-height: 0;
+              height: 30px !important;
               text-align:center;
 
               td {
-                padding: 5px;
+                min-height: 0;
+                height: 30px;
+                padding: 0px 5px;
+
+                button {
+                  margin: 2px;
+                  line-height: 30px;
+                  min-height: 30px;
+                  height: 30px;
+                  font-size: 12px;
+                }
               }
             }
             tr.md-row:not([disabled]) {

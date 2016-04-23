@@ -25,6 +25,7 @@ angular.module('demoApp')
         service.add = add;
         service.findLot = findLot;
         service.togglePolygonByStatus = togglePolygonByStatus;
+        service.showLotDetailsModal = showLotDetailsModal;
 
         function initialize() {
 
@@ -48,7 +49,16 @@ angular.module('demoApp')
                 console.log('delete lot with id = ', lotId);
             });
 
+            $(document).on('click', '.show-lot-detail-button', function () {
+                var lotId = $(this).data('lot-id'),
+                    blockId = $(this).data('block-id');
 
+                var foundLot = service.findLot(blockId, lotId);
+
+                if (foundLot) {
+                    service.showLotDetailsModal(foundLot);
+                }
+            });
         }
 
         initialize();
@@ -92,7 +102,7 @@ angular.module('demoApp')
             var restangularizedLot = Lots.cast(lot);
 
 
-            var adminHandler = function () {
+            var adminHandler = function (lot) {
                 //console.log('admin handler for polygon click lot');
                 //console.log('lot: ', lot);
 
@@ -127,16 +137,10 @@ angular.module('demoApp')
                 });
             };
 
-            var indexHandler = function () {
-                //console.log('index handler for polygon click lot');
-                // Show Lot Details
-                // and option to change status and select client
-                modalServices.showLotDetail(restangularizedLot)
-                    .then( function (response) {
+            polygon.lot = lot;
 
-                    }, function(err) {
-
-                    });
+            var indexHandler = function (lot) {
+                showLotInfowindow(lot);
             };
 
             var handler = forIndex ? indexHandler : adminHandler;
@@ -144,7 +148,7 @@ angular.module('demoApp')
             gmapServices.addListener(polygon, 'click', function() {
                 gmapServices.setZoomIfGreater(21);
                 gmapServices.panToPolygon(polygon);
-                handler();
+                handler(this.lot);
             });
 
             return polygon;
@@ -156,6 +160,13 @@ angular.module('demoApp')
             } else {
                 gmapServices.hidePolygon(polygon);
             }
+        }
+
+        function showLotDetailsModal (lot) {
+            modalServices.showLotDetail(lot)
+                .then(function (response) {
+                }, function (err) {
+                });
         }
 
         function togglePolygonByStatus(_status, _value) {
@@ -171,6 +182,26 @@ angular.module('demoApp')
             lots.forEach(function(lot){
                 togglePolygon(_value, lot.polygon);
             });
+        }
+
+        var lotInfowindow = gmapServices.createInfoWindow('');
+
+        function showLotInfowindow(lot) {
+            var info = '<b>Lot No:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
+            info += '<b>Section No:</b> ' + lot.section_id + ' <br>';
+            info += '<b>Lot No:</b> ' + lot.id + ' <br>';
+            info += '<b>Area:</b> ' + lot.lot_area + ' <br>';
+            info += '<b>Amount:</b> ' + lot.amount + ' <br>';
+            info += '<b>Status:</b> <span class="' + lot.status + '">' + lot.status + '</span> <br>';
+            info += '<b>Date Purchased:</b> ' + lot.date_purchased_formatted + ' <br>';
+            info += '<button data-lot-id="' + lot.id + '" data-block-id="' + lot.block_id + '" class="show-lot-detail-button md-primary md-button md-raised">Show Details</button>';
+
+            var center = gmapServices.getPolygonCenter(lot.polygon);
+            gmapServices.showInfoWindow(lotInfowindow);
+            gmapServices.panTo(center);
+
+            lotInfowindow.setPosition(center);
+            lotInfowindow.setContent(info);
         }
 
 

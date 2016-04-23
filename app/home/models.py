@@ -72,6 +72,7 @@ class Settings(BaseModel):
 class Lot(BaseModel):
     block_id = db.Column(db.Integer, db.ForeignKey('block.id'), index=True, nullable=False)
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), index=True)  # Lot Owner
+    name = db.Column(db.String(5))
     area = db.Column(Geometry('POLYGON'), nullable=False)
     dimension_width = db.Column(db.Float)  # ex. 5 x 6
     dimension_height = db.Column(db.Float)  # ex. 5 x 6

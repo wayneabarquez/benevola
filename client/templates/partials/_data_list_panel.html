@@ -66,7 +66,7 @@
                         <td md-cell>{{lot.block_id}}</td>
 
                         <!-- Lot No. -->
-                        <td md-cell>{{lot.id}}</td>
+                        <td md-cell>{{lot.name}}</td>
 
                         <!-- Dimension -->
                         <td md-cell>{{lot.dimension_width}} x {{ lot.dimension_height }}</td>
@@ -94,7 +94,7 @@
                         <!-- Date Purchased -->
                         <td md-cell>{{lot.date_purchased_formatted}}</td>
 
-                        <td md-cell><md-button class="md-raised" ng-click="listCtl.showLotDetails(lot)">View Details</md-button></td>
+                        <td md-cell style="text-align:center;"><md-button class="md-raised" ng-click="listCtl.showLotDetails(lot)">View Details</md-button></td>
 
                     </tr>
                 </tbody>
@@ -108,7 +108,7 @@
                 <md-table-pagination
                         md-limit="listCtl.query.limit"
                         md-page="listCtl.query.page"
-                        md-total="{{listCtl.rowData.length}}"
+                        md-total="{{lots.length}}"
                         md-page-select>
                 </md-table-pagination>
             </div>

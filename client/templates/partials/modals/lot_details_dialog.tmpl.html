@@ -11,8 +11,49 @@
         </md-toolbar>
         <md-dialog-content class="md-padding">
 
-            <span layout="row" layout-align="end center">
 
+            <span layout="row" layout-align="start center">
+
+                <!-- Lot Name / Lot No. -->
+                <p ng-mouseenter="showEditLotNameBtn = true"
+                   ng-mouseleave="showEditLotNameBtn = false"
+                   ng-hide="showEditLotNameForm">Lot No:
+                    <span>
+                        <md-button class="md-icon-button small-icon-button"
+                                   ng-show="showEditLotNameBtn"
+                                   ng-click="showEditLotNameForm = true">
+                            <md-icon>edit</md-icon>
+                        </md-button>
+                        {{ lotDetsCtl.lot.name }}
+                    </span>
+
+                    <section ng-show="showEditLotNameForm">
+                        <form class="inline-form">
+                            <div layout="row">
+                                <label class="parent-form-label">Lot No:</label>
+                                <span flex></span>
+                                <!-- Lot No -->
+                                <md-input-container>
+                                    <label>Lot No:</label>
+                                    <input type="number" name="name"
+                                           ng-model="lotDetsCtl.lot_copy.name">
+                                </md-input-container>
+
+                                <md-button class="md-icon-button"
+                                           ng-click="showEditLotNameForm = false">
+                                    <md-icon>clear</md-icon>
+                                </md-button>
+                                <md-button class="md-icon-button"
+                                           ng-click="lotDetsCtl.updateLotName()">
+                                    <md-icon>save</md-icon>
+                                </md-button>
+                            </div>
+                        </form>
+                    </section>
+
+                </p>
+
+                <span flex></span>
                 <!-- Add Occupant Button -->
                 <md-button class="md-hue-1"
                            ng-show="lotDetsCtl.lot.status !== 'vacant'"

@@ -9,6 +9,7 @@ lot_fields = dict(
     id=fields.Integer,
     block_id=fields.Integer,
     client_id=fields.Integer,
+    name=fields.String,
     area=PolygonToLatLng(attribute='area'),
     dimension_width=fields.Float,
     dimension_height=fields.Float,

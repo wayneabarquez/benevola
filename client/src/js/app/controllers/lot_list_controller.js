@@ -129,13 +129,7 @@
         }
 
         function onClickRow(lot) {
-            var foundLot = lotList.findLot(lot.block_id, lot.id);
-
-            if (foundLot) {
-                // hide table list
-                vm.showList = false;
-                showSearchedLotInfowindow(foundLot);
-            }
+            gmapServices.triggerEvent(lot.polygon, 'click');
         }
 
         function showLotDetails (lot) {
@@ -145,7 +139,7 @@
                 $timeout(function(){
                     vm.searchInfowindow.close();
                 }, 300);
-                gmapServices.triggerEvent(foundLot.polygon, 'click');
+                lotList.showLotDetailsModal(foundLot);
             }
         }
 

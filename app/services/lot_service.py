@@ -177,6 +177,19 @@ def update_remarks(lot_id, form_data):
     return lot
 
 
+def update_name(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    lot.name = form_data['name']
+
+    db.session.commit()
+
+    return lot
+
+
 def get_lot_by_date(start_date, end_date):
     return Lot.query.filter(Lot.date_purchased.between(start_date, end_date))
 

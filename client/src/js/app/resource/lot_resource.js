@@ -41,6 +41,14 @@
                     .customPUT(data);
             };
 
+            model.updateName = function (data) {
+                console.log('update name: ', data);
+
+                return model
+                    .all('name')
+                    .customPUT(data);
+            };
+
             return model;
         });
 

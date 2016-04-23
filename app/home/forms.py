@@ -27,6 +27,7 @@ class AddLotForm(ModelForm):
         model = Lot
         exclude = ['area']
 
+    name = StringField(validators=[validators.required()])
     block_id = StringField(validators=[validators.required()])
     area = TextAreaField(validators=[validators.required()])
     dimension_width = IntegerField(validators=[validators.required()])

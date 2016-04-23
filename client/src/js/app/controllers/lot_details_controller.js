@@ -7,7 +7,7 @@ angular.module('demoApp')
     function lotDetailsController ($scope, $mdDialog, lot, modalServices, Lots) {
         var vm = this;
 
-
+        $scope.showEditLotNameForm = false;
         $scope.showEditLotORNoForm = false;
         $scope.showEditLotDimensionForm = false;
         $scope.showEditLotPriceForm = false;
@@ -24,6 +24,7 @@ angular.module('demoApp')
         vm.updateLotDimension = updateLotDimension;
         vm.updateLotPrice = updateLotPrice;
         vm.updateLotRemarks = updateLotRemarks;
+        vm.updateLotName = updateLotName;
         vm.cancel = cancel;
 
         vm.initialize();
@@ -155,6 +156,23 @@ angular.module('demoApp')
 
                     $scope.showEditLotRemarksForm = false;
 
+                }, function (error) {
+                    console.log('error: ', error);
+                });
+        }
+
+        function updateLotName () {
+            console.log('update lot name');
+
+            var data = {name: vm.lot_copy.name};
+
+            vm.lot.updateName(data)
+                .then(function (response) {
+                    console.log('success: ',response);
+                    var lot = response.lot;
+                    vm.lot.name = lot.name;
+
+                    $scope.showEditLotNameForm = false;
                 }, function (error) {
                     console.log('error: ', error);
                 });
