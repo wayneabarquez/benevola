@@ -26,10 +26,10 @@ tempfile.tempdir = app.config.get('TMP_DIR', '')
 db = SQLAlchemy(app)
 
 # Configure authentication
-# lm = LoginManager()
-# lm.session_protection = 'strong'
-# lm.login_view = 'auth.login'
-# lm.init_app(app)
+lm = LoginManager()
+lm.session_protection = 'strong'
+lm.login_view = 'auth.login'
+lm.init_app(app)
 
 # Config for Logging
 stdout_handler = logging.StreamHandler(sys.stdout)
@@ -65,8 +65,5 @@ from .admin import admin as admin_blueprint
 app.register_blueprint(admin_blueprint)
 
 # Register Auth Blueprint
-# Uncomment this to enable authentication
-# from .authentication import auth as auth_blueprint
-# app.register_blueprint(auth_blueprint)
-
-
+from .authentication import auth as auth_blueprint
+app.register_blueprint(auth_blueprint)
