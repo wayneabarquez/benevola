@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', addLotController]);
+    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', 'lotHelper', addLotController]);
 
-    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices) {
+    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices, lotHelper) {
         var vm = this;
 
         vm.block = null;
@@ -29,24 +29,38 @@ angular.module('demoApp')
             // Restangularized
             vm.block = Blocks.cast(block);
 
-            $scope.$watch(function(){
-                return vm.lot.dimension_width;
-            }, function(newValue, oldValue){
-                if (newValue == oldValue) return;
-                computeLotArea();
-            });
 
             $scope.$watch(function () {
-                return vm.lot.dimension_height;
+                return vm.lot.dimension;
             }, function (newValue, oldValue) {
                 if (newValue == oldValue) return;
-                computeLotArea();
+                computeLotArea(newValue);
             });
+
+            //$scope.$watch(function(){
+            //    return vm.lot.dimension_width;
+            //}, function(newValue, oldValue){
+            //    if (newValue == oldValue) return;
+            //    computeLotArea();
+            //});
+
+            //$scope.$watch(function () {
+            //    return vm.lot.dimension_height;
+            //}, function (newValue, oldValue) {
+            //    if (newValue == oldValue) return;
+            //    computeLotArea();
+            //});
         }
 
-        function computeLotArea () {
-            vm.lot.lot_area = parseFloat(vm.lot.dimension_width * vm.lot.dimension_height).toFixed(2);
+        function computeLotArea(dimension) {
+            lotHelper.computeArea(dimension);
+
+            //vm.lot.lot_area = parseFloat(vm.lot.dimension_width * vm.lot.dimension_height).toFixed(2);
         }
+
+        //function computeLotArea () {
+        //    vm.lot.lot_area = parseFloat(vm.lot.dimension_width * vm.lot.dimension_height).toFixed(2);
+        //}
 
         function save () {
             vm.block.post('lots', vm.lot)

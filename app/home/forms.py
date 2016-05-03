@@ -30,8 +30,9 @@ class AddLotForm(ModelForm):
     name = StringField(validators=[validators.required()])
     block_id = StringField(validators=[validators.required()])
     area = TextAreaField(validators=[validators.required()])
-    dimension_width = IntegerField(validators=[validators.required()])
-    dimension_height = IntegerField(validators=[validators.required()])
+    dimension = StringField(validators=[validators.required()])
+    # dimension_width = IntegerField(validators=[validators.required()])
+    # dimension_height = IntegerField(validators=[validators.required()])
     # lot_area = IntegerField(validators=[validators.required()])
 
 

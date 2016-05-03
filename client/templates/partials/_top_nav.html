@@ -5,13 +5,26 @@
              <md-icon md-menu-origin>more_vert</md-icon>
          </md-button>
          <md-menu-content width="2">
-             <md-menu-item ng-repeat="item in mainCtl.menu">
-                 <md-button class="menu-button">
+             {% endraw %}
+
+             <md-menu-item>
+
+                 <md-button class="menu-button" disabled>
                      <div layout="row">
-                         <a ng-click="mainCtl.redirect($event, item.link)" href="javascript:void();" style="color:black;text-decoration:none;">
-                             <md-icon md-menu-align-target>{{item.icon}}</md-icon>
-                             <p flex>{{ item.title }}</p>
-                         </a>
+                         <md-icon>account_circle</md-icon>
+                         {{ current_user.username }}
+                     </div>
+                 </md-button>
+             </md-menu-item>
+
+             {% raw %}
+
+             <md-divider></md-divider>
+             <md-menu-item ng-repeat="item in mainCtl.menu">
+                 <md-button class="menu-button" ng-click="mainCtl.redirect($event, item.link)">
+                     <div layout="row">
+                        <md-icon md-menu-align-target>{{item.icon}}</md-icon>
+                        <p flex>{{ item.title }}</p>
                      </div>
                  </md-button>
              </md-menu-item>

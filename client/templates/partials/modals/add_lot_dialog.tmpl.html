@@ -14,13 +14,19 @@
             <div layout="row">
                 <md-input-container>
                     <label>Lot No.</label>
-                    <input type="number" name="name" ng-model="addLotCtl.lot.name" placeholder="Lot No." required>
+                    <input type="text" name="name" ng-model="addLotCtl.lot.name" placeholder="Lot No." required>
                 </md-input-container>
             </div>
 
             <div layout="row">
-                <label>Dimension</label>
+                <!-- <label>Dimension</label> -->
                 <!-- Lot Dimension -->
+                <md-input-container>
+                    <label>Dimension</label>
+                    <input type="text" name="dimension" ng-model="addLotCtl.lot.dimension" placeholder="Dimension"
+                           allow-pattern="[Xx0-9.]"/>
+                </md-input-container>
+                <!--
                 <md-input-container>
                     <label>Width</label>
                     <input type="number" name="width" ng-model="addLotCtl.lot.dimension_width" placeholder="Width">
@@ -29,7 +35,7 @@
                 <md-input-container>
                     <label>Height</label>
                     <input type="number" name="height" ng-model="addLotCtl.lot.dimension_height" placeholder="Height">
-                </md-input-container>
+                </md-input-container> -->
             </div>
 
             <p style="margin-top:5px;" ng-show="addLotCtl.lot.lot_area"><b>Lot Area: </b> {{ addLotCtl.lot.lot_area }} sq.meters</p>

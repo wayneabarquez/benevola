@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 def compute_lot_amount(area, price_per_sq_mtr):
     return area * price_per_sq_mtr
 
-
+# TODO
 def compute_lot_area(width, height):
     return float(width * height)
 
@@ -129,9 +129,10 @@ def update_lot_dimension(lot_id, form_data):
     if lot is None:
         raise LotNotFoundError("Lot id={0} not found".format(lot_id))
 
-    lot.dimension_width = float(form_data['dimension_width'])
-    lot.dimension_height = float(form_data['dimension_height'])
-    lot.lot_area = compute_lot_area(lot.dimension_width, lot.dimension_height)
+    # TODO recompute lot area
+    # lot.dimension_width = float(form_data['dimension_width'])
+    # lot.dimension_height = float(form_data['dimension_height'])
+    # lot.lot_area = compute_lot_area(lot.dimension_width, lot.dimension_height)
 
     db.session.commit()
 

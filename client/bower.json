@@ -32,6 +32,9 @@
     "angular-material-data-table": "~0.9.11",
     "angular-moment": "~0.10.3",
     "moment": "~2.12.0",
-    "ng-inline-edit": "~0.7.0"
+    "ng-inline-edit": "~0.7.0",
+    "angular-local-storage": "~0.2.7",
+    "ng-pattern-restrict": "~0.2.1",
+    "jquery.inputmask": "~3.3.1"
   }
 }

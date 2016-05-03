@@ -11,6 +11,11 @@ angular.module('demoApp')
             active: false
         };
 
+        $rootScope.currentUser = {
+          username: 'User1',
+          role: 'USER'
+        };
+
         vm.menu = [
             {
                 link: '/admin',
@@ -41,6 +46,9 @@ angular.module('demoApp')
         vm.initialize();
 
         function initialize () {
+            // TODO: fetch logged in user data
+            // and add in local storage
+
             $scope.$watch(function(){
                 return vm.isFabOpen;
             }, function(newValue, oldValue){

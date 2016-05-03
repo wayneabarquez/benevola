@@ -26,6 +26,7 @@ gulp.task('vendor-scripts', function () {
         paths.bower + '/moment/min/moment.min.js',
         paths.bower + '/angular-moment/angular-moment.min.js',
         paths.bower + '/ng-inline-edit/dist/ng-inline-edit.min.js'
+        //paths.bower + '/angular-ui-mask/dist/mask.js'
     ])
         .pipe($.concat('vendor.min.js'))
         .pipe($.uglify({mangle: false}).on('error', $.util.log))

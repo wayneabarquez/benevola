@@ -29,6 +29,15 @@ gulp.task('watch', function(event) {
         });
     });
 
+    // Watch App JS Files
+    gulp.watch([
+        paths.srcJs + '/app_jq.js'
+    ], function (event) {
+        runSequence('jq-scripts', function () {
+            browserSync.reload(event.path);
+        });
+    });
+
     // Watch Sass Files
     gulp.watch(paths.srcSass + '/**/*.scss',
         function (event) {

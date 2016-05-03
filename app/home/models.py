@@ -74,8 +74,9 @@ class Lot(BaseModel):
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), index=True)  # Lot Owner
     name = db.Column(db.String(5))
     area = db.Column(Geometry('POLYGON'), nullable=False)
-    dimension_width = db.Column(db.Float)  # ex. 5 x 6
-    dimension_height = db.Column(db.Float)  # ex. 5 x 6
+    # dimension_width = db.Column(db.Float)  # ex. 5 x 6
+    # dimension_height = db.Column(db.Float)  # ex. 5 x 6
+    dimension = db.Column(db.String)  # ex. 4x4x6
     lot_area = db.Column(db.Float)  # By Square meters (Computed by dimensions w x h)
     price_per_sq_mtr = db.Column(db.Float)  # copied from lot_price table
     date_purchased = db.Column(db.Date, default=db.func.current_date())

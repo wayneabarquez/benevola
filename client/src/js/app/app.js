@@ -16,6 +16,12 @@
                 .accentPalette('pink');
         })
 
+        //.config(['uiMask.ConfigProvider', function (uiMaskConfigProvider) {
+        //    uiMaskConfigProvider.maskDefinitions({'*': /[xX0-9]/});
+        ////    //uiMaskConfigProvider.clearOnBlur(false);
+        ////    //uiMaskConfigProvider.eventsToHandle(['input', 'keyup', 'click']);
+        //}])
+
         .config(['RestangularProvider', function (RestangularProvider) {
             //set the base url for api calls on our RESTful services
             RestangularProvider.setBaseUrl(window.location.origin + '/api');
