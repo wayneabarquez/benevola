@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', 'Lots', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', 'Lots', 'lotHelper', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot, modalServices, Lots) {
+    function lotDetailsController ($scope, $mdDialog, lot, modalServices, Lots, lotHelper) {
         var vm = this;
 
         $scope.showEditLotNameForm = false;
@@ -36,12 +36,6 @@ angular.module('demoApp')
             vm.lot_copy = angular.copy(vm.lot);
             console.log('lot details: ', vm.lot_copy);
 
-            //$scope.$watch(function () {
-            //    return vm.lot.dimension_height;
-            //}, function (newValue, oldValue) {
-            //    if (newValue == oldValue) return;
-            //    computeLotArea();
-            //});
             $scope.$watch(function(){
                 return vm.lot;
             }, function(newValue){
@@ -55,6 +49,21 @@ angular.module('demoApp')
             $scope.$watch(function () {
                 return vm.lot.price_per_sq_mtr;
             }, computeLotAmount);
+
+            $scope.$watch(function () {
+                return vm.lot_copy.dimension;
+            }, function (newValue, oldValue) {
+                if (newValue == oldValue) return;
+                computeLotArea(newValue);
+            });
+
+        }
+
+        function computeLotArea(dimension) {
+            var result = lotHelper.computeArea(dimension);
+
+            vm.lot_copy.dimension = result.dimension;
+            vm.lot_copy.lot_area = result.area;
         }
 
         function markSold () {
@@ -120,20 +129,16 @@ angular.module('demoApp')
         }
 
         function updateLotDimension () {
-            var dimension = {
-                dimension_width: vm.lot_copy.dimension_width,
-                dimension_height: vm.lot_copy.dimension_height
+            var data = {
+                dimension: lotHelper.filterDimensionString(vm.lot_copy.dimension),
+                lot_area: vm.lot_copy.lot_area
             };
 
-            //console.log('update dimension request');
-            vm.lot.updateDimension(dimension)
+            vm.lot.updateDimension(data)
                 .then(function(response){
-                    //console.log('success: ',response);
-
                     var lot = response.lot;
                     vm.lot.lot_area = lot.lot_area;
-                    vm.lot.dimension_width = lot.dimension_width;
-                    vm.lot.dimension_height = lot.dimension_height;
+                    vm.lot.dimension = lot.dimension;
 
                     $scope.showEditLotDimensionForm = false;
 

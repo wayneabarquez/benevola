@@ -14,8 +14,8 @@ def compute_lot_amount(area, price_per_sq_mtr):
     return area * price_per_sq_mtr
 
 # TODO
-def compute_lot_area(width, height):
-    return float(width * height)
+# def compute_lot_area(dimension):
+#     return float(width * height)
 
 
 def get_lots():
@@ -130,9 +130,8 @@ def update_lot_dimension(lot_id, form_data):
         raise LotNotFoundError("Lot id={0} not found".format(lot_id))
 
     # TODO recompute lot area
-    # lot.dimension_width = float(form_data['dimension_width'])
-    # lot.dimension_height = float(form_data['dimension_height'])
-    # lot.lot_area = compute_lot_area(lot.dimension_width, lot.dimension_height)
+    lot.dimension = form_data['dimension']
+    lot.lot_area = form_data['lot_area']
 
     db.session.commit()
 

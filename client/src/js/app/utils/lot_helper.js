@@ -8,10 +8,7 @@ angular.module('demoApp')
         var service = {};
 
         service.computeArea = computeArea;
-
-        function isNumeric(num) {
-            return !isNaN(num);
-        }
+        service.filterDimensionString = filterDimensionString;
 
         function validateDimensionArray(dimensionArray) {
             var flag = true,
@@ -31,28 +28,54 @@ angular.module('demoApp')
             return flag;
         }
 
-        function computerAreaByDimension(dimensionArray) {
-            var product = 0;
+        function filterDimensionArray (dimensionArray) {
+            function removeNonNumeric(value) {
+                return value.length && !isNaN(value);
+            }
+            return dimensionArray.filter(removeNonNumeric);
+        }
 
-            //dimensionArray.forEach(function(){
-            //
-            //});
+        function filterDimensionString (dimension) {
+            var dimensionArray = dimension.toLowerCase().split('x');
+            return getDimensionString(filterDimensionArray(dimensionArray));
+        }
 
+        function getDimensionString(dimensionArray) {
+            var dimension = '',
+                len = dimensionArray.length;
+
+            dimensionArray.forEach(function(value, index){
+                if(index < len - 1) {
+                    dimension += value + 'x';
+                } else {
+                    dimension += value;
+                }
+            });
+            return dimension;
         }
 
         function computeArea (dimension) {
+            if(!dimension) return false;
+
             var dimensionArray = dimension.toLowerCase().split('x');
+            var filteredDimensionArray = filterDimensionArray(dimensionArray);
 
-            //if (dimensionArray.length < 2) {
-            //    alert('Invalid dimension value.');
-            //    return false;
-            //}
+            if( !validateDimensionArray(dimensionArray)) return false;
 
-            console.log('dimensionArray: ', dimensionArray);
+            var dimensionStr = getDimensionString(filteredDimensionArray);
 
-            if( !validateDimensionArray(dimensionArray)) {
-                alert('Invalid dimension value.');
-            }
+            var _area = filteredDimensionArray[0];
+            for(var i=1; i < filteredDimensionArray.length; i++)
+                _area *= filteredDimensionArray[i];
+
+            dimensionStr += dimensionArray[dimensionArray.length - 1] == ""
+                            ? 'x'
+                            : '';
+
+            return {
+                dimension: dimensionStr,
+                area: parseFloat(_area).toFixed(2)
+            };
         }
 
         return service;

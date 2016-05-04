@@ -29,40 +29,23 @@ angular.module('demoApp')
             // Restangularized
             vm.block = Blocks.cast(block);
 
-
             $scope.$watch(function () {
                 return vm.lot.dimension;
             }, function (newValue, oldValue) {
                 if (newValue == oldValue) return;
                 computeLotArea(newValue);
             });
-
-            //$scope.$watch(function(){
-            //    return vm.lot.dimension_width;
-            //}, function(newValue, oldValue){
-            //    if (newValue == oldValue) return;
-            //    computeLotArea();
-            //});
-
-            //$scope.$watch(function () {
-            //    return vm.lot.dimension_height;
-            //}, function (newValue, oldValue) {
-            //    if (newValue == oldValue) return;
-            //    computeLotArea();
-            //});
         }
 
         function computeLotArea(dimension) {
-            lotHelper.computeArea(dimension);
+           var result = lotHelper.computeArea(dimension);
 
-            //vm.lot.lot_area = parseFloat(vm.lot.dimension_width * vm.lot.dimension_height).toFixed(2);
+            vm.lot.dimension = result.dimension;
+            vm.lot.lot_area = result.area;
         }
 
-        //function computeLotArea () {
-        //    vm.lot.lot_area = parseFloat(vm.lot.dimension_width * vm.lot.dimension_height).toFixed(2);
-        //}
-
         function save () {
+            vm.lot.dimension = lotHelper.filterDimensionString(vm.lot.dimension);
             vm.block.post('lots', vm.lot)
                 .then(function(response){
                     $mdDialog.hide(response);

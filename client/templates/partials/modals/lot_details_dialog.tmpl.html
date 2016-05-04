@@ -142,7 +142,7 @@
                                                    ng-click="showEditLotDimensionForm = true">
                                             <md-icon>edit</md-icon>
                                         </md-button>
-                                        {{ lotDetsCtl.lot.dimension_width }} x {{ lotDetsCtl.lot.dimension_height }}
+                                        {{ lotDetsCtl.lot.dimension }}
                                     </span>
 
                                     <section ng-show="showEditLotDimensionForm">
@@ -151,16 +151,11 @@
                                                 <label class="parent-form-label">Dimension</label>
                                                 <!-- Lot Dimension -->
                                                 <md-input-container>
-                                                    <label>Width</label>
-                                                    <input type="number" name="width"
-                                                           ng-model="lotDetsCtl.lot_copy.dimension_width" placeholder="Width">
-                                                </md-input-container>
-                                                x
-                                                <md-input-container>
-                                                    <label>Height</label>
-                                                    <input type="number" name="height"
-                                                           ng-model="lotDetsCtl.lot_copy.dimension_height"
-                                                           placeholder="Height">
+                                                    <label>Dimension</label>
+                                                    <input type="text" name="dimension"
+                                                           ng-model="lotDetsCtl.lot_copy.dimension"
+                                                           ng-model-options="{ debounce: 150 }" placeholder="Dimension"
+                                                           allow-pattern="[Xx0-9.]"/>
                                                 </md-input-container>
 
                                                 <md-button class="md-icon-button"
