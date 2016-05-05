@@ -64,9 +64,13 @@ angular.module('demoApp')
 
             var dimensionStr = getDimensionString(filteredDimensionArray);
 
-            var _area = filteredDimensionArray[0];
-            for(var i=1; i < filteredDimensionArray.length; i++)
-                _area *= filteredDimensionArray[i];
+            var _area = filteredDimensionArray.length == 2
+                     ? parseFloat(filteredDimensionArray[0] * filteredDimensionArray[1])
+                     : null;
+
+            //var _area = filteredDimensionArray[0];
+            //for(var i=1; i < filteredDimensionArray.length; i++)
+            //    _area *= filteredDimensionArray[i];
 
             dimensionStr += dimensionArray[dimensionArray.length - 1] == ""
                             ? 'x'
@@ -74,7 +78,7 @@ angular.module('demoApp')
 
             return {
                 dimension: dimensionStr,
-                area: parseFloat(_area).toFixed(2)
+                area: _area
             };
         }
 

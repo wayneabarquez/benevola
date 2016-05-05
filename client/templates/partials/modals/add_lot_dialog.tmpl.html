@@ -28,7 +28,15 @@
                 </md-input-container>
             </div>
 
-            <p style="margin-top:5px;" ng-show="addLotCtl.lot.lot_area"><b>Lot Area: </b> {{ addLotCtl.lot.lot_area }} sq.meters</p>
+            <div layout="row">
+                <!-- Lot Area -->
+                <md-input-container>
+                    <label>Lot Area</label>
+                    <input type="number" name="lot_area" ng-model="addLotCtl.lot.lot_area" placeholder="Lot Area"/>
+                </md-input-container>
+            </div>
+
+            <!--<p style="margin-top:5px;" ng-show="addLotCtl.lot.lot_area"><b>Lot Area: </b> {{ addLotCtl.lot.lot_area }} sq.meters</p>-->
 
             <span layout="row" layout-align="end center">
                 <span flex></span>

@@ -49,6 +49,14 @@
                     .customPUT(data);
             };
 
+            model.updateLotArea = function (data) {
+                console.log('update lot area: ', data);
+
+                return model
+                    .all('lot_area')
+                    .customPUT(data);
+            };
+
             return model;
         });
 

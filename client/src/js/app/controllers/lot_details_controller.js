@@ -13,6 +13,8 @@ angular.module('demoApp')
         $scope.showEditLotPriceForm = false;
         $scope.showEditLotRemarksForm = false;
 
+        $scope.showEditLotAreaForm = false;
+
         vm.lot = null;
 
         vm.lot_copy = null;
@@ -25,6 +27,7 @@ angular.module('demoApp')
         vm.updateLotPrice = updateLotPrice;
         vm.updateLotRemarks = updateLotRemarks;
         vm.updateLotName = updateLotName;
+        vm.updateLotArea = updateLotArea;
         vm.cancel = cancel;
 
         vm.initialize();
@@ -178,6 +181,24 @@ angular.module('demoApp')
                     vm.lot.name = lot.name;
 
                     $scope.showEditLotNameForm = false;
+                }, function (error) {
+                    console.log('error: ', error);
+                });
+        }
+
+
+        function updateLotArea() {
+            console.log('update lot area');
+
+            var data = {lot_area: vm.lot_copy.lot_area};
+
+            vm.lot.updateLotArea(data)
+                .then(function (response) {
+                    console.log('success: ', response);
+                    var lot = response.lot;
+                    vm.lot.lot_area = lot.lot_area;
+
+                    $scope.showEditLotAreaForm = false;
                 }, function (error) {
                     console.log('error: ', error);
                 });

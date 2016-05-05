@@ -154,6 +154,24 @@ class LotNameResource(Resource):
             abort(404, message=err.message)
 
 
+class LotAreaResource(Resource):
+    """
+    Resource for Lot Area
+    """
+
+    def put(self, lot_id):
+        """ PUT /api/lots/<lot_id>/lot_area """
+        form_data = request.json
+        log.debug('Update Lot Area request id {0}: {1}'.format(lot_id, form_data))
+        # TODO check authenticated user
+        try:
+            lot = lot_service.update_lot_area(lot_id, form_data)
+            result = dict(status=200, message='OK', lot=lot)
+            return marshal(result, lot_create_fields)
+        except LotNotFoundError as err:
+            abort(404, message=err.message)
+
+
 class BlockLotResource(Resource):
     """
     Resource for Block Lots
@@ -207,4 +225,4 @@ rest_api.add_resource(LotRemarksResource, '/api/lots/<int:lot_id>/remarks')
 rest_api.add_resource(BlockLotResource, '/api/blocks/<int:block_id>/lots')
 rest_api.add_resource(LotDeceasedResource, '/api/lots/<int:lot_id>/deceased')
 rest_api.add_resource(LotNameResource, '/api/lots/<int:lot_id>/name')
-
+rest_api.add_resource(LotAreaResource, '/api/lots/<int:lot_id>/lot_area')

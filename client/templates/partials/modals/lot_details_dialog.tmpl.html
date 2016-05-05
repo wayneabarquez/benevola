@@ -35,7 +35,7 @@
                                 <!-- Lot No -->
                                 <md-input-container>
                                     <label>Lot No:</label>
-                                    <input type="number" name="name"
+                                    <input type="text" name="name"
                                            ng-model="lotDetsCtl.lot_copy.name">
                                 </md-input-container>
 
@@ -171,7 +171,43 @@
                                     </section>
                                 </p>
 
-                                <p>Area: <span>{{ lotDetsCtl.lot.lot_area }}</span></p>
+                                <p ng-mouseenter="showEditLotAreaBtn = true"
+                                   ng-mouseleave="showEditLotAreaBtn= false"
+                                   ng-hide="showEditLotAreaForm">Lot Area:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotAreaBtn"
+                                                   ng-click="showEditLotAreaForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        {{ lotDetsCtl.lot.lot_area }}
+                                    </span>
+
+                                    <section ng-show="showEditLotAreaForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">Lot Area:</label>
+                                                <span flex></span>
+                                                <!-- Lot Area -->
+                                                <md-input-container>
+                                                    <label>Lot Area</label>
+                                                    <input type="input" name="lot_area"
+                                                           ng-model="lotDetsCtl.lot_copy.lot_area">
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotAreaForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotArea()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </p>
+
 
                                 <!-- TODO: functionality to update lot price per sq mtr -->
                                 <p ng-mouseenter="showEditLotPriceBtn = true"
