@@ -1,0 +1,42 @@
+<md-dialog aria-label="Columbary List" flex ng-cloak>
+    <md-toolbar ng-show="!showFilterColumbary">
+        <div class="md-toolbar-tools">
+            <h4>Columbary</h4>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="showFilterColumbary=true">
+                <md-icon>search</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="cListCtl.close()">
+                <md-icon aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar ng-show="showFilterColumbary">
+        <div class="md-toolbar-tools">
+            <md-input-container flex md-no-float class="md-block" style="margin:0;height:30px;">
+                <input type="text" placeholder="Search Columbary">
+            </md-input-container>
+            <md-button class="md-icon-button" ng-click="showFilterColumbary=false">
+                <md-icon aria-label="Close dialog">arrow_forward</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content style="padding:5px;">
+            <md-grid-list
+                    ng-init="showNavButtons=true"
+                    ng-mouseenter="showNavButtons=true" ng-mouseleave="showNavButtons=false"
+                    md-cols="12" md-row-height="4:3" md-gutter="3px">
+                <md-grid-tile
+                        ng-repeat="tile in cListCtl.colorTiles"
+                        ng-style="{'background': tile.color}"
+                        md-colspan="1"
+                        md-rowspan="1"
+                        ng-click="null">
+                </md-grid-tile>
+            </md-grid-list>
+
+        <div style="width:100%;height:50px;position:absolute;bottom:0;left:0;background-color:rgba(0,0,0,0.2);" ng-show="showNavButtons"></div>
+    </md-dialog-content>
+</md-dialog>

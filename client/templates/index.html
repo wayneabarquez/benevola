@@ -12,6 +12,12 @@
                 {% include "partials/_map.html" %}
                 {% include "partials/_lot_legend.html" %}
             </div>
+
+            <md-button id="columbary-btn" class="md-accent md-raised md-icon-button"
+                       ng-click="listCtl.showColumbaryModal($event)">
+                <md-icon>account_balance</md-icon>
+            </md-button>
+
             <!-- Report Buttons -->
             {% include "partials/_report_buttons.html" %}
             <!-- Lot List Panel -->

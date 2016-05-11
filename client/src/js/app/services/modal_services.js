@@ -32,7 +32,6 @@ angular.module('demoApp')
         service.salesReportModal = null;
         service.showSalesReport = showSalesReport;
 
-
         function showSettings(event) {
             var dfd = $q.defer();
 
@@ -310,6 +309,40 @@ angular.module('demoApp')
                     })
                     .finally(function () {
                         service.salesReportModal = null;
+                    });
+            }
+            return dfd.promise;
+        }
+
+        service.showColumbaryListModal = null;
+        service.showColumbaryList = showColumbaryList;
+
+        function showColumbaryList (event) {
+            var dfd = $q.defer();
+
+            if (service.showColumbaryListModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.showColumbaryListModal = $mdDialog.show({
+                    controller: 'columbaryListController',
+                    controllerAs: 'cListCtl',
+                    templateUrl: 'partials/modals/columbary_list.tmpl.html',
+                    parent: angular.element(document.body),
+                    fullscreen: service.customFullscreen,
+                    targetEvent: event
+                });
+
+                service.showColumbaryListModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.showColumbaryListModal = null;
                     });
             }
             return dfd.promise;
