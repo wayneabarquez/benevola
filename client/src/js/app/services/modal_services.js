@@ -23,6 +23,9 @@ angular.module('demoApp')
         service.showLotDetailModal = null;
         service.showLotDetail = showLotDetail;
 
+        service.showColumbaryDetailModal = null;
+        service.showColumbaryDetail = showColumbaryDetail;
+
         service.showClientSelectionModal = null;
         service.showClientSelection = showClientSelection;
 
@@ -344,6 +347,46 @@ angular.module('demoApp')
                     .finally(function () {
                         service.showColumbaryListModal = null;
                     });
+            }
+            return dfd.promise;
+        }
+
+        function showColumbaryDetail(columbary) {
+            var dfd = $q.defer();
+
+            console.log('Show Columbary Detail: ', columbary);
+
+            if (service.showColumbaryDetailModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                columbary.get().then(function (result) {
+                    service.showColumbaryDetailModal = $mdDialog.show({
+                        controller: 'columbaryDetailsController',
+                        controllerAs: 'cDetsCtl',
+                        templateUrl: 'partials/modals/columbary_details_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        locals: {columbary: result},
+                        fullscreen: service.customFullscreen
+                    });
+
+                    service.showColumbaryDetailModal.then(
+                        function (result) {
+                            dfd.resolve(result);
+                        }, function (reason) {
+                            $rootScope.$broadcast('modal-dismissed');
+                            dfd.reject(reason);
+                        })
+                        .finally(function () {
+                            service.showColumbaryDetailModal = null;
+                        })
+
+
+                }, function (err) {
+                    console.log('Error: ', err);
+                });
+
             }
             return dfd.promise;
         }

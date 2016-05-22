@@ -67,3 +67,7 @@ app.register_blueprint(admin_blueprint)
 # Register Auth Blueprint
 from .authentication import auth as auth_blueprint
 app.register_blueprint(auth_blueprint)
+
+# Register Columbary Blueprint
+from .columbary import columbary as columbary_blueprint
+app.register_blueprint(columbary_blueprint)

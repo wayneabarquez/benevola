@@ -1,42 +1,87 @@
-<md-dialog aria-label="Columbary List" flex ng-cloak>
+<md-button class="md-icon-button md-raised"
+           id="columbary-prev-btn"
+           ng-show="cListCtl.pages.prev_page"
+           ng-click="cListCtl.changePage(cListCtl.pages.prev_page)"
+           style="">
+    <md-icon>chevron_left</md-icon>
+</md-button>
+
+<md-button class="md-icon-button md-raised"
+           id="columbary-next-btn"
+           ng-show="cListCtl.pages.next_page"
+           ng-click="cListCtl.changePage(cListCtl.pages.next_page)">
+    <md-icon>chevron_right</md-icon>
+</md-button>
+
+<md-dialog id="columbary-dialog" aria-label="Columbary List" flex ng-cloak>
+
+    <!-- MAIN TOOLBAR -->
     <md-toolbar ng-show="!showFilterColumbary">
         <div class="md-toolbar-tools">
+
             <h4>Columbary</h4>
+
             <span flex></span>
+
+            <span style="color:#bdc3c7;">Block {{ cListCtl.filter.block }}</span>
+
+            <span flex></span>
+
             <md-button class="md-icon-button" ng-click="showFilterColumbary=true">
                 <md-icon>search</md-icon>
             </md-button>
+
             <md-button class="md-icon-button" ng-click="cListCtl.close()">
                 <md-icon aria-label="Close dialog">close</md-icon>
             </md-button>
+
         </div>
     </md-toolbar>
 
-    <md-toolbar ng-show="showFilterColumbary">
+    <!-- FILTER TOOLBAR -->
+    <md-toolbar class="filter-toolbar" ng-show="showFilterColumbary">
         <div class="md-toolbar-tools">
-            <md-input-container flex md-no-float class="md-block" style="margin:0;height:30px;">
+
+            <!-- TODO: server side filter -->
+            <md-input-container flex md-no-float class="md-block">
                 <input type="text" placeholder="Search Columbary">
             </md-input-container>
+
+            <md-input-container md-no-float>
+                <label>Block</label>
+                <md-select ng-model="cListCtl.filter.block"
+                           ng-change="cListCtl.filterChange()">
+                    <md-option ng-repeat="b in ['A', 'B']" value="{{ b }}">
+                        {{ b }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
             <md-button class="md-icon-button" ng-click="showFilterColumbary=false">
                 <md-icon aria-label="Close dialog">arrow_forward</md-icon>
             </md-button>
         </div>
     </md-toolbar>
 
-    <md-dialog-content style="padding:5px;">
+    <!-- CONTENT -->
+    <md-dialog-content>
             <md-grid-list
+                    id="columbary-grid-list"
                     ng-init="showNavButtons=true"
                     ng-mouseenter="showNavButtons=true" ng-mouseleave="showNavButtons=false"
-                    md-cols="12" md-row-height="4:3" md-gutter="3px">
+                    md-cols="12" md-row-height="3:2" md-gutter="3px">
                 <md-grid-tile
-                        ng-repeat="tile in cListCtl.colorTiles"
-                        ng-style="{'background': tile.color}"
+                        ng-repeat="tile in cListCtl.tiles track by $index"
+                        ng-class="{'vacant': tile.status == 'vacant',
+                                       'sold': tile.status == 'sold',
+                                       'occupied': tile.status == 'occupied'}"
                         md-colspan="1"
                         md-rowspan="1"
-                        ng-click="null">
+                        ng-click="cListCtl.showColumbaryDetail(tile)"> <!-- ng-if="$index % 8 == 0" -->
+                    <md-grid-tile-footer>
+                            <span>{{ tile.c_no }}</span>
+                    </md-grid-tile-footer>
                 </md-grid-tile>
             </md-grid-list>
-
-        <div style="width:100%;height:50px;position:absolute;bottom:0;left:0;background-color:rgba(0,0,0,0.2);" ng-show="showNavButtons"></div>
     </md-dialog-content>
 </md-dialog>

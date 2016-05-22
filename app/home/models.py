@@ -94,6 +94,8 @@ class Lot(BaseModel):
         return deceased
 
 
+# TODO: make this independent to lot_id
+# columns: ref_id, ref_table, date_of_death
 class Deceased(Person):
     lot_id = db.Column(db.Integer, db.ForeignKey('lot.id'), index=True, nullable=False)
     date_of_death = db.Column(db.Date)

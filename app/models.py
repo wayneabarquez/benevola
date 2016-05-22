@@ -2,6 +2,7 @@ from app import db
 from datetime import datetime
 from app.utils.orm_object import OrmObject
 
+
 # Define a base model for other database tables to inherit
 class BaseModel(db.Model, OrmObject):
     __abstract__ = True

@@ -1,0 +1,2 @@
+class ColumbaryNotFoundError(ValueError):
+    pass
