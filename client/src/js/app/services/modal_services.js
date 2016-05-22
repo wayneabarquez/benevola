@@ -23,6 +23,9 @@ angular.module('demoApp')
         service.showLotDetailModal = null;
         service.showLotDetail = showLotDetail;
 
+        service.showColumbaryDetailModal = null;
+        service.showColumbaryDetail = showColumbaryDetail;
+
         service.showClientSelectionModal = null;
         service.showClientSelection = showClientSelection;
 
@@ -31,7 +34,6 @@ angular.module('demoApp')
 
         service.salesReportModal = null;
         service.showSalesReport = showSalesReport;
-
 
         function showSettings(event) {
             var dfd = $q.defer();
@@ -311,6 +313,80 @@ angular.module('demoApp')
                     .finally(function () {
                         service.salesReportModal = null;
                     });
+            }
+            return dfd.promise;
+        }
+
+        service.showColumbaryListModal = null;
+        service.showColumbaryList = showColumbaryList;
+
+        function showColumbaryList (event) {
+            var dfd = $q.defer();
+
+            if (service.showColumbaryListModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                service.showColumbaryListModal = $mdDialog.show({
+                    controller: 'columbaryListController',
+                    controllerAs: 'cListCtl',
+                    templateUrl: 'partials/modals/columbary_list.tmpl.html',
+                    parent: angular.element(document.body),
+                    fullscreen: service.customFullscreen,
+                    targetEvent: event
+                });
+
+                service.showColumbaryListModal.then(
+                    function (result) {
+                        dfd.resolve(result);
+                    }, function (reason) {
+                        $rootScope.$broadcast('modal-dismissed');
+                        dfd.reject(reason);
+                    })
+                    .finally(function () {
+                        service.showColumbaryListModal = null;
+                    });
+            }
+            return dfd.promise;
+        }
+
+        function showColumbaryDetail(columbary) {
+            var dfd = $q.defer();
+
+            console.log('Show Columbary Detail: ', columbary);
+
+            if (service.showColumbaryDetailModal) {
+                dfd.reject('Modal already opened');
+            } else {
+                $rootScope.$broadcast("modal-opened");
+
+                columbary.get().then(function (result) {
+                    service.showColumbaryDetailModal = $mdDialog.show({
+                        controller: 'columbaryDetailsController',
+                        controllerAs: 'cDetsCtl',
+                        templateUrl: 'partials/modals/columbary_details_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        locals: {columbary: result},
+                        fullscreen: service.customFullscreen
+                    });
+
+                    service.showColumbaryDetailModal.then(
+                        function (result) {
+                            dfd.resolve(result);
+                        }, function (reason) {
+                            $rootScope.$broadcast('modal-dismissed');
+                            dfd.reject(reason);
+                        })
+                        .finally(function () {
+                            service.showColumbaryDetailModal = null;
+                        })
+
+
+                }, function (err) {
+                    console.log('Error: ', err);
+                });
+
             }
             return dfd.promise;
         }

@@ -18,18 +18,26 @@
 
 /* Status Colors */
 .occupied {
-  color: violet !important;
+  color: $occupied !important;
 }
 .sold {
-  color: red !important;
+  color: $sold !important;
 }
 .vacant {
-  color: green !important;
+  color: $vacant !important;
 }
 
 .full-height {
   height:100%;
   box-sizing: border-box;
+}
+
+md-grid-list {
+  transition: all ease-in-out 0.5s;
+}
+
+md-grid-tile {
+  transition: all linear 0.5s;
 }
 
 /* Treasure Overlay Spinner */

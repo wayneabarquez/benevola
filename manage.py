@@ -3,6 +3,8 @@ from flask.ext.migrate import Migrate, MigrateCommand
 from app import app
 from app.home.models import *
 from app.authentication.models import *
+from app.columbary.models import *
+from app.data.sample_data import *
 
 manager = Manager(app)
 migrate = Migrate(app, db)
@@ -24,39 +26,13 @@ def dropdb():
 
 
 @manager.command
-def create_roles():
-    # Admin Role
-    admin_role = Role()
-    admin_role.name = RoleType.ADMIN
-    db.session.add(admin_role)
-    # User Role
-    user_role = Role()
-    user_role.name = RoleType.USER
-    db.session.add(user_role)
-    db.session.commit()
-    print "Roles Created"
-
-
-@manager.command
 def create_users():
-    u = User()
-    u.username = 'user1'
-    u.password = 'password123'
-    u.role_id = 2
-    db.session.add(u)
-    db.session.commit()
-    print "Created User"
+    SampleData.load_users()
 
 
 @manager.command
-def create_admin_user():
-    u = User()
-    u.username = 'admin'
-    u.password = 'password123'
-    u.role_id = 1
-    db.session.add(u)
-    db.session.commit()
-    print "Created Admin"
+def create_columbary():
+    SampleData.load_columbary()
 
 
 if __name__ == '__main__':

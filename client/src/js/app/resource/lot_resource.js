@@ -62,7 +62,7 @@
 
         return angular.extend(model, {
             cast: function(lot) {
-              lot.polygon = null;
+              if(lot.polygon) lot.polygon = null;
               return Restangular.restangularizeElement(null, lot, 'lots');
             }
         });

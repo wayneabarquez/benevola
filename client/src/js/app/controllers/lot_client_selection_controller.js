@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('demoApp')
-        .controller('clientSelectionController', ['$rootScope', '$scope', 'LOT_STATUSES', '$mdDialog', 'lot', 'clients', 'Clients', 'Lots', clientSelectionController]);
+        .controller('clientSelectionController', ['$rootScope', '$scope', 'LOT_STATUSES', '$mdDialog', 'lot', 'clients', 'Clients', 'Lots', 'modalServices', clientSelectionController]);
 
-    function clientSelectionController($rootScope, $scope, LOT_STATUSES, $mdDialog, lot, clients, Clients, Lots) {
+    function clientSelectionController($rootScope, $scope, LOT_STATUSES, $mdDialog, lot, clients, Clients, Lots, modalServices) {
         var vm = this;
 
         vm.lot = null;
@@ -55,6 +55,7 @@
                 if (vm.selectedClient) {
                     // update lot with this client id
                     vm.lot.client_id = vm.selectedClient.client_id;
+                    vm.lot.status = 'sold';
                     promise = vm.lot.put();
                 } else {
                     if ($scope.newClientForm.$valid) {
@@ -69,7 +70,10 @@
                     console.log('Select Client: ', response);
                     $mdDialog.hide();
                     // TODO fetch new lot info via http request
-                    $rootScope.$broadcast('update-lot-detail', {lot: Lots.cast(response.lot)});
+                    if(!vm.lot.c_no)
+                        $rootScope.$broadcast('update-lot-detail', {lot: Lots.cast(response.lot)});
+                    else
+                        modalServices.showColumbaryList();
                 }, function (err) {
                     console.log('Error adding new client: ', err);
                 });

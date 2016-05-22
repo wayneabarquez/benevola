@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('demoApp')
-        .controller('lotListController', ['$rootScope', '$scope', 'sectionList', 'lotList', 'gmapServices', '$timeout', 'LOT_STATUSES_JSON', lotListController]);
+        .controller('lotListController', ['$rootScope', '$scope', 'sectionList', 'lotList', 'gmapServices', '$timeout', 'LOT_STATUSES_JSON', 'modalServices', lotListController]);
 
-    function lotListController($rootScope, $scope, sectionList, lotList, gmapServices, $timeout, LOT_STATUSES_JSON) {
+    function lotListController($rootScope, $scope, sectionList, lotList, gmapServices, $timeout, LOT_STATUSES_JSON, modalServices) {
         var vm = this;
 
         vm.showList = false;
@@ -143,22 +143,22 @@
             }
         }
 
-        function showSearchedLotInfowindow(lot) {
-            var info = '<b>Section No:</b> '+lot.section_id+' <br>';
-                info += '<b>Lot No:</b> '+lot.id+' <br>';
-                info += '<b>Area:</b> ' + lot.lot_area + ' <br>';
-                info += '<b>Amount:</b> ' + lot.amount + ' <br>';
-                info += '<b>Status:</b> <span class="'+lot.status+'">' + lot.status + '</span> <br>';
-                info += '<b>Date Purchased:</b> ' + lot.date_purchased_formatted + ' <br>';
-                info += '<button data-lot-id="'+lot.id+'" data-block-id="'+lot.block_id+'" class="show-lot-detail-button md-primary md-button md-raised">Show Details</button>';
-
-            var center = gmapServices.getPolygonCenter(lot.polygon);
-            gmapServices.showInfoWindow(vm.searchInfowindow);
-            gmapServices.panTo(center);
-
-            vm.searchInfowindow.setPosition(center);
-            vm.searchInfowindow.setContent(info);
-        }
+        //function showSearchedLotInfowindow(lot) {
+        //    var info = '<b>Section No:</b> '+lot.section_id+' <br>';
+        //        info += '<b>Lot No:</b> '+lot.id+' <br>';
+        //        info += '<b>Area:</b> ' + lot.lot_area + ' <br>';
+        //        info += '<b>Amount:</b> ' + lot.amount + ' <br>';
+        //        info += '<b>Status:</b> <span class="'+lot.status+'">' + lot.status + '</span> <br>';
+        //        info += '<b>Date Purchased:</b> ' + lot.date_purchased_formatted + ' <br>';
+        //        info += '<button data-lot-id="'+lot.id+'" data-block-id="'+lot.block_id+'" class="show-lot-detail-button md-primary md-button md-raised">Show Details</button>';
+        //
+        //    var center = gmapServices.getPolygonCenter(lot.polygon);
+        //    gmapServices.showInfoWindow(vm.searchInfowindow);
+        //    gmapServices.panTo(center);
+        //
+        //    vm.searchInfowindow.setPosition(center);
+        //    vm.searchInfowindow.setContent(info);
+        //}
 
         function loadLots() {
             $rootScope.lotList = lotList.lots;
@@ -206,6 +206,15 @@
 
         function close() {
             $mdDialog.hide();
+        }
+
+
+        /* Columbary Functions */
+
+        vm.showColumbaryModal = showColumbaryModal;
+
+        function showColumbaryModal (e) {
+            modalServices.showColumbaryList(e);
         }
     }
 }());
