@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('demoApp')
-        .controller('addLotOccupantController', ['$rootScope', '$scope', '$mdDialog', 'lot', addLotOccupantController]);
+        .controller('addLotOccupantController', ['$rootScope', '$scope', '$mdDialog', 'lot', 'modalServices', addLotOccupantController]);
 
-    function addLotOccupantController($rootScope, $scope, $mdDialog, lot) {
+    function addLotOccupantController($rootScope, $scope, $mdDialog, lot, modalServices) {
         var vm = this;
 
         vm.lot = null;
@@ -34,7 +34,11 @@
                         $mdDialog.hide();
                         // TODO fetch new lot info via http request
                         vm.lot.status = 'occupied'; // TODO extract to constant
-                        $rootScope.$broadcast('update-lot-detail', {lot: vm.lot});
+
+                        if (!vm.lot.c_no)
+                            $rootScope.$broadcast('update-lot-detail', {lot: vm.lot});
+                        else
+                            modalServices.showColumbaryList();
                     }, function (err) {
                         console.log('Error adding new deceased: ', err);
                     });
