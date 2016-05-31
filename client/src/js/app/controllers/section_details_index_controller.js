@@ -61,6 +61,7 @@ angular.module('demoApp')
                 updateSectionDetails(vm.section);
 
                 var tempSectionPolygon = angular.copy(vm.section.polygon);
+                //var tempSectionPolygon = vm.section.polygon;
 
                 gmapServices.hidePolygon(vm.section.polygon);
 

@@ -13,8 +13,15 @@
                 {% include "partials/_lot_legend.html" %}
             </div>
 
+            <md-button id="crematorium-btn" class="md-raised md-icon-button"
+                       ng-click="listCtl.showCrematorium($event)">
+                <md-tooltip md-direction="left">Manage Crematorium</md-tooltip>
+                <md-icon>whatshot</md-icon>
+            </md-button>
+
             <md-button id="columbary-btn" class="md-accent md-raised md-icon-button"
                        ng-click="listCtl.showColumbaryModal($event)">
+                <md-tooltip md-direction="left">Show Columbary</md-tooltip>
                 <md-icon>account_balance</md-icon>
             </md-button>
 

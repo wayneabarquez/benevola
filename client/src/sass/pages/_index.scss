@@ -14,8 +14,15 @@ md-menu-content {
   padding-bottom: 0px;
 }
 
+#crematorium-btn {
+  position: absolute;
+  right: 5px;
+  bottom: calc(25% + 35px);
+}
+
 #columbary-btn {
   position: absolute;
   right: 5px;
   bottom: calc(25% - 20px);
 }
+

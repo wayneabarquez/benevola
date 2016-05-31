@@ -1,6 +1,7 @@
 from app import db
 from app.models import BaseModel
 from geoalchemy2 import Geometry
+from datetime import date
 
 
 class Person(BaseModel):
@@ -8,6 +9,16 @@ class Person(BaseModel):
     first_name = db.Column(db.String(100), index=True, nullable=False)
     last_name = db.Column(db.String(100), index=True, nullable=False)
     middle_name = db.Column(db.String(100))
+    gender = db.Column(db.String(6))
+    date_of_birth = db.Column(db.Date)
+
+    @property
+    def age(self):
+        if self.date_of_birth is None:
+            return ''
+
+        today = date.today()
+        return today.year - self.date_of_birth.year
 
 
 class Section(BaseModel):
