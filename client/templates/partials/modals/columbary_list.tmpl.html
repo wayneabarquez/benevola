@@ -1,8 +1,7 @@
 <md-button class="md-icon-button md-raised"
            id="columbary-prev-btn"
            ng-show="cListCtl.pages.prev_page"
-           ng-click="cListCtl.changePage(cListCtl.pages.prev_page)"
-           style="">
+           ng-click="cListCtl.changePage(cListCtl.pages.prev_page)">
     <md-icon>chevron_left</md-icon>
 </md-button>
 
@@ -31,6 +30,10 @@
                 <md-icon>search</md-icon>
             </md-button>
 
+            <md-button class="md-icon-button" ng-click="cListCtl.showColumbaryTable()">
+                <md-icon>view_list</md-icon>
+            </md-button>
+
             <md-button class="md-icon-button" ng-click="cListCtl.close()">
                 <md-icon aria-label="Close dialog">close</md-icon>
             </md-button>
@@ -44,8 +47,18 @@
 
             <!-- TODO: server side filter -->
             <md-input-container flex md-no-float class="md-block">
-                <input type="text" placeholder="Search Columbary">
+                <input type="text" ng-model="cListCtl.query.filter" placeholder="Search Columbary">
             </md-input-container>
+
+            <!--<md-input-container md-no-float>
+                <label>Status</label>
+                <md-select ng-model="cTblCtl.query.status"
+                           ng-change="cTblCtl.statusChange()">
+                    <md-option ng-repeat="stat in cListCtl.statusChoices" value="{{ stat }}">
+                        {{ stat }}
+                    </md-option>
+                </md-select>
+            </md-input-container> -->
 
             <md-input-container md-no-float>
                 <label>Block</label>
@@ -57,7 +70,7 @@
                 </md-select>
             </md-input-container>
 
-            <md-button class="md-icon-button" ng-click="showFilterColumbary=false">
+            <md-button class="md-icon-button" ng-click="cListCtl.removeFilter()">
                 <md-icon aria-label="Close dialog">arrow_forward</md-icon>
             </md-button>
         </div>
@@ -71,15 +84,15 @@
                     ng-mouseenter="showNavButtons=true" ng-mouseleave="showNavButtons=false"
                     md-cols="12" md-row-height="3:2" md-gutter="3px">
                 <md-grid-tile
-                        ng-repeat="tile in cListCtl.tiles track by $index"
-                        ng-class="{'vacant': tile.status == 'vacant',
-                                       'sold': tile.status == 'sold',
-                                       'occupied': tile.status == 'occupied'}"
+                        ng-repeat="item in cListCtl.tiles track by $index"
+                        ng-class="{'vacant': item.status == 'vacant',
+                                       'sold': item.status == 'sold',
+                                       'occupied': item.status == 'occupied'}"
                         md-colspan="1"
                         md-rowspan="1"
-                        ng-click="cListCtl.showColumbaryDetail(tile)"> <!-- ng-if="$index % 8 == 0" -->
+                        ng-click="cListCtl.showColumbaryDetail(item)"> <!-- ng-if="$index % 8 == 0" -->
                     <md-grid-tile-footer>
-                            <span>{{ tile.c_no }}</span>
+                            <span>{{ item.c_no }}</span>
                     </md-grid-tile-footer>
                 </md-grid-tile>
             </md-grid-list>

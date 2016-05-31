@@ -16,6 +16,7 @@ angular.module('demoApp')
 
         vm.initialize = initialize;
         vm.markSold = markSold;
+        vm.addOccupant = addOccupant;
         vm.save = save;
         vm.cancel = cancel;
 
@@ -46,6 +47,17 @@ angular.module('demoApp')
                     vm.columbary.status = 'sold';
                 }, function (err) {
                     console.log('ShowClientSelection: ', err);
+                });
+        }
+
+        function addOccupant() {
+            console.log('add occupant');
+            // add functionality to update database
+            modalServices.showAddOccupant(vm.columbary)
+                .then(function (success) {
+                    console.log('Show Add Occupant: ', success);
+                }, function (err) {
+                    console.log('Show Add Occupant: ', err);
                 });
         }
 

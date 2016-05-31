@@ -1,0 +1,128 @@
+<md-dialog id="columbary-table" style="overflow: hidden;"
+         ng-cloak>
+
+            <!-- PRIMARY Toolbar -->
+            <md-toolbar class="md-table-toolbar md-default primary-table-toolbar" ng-hide="cTblCtl.filter.show">
+                <div class="md-toolbar-tools">
+                    <span class="table-header-title">Benevola Columbary List</span>
+
+                    <span flex></span>
+
+                    <span style="color:#bdc3c7;">Block {{ cTblCtl.query.block }}</span>
+
+                    <span flex></span>
+
+                    <md-button class="md-icon-button" ng-click="cTblCtl.filter.show = true">
+                        <md-tooltip md-direction="left">Filter List</md-tooltip>
+                        <md-icon>filter_list</md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-click="cTblCtl.close()">
+                        <md-tooltip md-direction="left">Close Table</md-tooltip>
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <!-- FILTER Toolbar -->
+            <md-toolbar class="md-table-toolbar md-default toolbar-search"
+                        ng-show="cTblCtl.filter.show">
+                <div class="md-toolbar-tools">
+                    <md-icon>search</md-icon>
+                    <form flex name="cTblCtl.filter.form">
+                        <md-input-container md-no-float class="md-block" style="max-height: 30px; margin-top: 25px;">
+                            <input type="text" ng-model="cTblCtl.query.filter" placeholder="search">
+                        </md-input-container>
+                    </form>
+
+                    <md-input-container md-no-float>
+                        <label>Status</label>
+                        <md-select ng-model="cTblCtl.query.status"
+                                   ng-change="cTblCtl.statusChange()">
+                            <md-option ng-repeat="stat in cTblCtl.statusChoices" value="{{ stat }}">
+                                {{ stat }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container md-no-float>
+                        <label>Block</label>
+                        <md-select ng-model="cTblCtl.query.block"
+                                   ng-change="cTblCtl.blockChange()">
+                            <md-option ng-repeat="b in ['A', 'B']" value="{{ b }}">
+                                {{ b }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button ng-click="cTblCtl.removeFilter()">
+                        Back
+                        <md-icon>arrow_forward</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+    <md-dialog-content>
+            <!-- TABLE -->
+            <md-table-container class="benevola-table">
+                <table md-table md-progress="">
+
+                    <!-- TABLE HEAD -->
+                    <thead md-head md-order="cTblCtl.query.order" md-on-reorder="cTblCtl.onReorder">
+                    <tr md-row>
+                        <th md-column ng-repeat="col in cTblCtl.tableHeaderList">{{col}}</th>
+                    </tr>
+                    </thead>
+
+                    <!-- TABLE BODY -->
+                    <tbody md-body>
+                        <tr md-row
+                            ng-repeat="c in cTblCtl.columbaryItems
+                            | orderBy: cTblCtl.query.order
+                            | limitTo: cTblCtl.query.max_per_page : (cTblCtl.query.page - 1) * cTblCtl.query.max_per_page"
+                            >
+
+                            <td md-cell>{{ c.block }}</td>
+
+                            <td md-cell>{{ c.c_no }}</td>
+
+                            <td md-cell>{{ c.price | currency: "PHP ":0}}</td>
+
+                            <td md-cell
+                                ng-class="{'vacant': c.status == 'vacant',
+                                           'sold': c.status == 'sold',
+                                           'occupied': c.status == 'occupied'}">
+                                <b>{{ lot.status }}</b>
+                            </td>
+
+                            <td md-cell>{{ c.or_no }}</td>
+
+                            <td md-cell>{{ c.client_name }}</td>
+
+                            <td md-cell>{{ c.date_purchased }}</td>
+
+                            <td md-cell style="text-align:center;">
+                                <md-button class="md-raised" ng-click="cTblCtl.showDetails(c)">View Details</md-button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+
+                </table>
+            </md-table-container>
+    </md-dialog-content>
+
+    <!-- FOOTER -->
+    <md-dialog-actions layout="column">
+        <md-toolbar class="md-table-toolbar md-default table-footer">
+            <div layout="row" layout-align="start center" flex>
+                <md-table-pagination
+                        md-limit="cTblCtl.query.max_per_page"
+                        md-page="cTblCtl.query.page"
+                        md-total="{{ cTblCtl.columbaryItems.length }}"
+                        md-page-select>
+                </md-table-pagination>
+            </div>
+        </md-toolbar>
+    </md-dialog-actions>
+
+</md-dialog>

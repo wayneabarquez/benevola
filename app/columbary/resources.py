@@ -21,6 +21,17 @@ class ColumbaryResource(Resource):
         return get_columbary(request.args)
 
 
+class ColumbaryAllResource(Resource):
+    """
+    Resource for Columbary All
+    """
+
+    @marshal_with(columbary_complete_fields)
+    def get(self):
+        print "Get All Columbary Data Request"
+        return get_list()
+
+
 class ColumbaryDetailResource(Resource):
     """
     Resource for Columbary Detail
@@ -48,5 +59,21 @@ class ColumbaryDetailResource(Resource):
         except ColumbaryNotFoundError as err:
             abort(404, message=err.message)
 
+
+class MarkSoldColumbaryResource(Resource):
+    def put(self, c_id):
+        """ PUT /api/columbary/<c_id>/mark_sold """
+        form_data = request.json
+        log.debug('Mark Sold Columbary request id {0}: {1}'.format(c_id, form_data))
+        try:
+            columbary = sold_columbary(c_id, form_data)
+            result = dict(status=200, message='OK', columbary=columbary)
+            return marshal(result, columbary_create_fields)
+        except ColumbaryNotFoundError as err:
+            abort(404, message=err.message)
+
+
 rest_api.add_resource(ColumbaryResource, '/api/columbary')
+rest_api.add_resource(ColumbaryAllResource, '/api/columbary/all')
 rest_api.add_resource(ColumbaryDetailResource, '/api/columbary/<int:c_id>')
+rest_api.add_resource(MarkSoldColumbaryResource, '/api/columbary/<int:c_id>/mark_sold')

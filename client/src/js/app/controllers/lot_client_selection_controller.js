@@ -39,6 +39,18 @@
             vm.lot = lot;
 
             console.log('lot details: ', vm.lot);
+
+            $scope.$watch(function(){
+                return vm.dateSold;
+            }, function(newValue, oldValue){
+                if(!newValue || newValue === oldValue) return;
+
+                var year = newValue.getFullYear(),
+                    month = newValue.getMonth() + 1,
+                    day = newValue.getDate();
+
+                vm.lot.date_purchased = year + '-' + month + '-' + day;
+            });
         }
 
         function save() {
@@ -47,24 +59,20 @@
             var promise = null;
 
             if( !$scope.selectClientDateForm.$valid) {
-
                 // Show error messages
-
-
             } else {
                 if (vm.selectedClient) {
                     // update lot with this client id
                     vm.lot.client_id = vm.selectedClient.client_id;
                     vm.lot.status = 'sold';
-                    promise = vm.lot.put();
                 } else {
                     if ($scope.newClientForm.$valid) {
                         vm.client.lot_id = vm.lot.id;
-
                         vm.lot.client = vm.client;
-                        promise = vm.lot.put();
                     }
                 }
+
+                promise = vm.lot.customPUT(null, 'mark_sold');
 
                 promise.then(function (response) {
                     console.log('Select Client: ', response);

@@ -122,11 +122,10 @@ def print_lot_list_sections_data(ws):
         # TABLE BODY - LOTS
         for b in section.blocks:
             for l in b.lots:
-                dimen = str(l.dimension_width) + ' X ' + str(l.dimension_height)
-                area = l.dimension_width * l.dimension_height
+                client_name = l.client.get_full_name() if l.client is not None else ''
                 price_formatted = '{:20,.2f}'.format(l.price_per_sq_mtr)
-                amount = '{:20,.2f}'.format(area * l.price_per_sq_mtr)
-                row_val = [b.id, l.id, dimen, area, price_formatted, amount, l.remarks, l.client.get_full_name(),
+                amount = '{:20,.2f}'.format(l.lot_area * l.price_per_sq_mtr)
+                row_val = [b.id, l.id, l.dimension, l.lot_area, price_formatted, amount, l.remarks, client_name,
                            l.date_purchased]
                 row_cells = []
                 for rv in row_val:
@@ -159,10 +158,11 @@ def generate_lotlist_report():
 
 # SALES REPORT FUNCTIONS
 
-def print_sales_content(lots, ws):
+def print_sales_content(collection, ws):
     # Table Header
     table_headers = ['Date', 'O.R. #', 'Name', 'Amount', 'Remarks']
     table_header_cells = []
+
     for h in table_headers:
         c = underline_border_cell(h, ws)
         table_header_cells.append(c)
@@ -170,21 +170,19 @@ def print_sales_content(lots, ws):
     ws.append(r)
 
     sales_total = 0
-    lot_remarks = 'Cemetery Lot'
-    for l in lots:
-        area = l.dimension_width * l.dimension_height
-        amount = area * l.price_per_sq_mtr
-        sales_total += amount
+    for item in collection:
+        if item.label == 'Cemetery Lot':
+            amount = item.lot_area * item.price_per_sq_mtr
+        elif item.label == 'Columbary':
+            amount = item.price if item.price is not None else 0
+
         amount_formatted = 'P {:20,.2f}'.format(amount)
         amount_formatted_cell = Cell(ws, value=amount_formatted)
         amount_formatted_cell.style = Style(alignment=Alignment(horizontal='right'))
-        # row_val = [b.id, l.id, dimen, area, price_formatted, amount, l.remarks, l.client.get_full_name(),
-        #            l.date_purchased]
-        # row_cells = []
-        # for rv in row_val:
-        #     row_cells.append(create_bordered_cell(rv, ws))
+        client_name = item.client.get_full_name() if item.client is not None else ''
 
-        ws.append(['', l.date_purchased, l.or_no, l.client.get_full_name(), amount_formatted_cell, lot_remarks])
+        sales_total += amount
+        ws.append(['', item.date_purchased, item.or_no, client_name, amount_formatted_cell, item.label])
 
     # Sales Total
     total_label_cell = Cell(ws, value='TOTAL')
@@ -200,14 +198,15 @@ def print_sales_content(lots, ws):
 
 def generate_sales_report(start_date, end_date):
     from app.services import lot_service
-    lots = lot_service.get_lot_by_date(start_date, end_date)
+    collection = lot_service.get_sales_data_by_date(start_date, end_date)
 
     wb = Workbook()
     # grab the active worksheet
     ws = wb.active
     print_worksheet_header(ws)
 
-    print_sales_content(lots, ws)
+    # print_sales_content(lots, ws)
+    print_sales_content(collection, ws)
 
     filename = generate_sales_file_name() + ".xlsx"
     file_dict = {'name': filename, 'dir': LOT_LIST_FOLDER + filename}

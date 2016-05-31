@@ -2,9 +2,11 @@ from app.utils import forms_helper
 from app.exceptions.lot import *
 from app import db
 from app.services import setting_service, client_service
-from app.home.models import Lot, Deceased, Client
+from app.home.models import Lot, Deceased, Client, DeceasedOccupancy
+from app.columbary.models import Columbary
 from app.home.forms import AddClientForm
 from app.constants.lot_constants import SOLD
+import datetime
 import logging
 
 log = logging.getLogger(__name__)
@@ -12,10 +14,6 @@ log = logging.getLogger(__name__)
 
 def compute_lot_amount(area, price_per_sq_mtr):
     return area * price_per_sq_mtr
-
-# TODO
-# def compute_lot_area(dimension):
-#     return float(width * height)
 
 
 def get_lots():
@@ -69,10 +67,11 @@ def update_from_dict(lot_id, data):
     if lot is None:
         raise LotNotFoundError("Lot id={0} not found".format(lot_id))
 
-    lot.update_from_dict(data, ['id', 'area', 'date_modified', 'date_created'])
+    lot.update_from_dict(data, ['id', 'area', 'date_modified', 'date_created', 'deceased', 'client'])
 
     # Update Area
-    lot.area = forms_helper.parse_area(data['area'])
+    if 'area' in data:
+        lot.area = forms_helper.parse_area(data['area'])
 
     # Persist
     db.session.commit()
@@ -97,6 +96,11 @@ def sold_lot(lot_id, form_data):
     else:
         lot.client_id = form_data['client_id']
 
+    if 'date_purchased' in form_data:
+        lot.date_purchased = form_data['date_purchased']
+    else:
+        lot.date_purchased = datetime.datetime.now()
+
     lot.status = SOLD
 
     db.session.commit()
@@ -115,79 +119,16 @@ def add_occupant(lot_id, data):
 
     # Prepare Data
     deceased = Deceased.from_dict(data)
-    deceased.lot_id = lot.id
-
+    # deceased.lot_id = lot.id
     db.session.add(deceased)
     db.session.commit()
 
+    deceased_occupancy = DeceasedOccupancy(deceased_id=deceased.id, ref_id=lot.id, ref_table='lot')
+    db.session.add(deceased_occupancy)
+
+    db.session.commit()
+
     return deceased
-
-
-def update_lot_dimension(lot_id, form_data):
-    lot = Lot.query.get(lot_id)
-
-    if lot is None:
-        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
-
-    # TODO recompute lot area
-    lot.dimension = form_data['dimension']
-    lot.lot_area = form_data['lot_area']
-
-    db.session.commit()
-
-    return lot
-
-
-def update_lot_price(lot_id, form_data):
-    lot = Lot.query.get(lot_id)
-
-    if lot is None:
-        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
-
-    lot.price_per_sq_mtr = float(form_data['price_per_sq_mtr'])
-
-    db.session.commit()
-
-    return lot
-
-
-def update_lot_or_no(lot_id, form_data):
-    lot = Lot.query.get(lot_id)
-
-    if lot is None:
-        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
-
-    lot.or_no = form_data['or_no']
-
-    db.session.commit()
-
-    return lot
-
-
-def update_remarks(lot_id, form_data):
-    lot = Lot.query.get(lot_id)
-
-    if lot is None:
-        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
-
-    lot.remarks = form_data['remarks']
-
-    db.session.commit()
-
-    return lot
-
-
-def update_name(lot_id, form_data):
-    lot = Lot.query.get(lot_id)
-
-    if lot is None:
-        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
-
-    lot.name = form_data['name']
-
-    db.session.commit()
-
-    return lot
 
 
 def update_lot_area(lot_id, form_data):
@@ -204,7 +145,31 @@ def update_lot_area(lot_id, form_data):
 
 
 def get_lot_by_date(start_date, end_date):
-    return Lot.query.filter(Lot.date_purchased.between(start_date, end_date))
+    list = []
+    result = Lot.query.filter(Lot.date_purchased.between(start_date, end_date))
+    for item in result:
+        item.label = 'Cemetery Lot'
+        list.append(item)
+    return list
+
+
+def get_columbary_by_date(start_date, end_date):
+    list = []
+    result = Columbary.query.filter(Columbary.date_purchased.between(start_date, end_date))
+    for item in result:
+        item.label = 'Columbary'
+        list.append(item)
+    return list
+
+
+# Consolidated Data from lot, columbary
+def get_sales_data_by_date(start_date, end_date):
+    result = get_lot_by_date(start_date, end_date) + get_columbary_by_date(start_date, end_date)
+
+    # sort by date_purchased
+    result.sort(key=lambda item: item.date_purchased)
+
+    return result
 
 
 def delete_lot(lot_id):

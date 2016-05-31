@@ -9,6 +9,7 @@
 
         .constant('BASE_URL', window.location.origin)
         .constant('NAV_HEIGHT', 0)
+        .constant('LOT_STATUSES', ['vacant', 'sold', 'occupied'])
 
         .config(function ($mdThemingProvider) {
             $mdThemingProvider.theme('default')

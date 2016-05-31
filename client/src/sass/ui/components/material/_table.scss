@@ -1,0 +1,54 @@
+md-table-container.benevola-table {
+  max-height: 100%;
+  min-height: 70%;
+  width: 100%;
+  margin-bottom: 20px;
+
+  table.md-table {
+    // Fixes last tr on tbody offset
+    //padding-bottom: 100px !important;
+
+    thead {
+      tr {
+        height: 40px;
+        text-align: center;
+        border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
+
+        //th {
+        //  height: 20px !important;
+        //}
+      }
+    }
+
+    thead.md-table-progress {
+      display: none;
+    }
+
+    tbody {
+      tr {
+        min-height: 0;
+        height: 30px !important;
+        text-align: center;
+
+        td {
+          min-height: 0;
+          height: 30px;
+          padding: 0px 5px;
+
+          button {
+            margin: 2px;
+            line-height: 30px;
+            min-height: 30px;
+            height: 30px;
+            font-size: 12px;
+          }
+        }
+      }
+      tr.md-row:not([disabled]) {
+        &:hover {
+          background-color: #eee !important;
+        }
+      }
+    }
+  }
+}

@@ -170,11 +170,24 @@
                                         </form>
                                     </section>
                                 </p>
-
                             </md-card-content>
                         </md-card>
+                    </md-content>
+                </md-tab>
 
-
+                <!-- Occupants Tab : Show only if lot is occupied -->
+                <md-tab label="Occupants/Deceased" ng-if="cDetsCtl.columbary.status == 'occupied'">
+                    <md-content>
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">{{ lotDetsCtl.columbary.deceased.length }} occupants
+                            </md-subheader>
+                            <md-list-item class="md-2-line" ng-repeat="dead in cDetsCtl.columbary.deceased">
+                                <div class="md-list-item-text" layout="column">
+                                    <h4>{{ dead.first_name + ' ' + dead.last_name }}</h4>
+                                    <p>{{ dead.date_of_death }}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
                     </md-content>
                 </md-tab>
 

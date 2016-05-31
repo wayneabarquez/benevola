@@ -1,7 +1,7 @@
 from app.columbary.models import *
 from .exceptions import ColumbaryNotFoundError
 from app import db
-
+import datetime
 import logging
 
 log = logging.getLogger(__name__)
@@ -45,5 +45,40 @@ def update_columbary(c_id, data):
         raise ColumbaryNotFoundError("Lot {0} not found".format(c_id))
 
     columbary.update_from_dict(data, ['id', 'client'])
+
+    # if 'status' not in data and columbary.status == 'sold':
+    #     columbary.date_purchased = datetime.datetime.now()
+
     db.session.commit()
+    return columbary
+
+
+def sold_columbary(c_id, form_data):
+    from app.home.forms import AddClientForm
+    from app.services import client_service
+    from app.constants.lot_constants import SOLD
+
+    columbary = Columbary.query.get(c_id)
+
+    if columbary is None:
+        raise ColumbaryNotFoundError("Columbary id={0} not found".format(c_id))
+
+    if 'client_id' not in form_data:
+        client_data = form_data['client']
+        form = AddClientForm.from_json(client_data)
+        if form.validate():
+            client = client_service.create_from_dict(client_data)
+            columbary.client_id = client.id
+    else:
+        columbary.client_id = form_data['client_id']
+
+    if 'date_purchased' in form_data:
+        columbary.date_purchased = form_data['date_purchased']
+    else:
+        columbary.date_purchased = datetime.datetime.now()
+
+    columbary.status = SOLD
+
+    db.session.commit()
+
     return columbary
