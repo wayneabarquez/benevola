@@ -21,6 +21,10 @@ class Columbary(BaseModel):
 
     client = db.relationship(Client)
 
+    @property
+    def client_name(self):
+        return '' if self.client is None else self.client.last_name + ', ' + self.client.first_name
+
     # def get_deceased(self):
     #     deceased = []
     #     for d in self.deceased:

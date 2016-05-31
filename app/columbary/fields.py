@@ -16,6 +16,12 @@ columbary_fields = dict(
     date_modified=fields.DateTime("iso8601")
 )
 
+columbary_create_fields = dict(
+    status=fields.String,
+    message=fields.String,
+    columbary=fields.Nested(columbary_fields, allow_null=False)
+)
+
 page_fields = dict(
     first_url=fields.String,
     last_url=fields.String,
@@ -37,3 +43,4 @@ columbary_paginated_fields = dict(
 columbary_complete_fields = copy(columbary_fields)
 # columbary_complete_fields['deceased'] = fields.Nested(deceased_fields)
 columbary_complete_fields['client'] = fields.Nested(client_fields)
+columbary_complete_fields['client_name'] = fields.String

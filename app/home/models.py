@@ -74,12 +74,10 @@ class Lot(BaseModel):
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'), index=True)  # Lot Owner
     name = db.Column(db.String(5))
     area = db.Column(Geometry('POLYGON'), nullable=False)
-    # dimension_width = db.Column(db.Float)  # ex. 5 x 6
-    # dimension_height = db.Column(db.Float)  # ex. 5 x 6
     dimension = db.Column(db.String)  # ex. 4x4x6
     lot_area = db.Column(db.Float)  # By Square meters (Computed by dimensions w x h)
     price_per_sq_mtr = db.Column(db.Float)  # copied from lot_price table
-    date_purchased = db.Column(db.Date, default=db.func.current_date())
+    date_purchased = db.Column(db.Date)
     or_no = db.Column(db.String(10))
     status = db.Column(db.String(20), index=True, default='vacant')  # [vacant, sold, occupied]
     remarks = db.Column(db.Text)
@@ -89,15 +87,22 @@ class Lot(BaseModel):
 
     def get_deceased(self):
         deceased = []
-        for d in self.deceased:
-            deceased.append(d.to_dict())
+        result = DeceasedOccupancy.query.filter_by(ref_table='lot', ref_id=self.id).all()
+
+        for d in result:
+            deceased.append(d.deceased.to_dict())
         return deceased
 
 
 # TODO: make this independent to lot_id
 # columns: ref_id, ref_table, date_of_death
 class Deceased(Person):
-    lot_id = db.Column(db.Integer, db.ForeignKey('lot.id'), index=True, nullable=False)
     date_of_death = db.Column(db.Date)
 
-    lot = db.relationship(Lot, backref=db.backref('deceased', cascade="all, delete-orphan"))
+
+class DeceasedOccupancy(BaseModel):
+    deceased_id = db.Column(db.Integer, db.ForeignKey('deceased.id'), index=True, nullable=False)
+    ref_id = db.Column(db.Integer, index=True, nullable=False)
+    ref_table = db.Column(db.String(20), index=True, nullable=False)
+
+    deceased = db.relationship(Deceased, backref=db.backref('deceased_occupancy', cascade="all, delete-orphan"))

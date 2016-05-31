@@ -15,7 +15,7 @@ angular.module('demoApp')
             strokeColor: service.polygoncolor,
             strokeOpacity: 0.3,
             strokeWeight: 2,
-            zIndex: 101
+            zIndex: 100
         };
 
         service.blocks = {};

@@ -1,0 +1,15 @@
+#columbary-table {
+
+  md-toolbar.toolbar-search {
+    div.md-toolbar-tools {
+      md-input-container {
+        margin: 0;
+        height: 30px;
+      }
+
+      label:not(.md-no-float), md-input-container.md-input-has-value label:not(.md-no-float) {
+        transform: translate3d(0, 12px, 0) scale(.75);
+      }
+    }
+  }
+}

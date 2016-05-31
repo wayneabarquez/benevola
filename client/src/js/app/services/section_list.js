@@ -15,7 +15,7 @@ angular.module('demoApp')
             strokeColor: service.polygoncolor,
             strokeOpacity: 0.8,
             strokeWeight: 4,
-            zIndex: 100
+            zIndex: 99
         };
 
         service.sections = [];

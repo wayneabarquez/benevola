@@ -9,6 +9,8 @@ angular.module('demoApp')
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
 
+        service.closeModal = closeModal;
+
         service.settingsModal = null;
         service.showSettings = showSettings;
 
@@ -35,360 +37,217 @@ angular.module('demoApp')
         service.salesReportModal = null;
         service.showSalesReport = showSalesReport;
 
-        function showSettings(event) {
-            var dfd = $q.defer();
+        service.showColumbaryListModal = null;
+        service.showColumbaryList = showColumbaryList;
 
-            if (service.settingsModal) {
-                dfd.reject('Modal already opened');
+        var showColumbaryTableModal = null;
+        service.showColumbaryTable = showColumbaryTable;
+
+        function showModal(modalObj, modalParams) {
+            var dfd = $q.defer();
+            if (modalObj) {
+                dfd.reject("Modal already opened");
             } else {
                 $rootScope.$broadcast("modal-opened");
-
-                Settings.customGET('last_lot_price')
-                    .then(function(lastLot){
-                        console.log('get last lot price: ',lastLot);
-
-                        service.settingsModal = $mdDialog.show({
-                            controller: 'settingsController',
-                            controllerAs: 'settingsCtl',
-                            templateUrl: 'partials/modals/settings_dialog.tmpl.html',
-                            parent: angular.element(document.body),
-                            targetEvent: event,
-                            locals: {lastLot: lastLot},
-                            fullscreen: service.customFullscreen
-                        });
-
-                        service.settingsModal.then(
-                            function (result) {
-                                dfd.resolve(result);
-                            }, function (reason) {
-                                $rootScope.$broadcast('modal-dismissed');
-                                dfd.reject(reason);
-                            })
-                            .finally(function () {
-                                service.settingsModal = null;
-                            });
-
-                    }, function(er){
-                        console.log('er: ',er);
-                    });
-            }
-            return dfd.promise;
-        }
-
-        function showAddSection (event, sectionArea) {
-            var dfd = $q.defer();
-
-            if(service.addSectionModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                service.addSectionModal = $mdDialog.show({
-                    controller: 'addSectionController',
-                    controllerAs: 'addSectionCtl',
-                    templateUrl: 'partials/modals/add_section_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    locals: {area: sectionArea},
-                    targetEvent: event,
-                    fullscreen: service.customFullscreen
-                });
-
-                service.addSectionModal.then(
-                   function(result) {
-                    dfd.resolve(result);
-                }, function (reason) {
-                    $rootScope.$broadcast('modal-dismissed');
-                    dfd.reject(reason);
-                })
-                .finally(function () {
-                    service.addSectionModal = null;
-                });
-            }
-            return dfd.promise;
-        }
-
-        function showAddBlock(event, section, sectionArea) {
-            var dfd = $q.defer();
-
-            if (service.addBlockModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                service.addBlockModal = $mdDialog.show({
-                    controller: 'addBlockController',
-                    controllerAs: 'addBlockCtl',
-                    templateUrl: 'partials/modals/add_block_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    locals: {section: section, area: sectionArea},
-                    targetEvent: event,
-                    fullscreen: service.customFullscreen
-                });
-
-                service.addBlockModal.then(
-                    function (result) {
+                modalObj = $mdDialog.show(modalParams);
+                modalObj.then(function (result) {
                         dfd.resolve(result);
                     }, function (reason) {
-                        $rootScope.$broadcast('modal-dismissed');
+                        $rootScope.$broadcast("modal-dismissed");
                         dfd.reject(reason);
                     })
                     .finally(function () {
-                        service.addBlockModal = null;
+                        modalObj = null;
                     });
             }
             return dfd.promise;
         }
 
-        function showAddLot(event, block, area) {
+        function showSettings(ev) {
             var dfd = $q.defer();
 
-            if (service.addLotModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
+            Settings.customGET('last_lot_price')
+                .then(function(lastLot) {
+                    console.log('get last lot price: ', lastLot);
+                    var opts = {
+                        controller: 'settingsController',
+                        controllerAs: 'settingsCtl',
+                        templateUrl: 'partials/modals/settings_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        locals: {lastLot: lastLot},
+                        fullscreen: service.customFullscreen
+                    };
+                    dfd.resolve(showModal(service.settingsModal, opts));
+                },function(error){ dfd.reject(error); });
 
-                service.addLotModal = $mdDialog.show({
-                    controller: 'addLotController',
-                    controllerAs: 'addLotCtl',
-                    templateUrl: 'partials/modals/add_lot_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    locals: {block: block, area: area},
-                    targetEvent: event,
-                    fullscreen: service.customFullscreen
-                });
-
-                service.addLotModal.then(
-                    function (result) {
-                        dfd.resolve(result);
-                    }, function (reason) {
-                        $rootScope.$broadcast('modal-dismissed');
-                        dfd.reject(reason);
-                    })
-                    .finally(function(){
-                        service.addLotModal = null;
-                    })
-            }
             return dfd.promise;
+        }
+
+        function showAddSection(event, sectionArea) {
+            var opts = {
+                controller: 'addSectionController',
+                controllerAs: 'addSectionCtl',
+                templateUrl: 'partials/modals/add_section_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {area: sectionArea},
+                targetEvent: event,
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(service.addSectionModal, opts);
+        }
+
+        function showAddBlock(event, section, sectionArea) {
+            var opts = {
+                controller: 'addBlockController',
+                controllerAs: 'addBlockCtl',
+                templateUrl: 'partials/modals/add_block_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {section: section, area: sectionArea},
+                targetEvent: event,
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(service.addBlockModal, opts);
+        }
+
+        function showAddLot(event, block, area) {
+            var opts = {
+                controller: 'addLotController',
+                controllerAs: 'addLotCtl',
+                templateUrl: 'partials/modals/add_lot_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {block: block, area: area},
+                targetEvent: event,
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(service.addLotModal, opts);
         }
 
         function showLotDetail(lot) {
             var dfd = $q.defer();
-
             console.log('Show Lot Detail: ', lot);
 
-            if (service.showLotDetailModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                lot.get().then(function(result){
-                    service.showLotDetailModal = $mdDialog.show({
+            lot.get()
+                .then(function (result) {
+                    var opts = {
                         controller: 'lotDetailsController',
                         controllerAs: 'lotDetsCtl',
                         templateUrl: 'partials/modals/lot_details_dialog.tmpl.html',
                         parent: angular.element(document.body),
                         locals: {lot: result},
                         fullscreen: service.customFullscreen
-                    });
+                    };
 
-                    service.showLotDetailModal.then(
-                        function (result) {
-                            dfd.resolve(result);
-                        }, function (reason) {
-                            $rootScope.$broadcast('modal-dismissed');
-                            dfd.reject(reason);
-                        })
-                        .finally(function () {
-                            service.showLotDetailModal = null;
-                        })
+                    dfd.resolve(showModal(service.showLotDetailModal, opts));
+            },function(error){dfd.reject(error);});
 
-
-                }, function(err){
-                    console.log('Error: ',err);
-                });
-
-            }
             return dfd.promise;
         }
 
         function showClientSelection (lot) {
             var dfd = $q.defer();
 
-            if (service.showClientSelectionModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                Clients.getList()
-                    .then(function(resp) {
-
-                        var clients = [];
-                        resp.forEach(function(cl){
-                           clients.push(cl);
-                        });
-
-                        console.log('Clients: ',resp);
-
-                        service.showClientSelectionModal = $mdDialog.show({
-                            controller: 'clientSelectionController',
-                            controllerAs: 'clientSelectCtl',
-                            templateUrl: 'partials/modals/lot_client_select_dialog.tmpl.html',
-                            parent: angular.element(document.body),
-                            locals: {lot: lot, clients: clients},
-                            fullscreen: service.customFullscreen
-                        });
-
-                        service.showClientSelectionModal.then(
-                            function (result) {
-                                dfd.resolve(result);
-                            }, function (reason) {
-                                $rootScope.$broadcast('modal-dismissed');
-                                dfd.reject(reason);
-                            })
-                            .finally(function () {
-                                service.showClientSelectionModal = null;
-                            });
-
-                    }, function(err) {
-                        console.log('Error fetching clients: ',err);
+            Clients.getList()
+                .then(function (resp) {
+                    var clients = [];
+                    resp.forEach(function (cl) {
+                        clients.push(cl);
                     });
-            }
+
+                    var opts = {
+                        controller: 'clientSelectionController',
+                        controllerAs: 'clientSelectCtl',
+                        templateUrl: 'partials/modals/lot_client_select_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        locals: {lot: lot, clients: clients},
+                        fullscreen: service.customFullscreen
+                    };
+
+                    dfd.resolve(showModal(service.showClientSelectionModal, opts));
+            }, function (error) {
+                dfd.reject(error);
+            });
+
             return dfd.promise;
         }
 
-        function showAddOccupant(lot) {
-            var dfd = $q.defer();
+        function showAddOccupant (lot) {
+            var opts = {
+                controller: 'addLotOccupantController',
+                controllerAs: 'addLotOcptCtl',
+                templateUrl: 'partials/modals/add_lot_occupant_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {lot: lot},
+                fullscreen: service.customFullscreen
+            };
 
-            if (service.showAddOccupantModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                service.showAddOccupantModal = $mdDialog.show({
-                    controller: 'addLotOccupantController',
-                    controllerAs: 'addLotOcptCtl',
-                    templateUrl: 'partials/modals/add_lot_occupant_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    locals: {lot: lot},
-                    fullscreen: service.customFullscreen
-                });
-
-                service.showAddOccupantModal.then(
-                    function (result) {
-                        dfd.resolve(result);
-                    }, function (reason) {
-                        $rootScope.$broadcast('modal-dismissed');
-                        dfd.reject(reason);
-                    })
-                    .finally(function () {
-                        service.showAddOccupantModal = null;
-                    });
-            }
-            return dfd.promise;
+            return showModal(service.showAddOccupantModal, opts);
         }
 
         function showSalesReport () {
-            var dfd = $q.defer();
+            var opts = {
+                controller: 'salesReportController',
+                controllerAs: 'salesRepCtl',
+                templateUrl: 'partials/modals/sales_report_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                fullscreen: service.customFullscreen
+            };
 
-            if (service.showAddOccupantModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                service.salesReportModal = $mdDialog.show({
-                    controller: 'salesReportController',
-                    controllerAs: 'salesRepCtl',
-                    templateUrl: 'partials/modals/sales_report_dialog.tmpl.html',
-                    parent: angular.element(document.body),
-                    fullscreen: service.customFullscreen
-                });
-
-                service.salesReportModal.then(
-                    function (result) {
-                        dfd.resolve(result);
-                    }, function (reason) {
-                        $rootScope.$broadcast('modal-dismissed');
-                        dfd.reject(reason);
-                    })
-                    .finally(function () {
-                        service.salesReportModal = null;
-                    });
-            }
-            return dfd.promise;
+            return showModal(service.salesReportModal, opts);
         }
 
-        service.showColumbaryListModal = null;
-        service.showColumbaryList = showColumbaryList;
+        function showColumbaryList(event) {
+            var opts = {
+                controller: 'columbaryListController',
+                controllerAs: 'cListCtl',
+                templateUrl: 'partials/modals/columbary_list.tmpl.html',
+                parent: angular.element(document.body),
+                fullscreen: service.customFullscreen,
+                targetEvent: event
+            };
 
-        function showColumbaryList (event) {
-            var dfd = $q.defer();
-
-            if (service.showColumbaryListModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                service.showColumbaryListModal = $mdDialog.show({
-                    controller: 'columbaryListController',
-                    controllerAs: 'cListCtl',
-                    templateUrl: 'partials/modals/columbary_list.tmpl.html',
-                    parent: angular.element(document.body),
-                    fullscreen: service.customFullscreen,
-                    targetEvent: event
-                });
-
-                service.showColumbaryListModal.then(
-                    function (result) {
-                        dfd.resolve(result);
-                    }, function (reason) {
-                        $rootScope.$broadcast('modal-dismissed');
-                        dfd.reject(reason);
-                    })
-                    .finally(function () {
-                        service.showColumbaryListModal = null;
-                    });
-            }
-            return dfd.promise;
+            return showModal(service.showColumbaryListModal, opts);
         }
 
         function showColumbaryDetail(columbary) {
             var dfd = $q.defer();
 
-            console.log('Show Columbary Detail: ', columbary);
-
-            if (service.showColumbaryDetailModal) {
-                dfd.reject('Modal already opened');
-            } else {
-                $rootScope.$broadcast("modal-opened");
-
-                columbary.get().then(function (result) {
-                    service.showColumbaryDetailModal = $mdDialog.show({
+            columbary.get()
+                .then(function (result) {
+                    var opts = {
                         controller: 'columbaryDetailsController',
                         controllerAs: 'cDetsCtl',
                         templateUrl: 'partials/modals/columbary_details_dialog.tmpl.html',
                         parent: angular.element(document.body),
                         locals: {columbary: result},
                         fullscreen: service.customFullscreen
-                    });
+                    };
 
-                    service.showColumbaryDetailModal.then(
-                        function (result) {
-                            dfd.resolve(result);
-                        }, function (reason) {
-                            $rootScope.$broadcast('modal-dismissed');
-                            dfd.reject(reason);
-                        })
-                        .finally(function () {
-                            service.showColumbaryDetailModal = null;
-                        })
-
-
-                }, function (err) {
-                    console.log('Error: ', err);
+                    dfd.resolve(showModal(service.showColumbaryDetailModal, opts));
+                }, function (error) {
+                    dfd.reject(error);
                 });
 
-            }
             return dfd.promise;
+        }
+
+        function showColumbaryTable () {
+            var opts = {
+                controller: 'columbaryTableController',
+                controllerAs: 'cTblCtl',
+                templateUrl: 'partials/modals/columbary_table.tmpl.html',
+                parent: angular.element(document.body),
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(showColumbaryTableModal, opts);
+        }
+
+        function closeModal() {
+            $mdDialog.cancel();
         }
 
         return service;

@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', 'Lots', 'lotHelper', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot, modalServices, Lots, lotHelper) {
+    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper) {
         var vm = this;
 
         $scope.showEditLotNameForm = false;
@@ -22,6 +22,9 @@ angular.module('demoApp')
         vm.initialize = initialize;
         vm.markSold = markSold;
         vm.addOccupant = addOccupant;
+
+        vm.updateLot = updateLot;
+
         vm.updateLotORNo = updateLotORNo;
         vm.updateLotDimension = updateLotDimension;
         vm.updateLotPrice = updateLotPrice;
@@ -54,19 +57,18 @@ angular.module('demoApp')
             }, computeLotAmount);
 
             $scope.$watch(function () {
-                return vm.lot_copy.dimension;
+                return vm.lot.dimension;
             }, function (newValue, oldValue) {
                 if (newValue == oldValue) return;
                 computeLotArea(newValue);
             });
-
         }
 
         function computeLotArea(dimension) {
             var result = lotHelper.computeArea(dimension);
 
-            vm.lot_copy.dimension = result.dimension;
-            vm.lot_copy.lot_area = result.area;
+            vm.lot.dimension = result.dimension;
+            vm.lot.lot_area = result.area;
         }
 
         function markSold () {
@@ -94,113 +96,64 @@ angular.module('demoApp')
                 });
         }
 
-        function updateLotPrice () {
-            var newPrice = {price_per_sq_mtr: vm.lot_copy.price_per_sq_mtr};
-
-            console.log('update price request');
-            vm.lot.updatePrice(newPrice)
+        function updateLot () {
+            var dfd = $q.defer();
+            vm.lot.put()
                 .then(function (response) {
-                    //console.log('success: ',response);
-
-                    var lot = response.lot;
-                    vm.lot.price_per_sq_mtr = lot.price_per_sq_mtr;
-
-                    $scope.showEditLotPriceForm = false;
-
+                    dfd.resolve(response);
                 }, function (error) {
-                    console.log('error: ', error);
+                    dfd.reject(error);
+                });
+            return dfd.promise;
+        }
+
+        function updateLotPrice () {
+            updateLot()
+                .then(function (response) {
+                    vm.lot.price_per_sq_mtr = response.lot.price_per_sq_mtr;
+                    $scope.showEditLotPriceForm = false;
                 });
         }
 
         function updateLotORNo () {
-            console.log('update or no');
-
-            var newORNo = {or_no: vm.lot_copy.or_no};
-
-            vm.lot.updateORNo(newORNo)
+            updateLot()
                 .then(function (response) {
-                    //console.log('success: ',response);
-
-                    var lot = response.lot;
-                    vm.lot.or_no = lot.or_no;
-
+                    vm.lot.or_no = response.lot.or_no;
                     $scope.showEditLotORNoForm = false;
-
-                }, function (error) {
-                    console.log('error: ', error);
                 });
         }
 
         function updateLotDimension () {
-            var data = {
-                dimension: lotHelper.filterDimensionString(vm.lot_copy.dimension),
-                lot_area: vm.lot_copy.lot_area
-            };
-
-            vm.lot.updateDimension(data)
-                .then(function(response){
-                    var lot = response.lot;
-                    vm.lot.lot_area = lot.lot_area;
-                    vm.lot.dimension = lot.dimension;
-
+            updateLot()
+                .then(function (response) {
+                    vm.lot.lot_area = response.lot.lot_area;
+                    vm.lot.dimension = response.lot.dimension;
                     $scope.showEditLotDimensionForm = false;
-
-                }, function(error){
-                    console.log('error: ',error);
                 });
         }
 
         function updateLotRemarks () {
-            console.log('update lot remarks');
-
-            var data = {remarks: vm.lot_copy.remarks};
-
-            vm.lot.updateRemarks(data)
+            updateLot()
                 .then(function (response) {
-                    //console.log('success: ',response);
-
-                    var lot = response.lot;
-                    vm.lot.remarks = lot.remarks;
-
+                    vm.lot.remarks = response.lot.remarks;
                     $scope.showEditLotRemarksForm = false;
-
-                }, function (error) {
-                    console.log('error: ', error);
                 });
         }
 
         function updateLotName () {
-            console.log('update lot name');
-
-            var data = {name: vm.lot_copy.name};
-
-            vm.lot.updateName(data)
-                .then(function (response) {
-                    console.log('success: ',response);
-                    var lot = response.lot;
-                    vm.lot.name = lot.name;
-
+            updateLot()
+                .then(function(response){
+                    vm.lot.name = response.lot.name;
                     $scope.showEditLotNameForm = false;
-                }, function (error) {
-                    console.log('error: ', error);
                 });
         }
 
 
         function updateLotArea() {
-            console.log('update lot area');
-
-            var data = {lot_area: vm.lot_copy.lot_area};
-
-            vm.lot.updateLotArea(data)
+            updateLot()
                 .then(function (response) {
-                    console.log('success: ', response);
-                    var lot = response.lot;
-                    vm.lot.lot_area = lot.lot_area;
-
+                    vm.lot.lot_area = response.lot.lot_area;
                     $scope.showEditLotAreaForm = false;
-                }, function (error) {
-                    console.log('error: ', error);
                 });
         }
 
