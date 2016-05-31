@@ -2,9 +2,9 @@
     'use strict';
 
     angular.module('demoApp')
-        .factory('gmapServices', ['$log', '$q', gmapServices]);
+        .factory('gmapServices', ['$log', '$q', '$timeout', gmapServices]);
 
-    function gmapServices($log, $q) {
+    function gmapServices($log, $q, $timeout) {
         var service = {};
 
         //infowindow balloons
@@ -122,6 +122,7 @@
         service.initializeAutocomplete = initializeAutocomplete;
         service.containsLocation = containsLocation;
         service.triggerEvent = triggerEvent;
+        service.highlightPolygon = highlightPolygon;
 
         function apiAvailable() {
             return typeof window.google === 'object';
@@ -941,6 +942,20 @@
 
         function triggerEvent (obj, event) {
             google.maps.event.trigger(obj, event);
+        }
+
+        function highlightPolygon(polygon) {
+            if(polygon && polygon.getMap()) {
+                polygon.setOptions({
+                    fillOpacity: 0.8
+                });
+
+                $timeout(function(){
+                    polygon.setOptions({
+                        fillOpacity: 0
+                    });
+                }, 1000);
+            }
         }
 
         return service;

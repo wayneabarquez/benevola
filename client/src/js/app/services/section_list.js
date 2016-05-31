@@ -74,6 +74,7 @@ angular.module('demoApp')
                 function() {
                     gmapServices.setZoomIfGreater(21);
                     gmapServices.panToPolygon(polygon);
+                    gmapServices.highlightPolygon(polygon);
                     handler();
                 }
             );

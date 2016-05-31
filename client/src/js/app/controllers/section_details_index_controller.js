@@ -153,6 +153,7 @@ angular.module('demoApp')
         function showBlock(block) {
             gmapServices.setZoomIfGreater(21);
             gmapServices.panToPolygon(block.polygon);
+            gmapServices.highlightPolygon(block.polygon);
         }
 
         /* End of Block Functions */

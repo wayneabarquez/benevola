@@ -65,6 +65,8 @@ angular.module('demoApp')
                 gmapServices.setZoomIfGreater(21);
                 gmapServices.panToPolygon(polygon);
                 //handler();
+                gmapServices.highlightPolygon(polygon);
+                console.log('block polygon cliked');
             });
 
             return polygon;
