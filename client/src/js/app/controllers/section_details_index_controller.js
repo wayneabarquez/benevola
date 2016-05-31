@@ -55,9 +55,12 @@ angular.module('demoApp')
             $rootScope.$on('show-section-details', function(event, params){
                 vm.editMode = false;
                 vm.section = params.section;
+
                 vm.tempSection.name = params.section.name;
 
                 updateSectionDetails(vm.section);
+
+                var tempSectionPolygon = angular.copy(vm.section.polygon);
 
                 gmapServices.hidePolygon(vm.section.polygon);
 
@@ -73,7 +76,8 @@ angular.module('demoApp')
                     vm.tempSection.polygon = null;
                 }
 
-                vm.tempSection.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
+                vm.tempSection.polygon = tempSectionPolygon;
+                //vm.tempSection.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
             });
         }
 

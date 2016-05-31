@@ -50,6 +50,8 @@ angular.module('demoApp')
                 vm.section = params.section;
                 vm.tempSection.name = params.section.name;
 
+                var tempSectionPolygon = angular.copy(vm.section.polygon);
+
                 gmapServices.hidePolygon(vm.section.polygon);
 
                 if(vm.lastPolygon) {
@@ -64,7 +66,8 @@ angular.module('demoApp')
                     vm.tempSection.polygon = null;
                 }
 
-                vm.tempSection.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
+                vm.tempSection.polygon = tempSectionPolygon;
+                //vm.tempSection.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
             });
         }
 
