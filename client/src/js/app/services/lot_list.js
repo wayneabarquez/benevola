@@ -84,7 +84,10 @@ angular.module('demoApp')
             data.client_name = data.client && data.client.last_name
                                ? (data.client.first_name + ' ' + data.client.last_name)
                                : '';
-            data.date_purchased_formatted = moment(data.date_purchased).format("MMM DD, YYYY");
+
+            data.date_purchased_formatted = data.date_purchased
+                                            ? moment(data.date_purchased).format("MMM DD, YYYY")
+                                            : '';
 
             data.polygon = createPolygon(data, forIndex);
 
