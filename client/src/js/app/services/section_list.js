@@ -50,7 +50,8 @@ angular.module('demoApp')
                 polygon.section = section;
 
             var adminHandler = function () {
-                $mdSidenav('sectionDetailsSidenav')
+                var sidenavId = 'sectionDetailsSidenav';
+                $mdSidenav(sidenavId)
                     .open()
                     .then(function () {
                         $rootScope.$broadcast('show-section-details', {section: section});
@@ -59,7 +60,12 @@ angular.module('demoApp')
 
             var indexHandler = function () {
                 console.log('section polygon is clicked handler for index');
-                $mdSidenav('sectionDetailsIndexSidenav')
+                var sidenavId = 'sectionDetailsIndexSidenav';
+
+                //if($mdSidenav(sidenavId).isOpen()) $mdSidenav(sidenavId).toggle();
+
+
+                $mdSidenav(sidenavId)
                     .open()
                     .then(function () {
                         $rootScope.$broadcast('show-section-details', {section: section});
