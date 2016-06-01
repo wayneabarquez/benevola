@@ -105,11 +105,11 @@ angular.module('demoApp')
             var restangularizedLot = Lots.cast(lot);
 
 
-            var adminHandler = function (lot) {
+            var adminHandler = function (_lot) {
                 //console.log('admin handler for polygon click lot');
                 //console.log('lot: ', lot);
 
-                var content = '<button data-lot-id="'+lot.id+'" class="md-raised md-button md-ink-ripple" id="admin-delete-lot-button" type="button">Delete Lot</button>';
+                var content = '<button data-lot-id="'+_lot.id+'" class="md-raised md-button md-ink-ripple" id="admin-delete-lot-button" type="button">Delete Lot</button>';
 
                 var center = gmapServices.getPolygonCenter(lot.polygon);
                 gmapServices.showInfoWindow(service.selectedLotInfowindow);
@@ -117,21 +117,21 @@ angular.module('demoApp')
                 service.selectedLotInfowindow.setContent(content);
 
                 $('#admin-delete-lot-button').click(function () {
-                    var lotId = $(this).data('lot-id');
+                    //var lotId = $(this).data('lot-id');
                     //console.log('delete lot with id = ', lotId);
 
-                    var polygonTemp = lot.polygon;
+                    var polygonTemp = _lot.polygon;
 
-                    lot.polygon = null;
+                    _lot.polygon = null;
 
-                    lot.remove()
+                    _lot.remove()
                         .then(function(s){
                             gmapServices.hidePolygon(polygonTemp);
                             polygonTemp = null;
                             //console.log('success deleting lot: ', s);
                         },function(e){
                            //console.log('failed to delete lot: ',e);
-                           lot.polygon = polygonTemp;
+                           _lot.polygon = polygonTemp;
                            alert('Failed to Delete Lot');
                         })
                         .finally(function(){
@@ -142,8 +142,8 @@ angular.module('demoApp')
 
             polygon.lot = lot;
 
-            var indexHandler = function (lot) {
-                showLotInfowindow(lot);
+            var indexHandler = function (_lot) {
+                showLotInfowindow(_lot);
             };
 
             var handler = forIndex ? indexHandler : adminHandler;
@@ -190,9 +190,11 @@ angular.module('demoApp')
         var lotInfowindow = gmapServices.createInfoWindow('');
 
         function showLotInfowindow(lot) {
-            var info = '<b>Lot No:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
-            info += '<b>Section No:</b> ' + lot.section_id + ' <br>';
-            info += '<b>Lot No:</b> ' + lot.id + ' <br>';
+            //console.log('show lot infowindow: ', lot);
+
+            var info = '<b>Lot:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
+            info += '<b>Section:</b> ' + lot.block.section.name + ' <br>';
+            info += '<b>Block:</b> ' + lot.block.name + ' <br>';
             info += '<b>Area:</b> ' + lot.lot_area + ' <br>';
             info += '<b>Amount:</b> ' + lot.amount + ' <br>';
             info += '<b>Status:</b> <span class="' + lot.status + '">' + lot.status + '</span> <br>';

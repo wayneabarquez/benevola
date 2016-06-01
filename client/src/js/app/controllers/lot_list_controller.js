@@ -146,6 +146,8 @@
         function loadLots() {
             $rootScope.lotList = lotList.lots;
             filterList();
+
+            console.log('lots: ',$rootScope.lots);
         }
 
         function startFilter() {
