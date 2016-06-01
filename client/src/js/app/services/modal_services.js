@@ -43,6 +43,9 @@ angular.module('demoApp')
         var showColumbaryTableModal = null;
         service.showColumbaryTable = showColumbaryTable;
 
+        var showCrematoriumModal = null;
+        service.showCrematorium = showCrematorium;
+
         function showModal(modalObj, modalParams) {
             var dfd = $q.defer();
             if (modalObj) {
@@ -244,6 +247,20 @@ angular.module('demoApp')
             };
 
             return showModal(showColumbaryTableModal, opts);
+        }
+
+        function showCrematorium () {
+            var opts = {
+                controller: 'crematoriumListController',
+                controllerAs: 'cremListCtl',
+                templateUrl: 'partials/modals/crematorium_table.tmpl.html',
+                parent: angular.element(document.body),
+                fullscreen: service.customFullscreen
+            };
+
+            console.log('show crem modal');
+
+            return showModal(showCrematoriumModal, opts);
         }
 
         function closeModal() {

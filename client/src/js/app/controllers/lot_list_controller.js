@@ -199,5 +199,13 @@
         function showColumbaryModal (e) {
             modalServices.showColumbaryList(e);
         }
+
+        /* Crematorium functions */
+
+        vm.showCrematorium = showCrematorium;
+
+        function showCrematorium(e) {
+            modalServices.showCrematorium(e);
+        }
     }
 }());

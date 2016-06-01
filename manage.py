@@ -4,6 +4,7 @@ from app import app
 from app.home.models import *
 from app.authentication.models import *
 from app.columbary.models import *
+from app.crematorium.models import Crematorium
 from app.data.sample_data import *
 
 manager = Manager(app)
