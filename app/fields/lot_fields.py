@@ -11,8 +11,6 @@ lot_fields = dict(
     client_id=fields.Integer,
     name=fields.String,
     area=PolygonToLatLng(attribute='area'),
-    # dimension_width=fields.Float,
-    # dimension_height=fields.Float,
     dimension=fields.String,
     lot_area=fields.Float,
     price_per_sq_mtr=fields.Float,
