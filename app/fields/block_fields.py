@@ -23,7 +23,6 @@ block_basic_fields = dict(
     section=fields.Nested(section_basic_fields)
 )
 
-lot_complete_fields['block'] = fields.Nested(block_basic_fields)
 
 block_fields = dict(
     id=fields.Integer,

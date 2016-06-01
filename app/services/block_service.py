@@ -11,6 +11,10 @@ def get_blocks():
     return Block.query.all()
 
 
+def get_blocks_for_section(sectionid):
+    return Block.query.filter_by(section_id=sectionid).all()
+
+
 def create_from_dict(section_id, data):
     # Prepare Data
     block = Block.from_dict(data)
