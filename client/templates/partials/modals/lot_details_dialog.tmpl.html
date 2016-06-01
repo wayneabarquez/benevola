@@ -89,6 +89,47 @@
                                     // when reverting back status to vacant. clear all cascaded data
                                     -->
 
+                                <p ng-mouseenter="showEditLotBlockNoBtn = true"
+                                   ng-mouseleave="showEditLotBlockNoBtn = false"
+                                   ng-hide="showEditLotBlockNoForm">Block:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotBlockNoBtn"
+                                                   ng-click="showEditLotBlockNoForm = true">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                        {{ lotDetsCtl.lot.block.name }}
+                                    </span>
+
+                                    <section ng-show="showEditLotBlockNoForm">
+                                        <form class="inline-form">
+                                            <div layout="row">
+                                                <label class="parent-form-label">Block:</label>
+                                                <span flex></span>
+                                                <!-- Block -->
+                                                <md-input-container>
+                                                    <label>Block</label>
+                                                    <md-select ng-model="lotDetsCtl.lot.block_id">
+                                                        <md-option ng-repeat="block in lotDetsCtl.blocks"
+                                                                   value="{{ block.id }}">
+                                                            {{ block.name }}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+
+                                                <md-button class="md-icon-button"
+                                                           ng-click="showEditLotBlockNoForm = false">
+                                                    <md-icon>clear</md-icon>
+                                                </md-button>
+                                                <md-button class="md-icon-button"
+                                                           ng-click="lotDetsCtl.updateLotBlockNo()">
+                                                    <md-icon>save</md-icon>
+                                                </md-button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </p>
+
                                 <!-- OR # -->
                                 <p ng-mouseenter="showEditLotORNoBtn = true"
                                    ng-mouseleave="showEditLotORNoBtn = false"
@@ -99,7 +140,7 @@
                                                    ng-click="showEditLotORNoForm = true">
                                             <md-icon>edit</md-icon>
                                         </md-button>
-                                        # {{lotDetsCtl.lot.or_no}}
+                                        {{ lotDetsCtl.lot.or_no ? '#' + lotDetsCtl.lot.or_no : '' }}
                                     </span>
 
                                     <section ng-show="showEditLotORNoForm">

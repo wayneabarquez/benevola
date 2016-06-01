@@ -39,22 +39,14 @@ class SectionBlocksResource(Resource):
     Resource for Section Blocks
     """
 
-    # @marshal_with(section_fields)
-    # def get(self):
-    #     """ GET /api/sections """
-    #     # TODO check authenticated user
-    #     # TODO: Handle logins for 401s
-    #     # try:
-    #     # solars = solar_service.get_solars_for_user(current_user)
-    #     # log.debug("Scips Resource Data: {0}".format(scips))
-    #     # return solars
-    #     # except scip_service.UserNotAuthorizedError:
-    #     # abort(401, message="Requires user to login")
-    #     # except scip_service.UserRoleInvalidError as err:
-    #     #     abort(403, message=err.message)
-    #     sections = section_service.get_sections()
-    #     log.debug("Sections Resource Data: {0}".format(sections))
-    #     return sections
+    @marshal_with(block_basic_fields)
+    def get(self, section_id):
+        """ GET /api/sections/section_id/blocks """
+        log.debug("Get All Blocks for Section : {0}".format(section_id))
+        try:
+            return block_service.get_blocks_for_section(section_id)
+        except SectionNotFoundError as err:
+            abort(403, message=err.message)
 
     def post(self, section_id):
         """ POST /api/sections/<section_id>/blocks """

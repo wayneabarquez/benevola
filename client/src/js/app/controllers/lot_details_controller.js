@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', 'Restangular', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper) {
+    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper, Restangular) {
         var vm = this;
 
         $scope.showEditLotNameForm = false;
@@ -12,12 +12,11 @@ angular.module('demoApp')
         $scope.showEditLotDimensionForm = false;
         $scope.showEditLotPriceForm = false;
         $scope.showEditLotRemarksForm = false;
-
         $scope.showEditLotAreaForm = false;
+        $scope.showEditLotBlockNoForm = false;
 
         vm.lot = null;
-
-        vm.lot_copy = null;
+        vm.blocks = [];
 
         vm.initialize = initialize;
         vm.markSold = markSold;
@@ -31,6 +30,7 @@ angular.module('demoApp')
         vm.updateLotRemarks = updateLotRemarks;
         vm.updateLotName = updateLotName;
         vm.updateLotArea = updateLotArea;
+        vm.updateLotBlockNo = updateLotBlockNo;
         vm.cancel = cancel;
 
         vm.initialize();
@@ -39,14 +39,15 @@ angular.module('demoApp')
 
         function initialize () {
             vm.lot = lot;
-            vm.lot_copy = angular.copy(vm.lot);
-            console.log('lot details: ', vm.lot_copy);
+            console.log('lot details: ', vm.lot);
 
-            $scope.$watch(function(){
-                return vm.lot;
-            }, function(newValue){
-                vm.lot_copy = angular.copy(newValue);
-            });
+            //vm.lot_copy = angular.copy(vm.lot);
+
+            //$scope.$watch(function(){
+            //    return vm.lot;
+            //}, function(newValue){
+            //    vm.lot_copy = angular.copy(newValue);
+            //});
 
             $scope.$watch(function () {
                 return vm.lot.lot_area;
@@ -62,6 +63,19 @@ angular.module('demoApp')
                 if (newValue == oldValue) return;
                 computeLotArea(newValue);
             });
+
+            Restangular
+                .one('sections', vm.lot.block.section_id)
+                .all('blocks')
+                .getList()
+                .then(function(response){
+                   console.log('get all blocks for section '+vm.lot.block.section.name, response);
+                    response.forEach(function(block){
+                       vm.blocks.push(block);
+                    });
+                },function(error){
+                    console.log('error getting all blocks for section', error);
+                });
         }
 
         function computeLotArea(dimension) {
@@ -154,6 +168,16 @@ angular.module('demoApp')
                 .then(function (response) {
                     vm.lot.lot_area = response.lot.lot_area;
                     $scope.showEditLotAreaForm = false;
+                });
+        }
+
+        function updateLotBlockNo () {
+            updateLot()
+                .then(function (response) {
+                    console.log('update lot block no response: ',response);
+                    vm.lot.block_id = response.lot.block_id;
+                    vm.lot.block = response.lot.block;
+                    $scope.showEditLotBlockNoForm = false;
                 });
         }
 

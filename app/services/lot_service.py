@@ -30,6 +30,8 @@ def get_details(lot_id):
     amount = compute_lot_amount(lot.lot_area, lot.price_per_sq_mtr)
     data['amount'] = float(amount)
 
+    data['block'] = lot.block
+
     if lot.client is not None:
         data['client'] = lot.client.to_dict()
 
@@ -67,7 +69,10 @@ def update_from_dict(lot_id, data):
     if lot is None:
         raise LotNotFoundError("Lot id={0} not found".format(lot_id))
 
-    lot.update_from_dict(data, ['id', 'area', 'date_modified', 'date_created', 'deceased', 'client'])
+    if 'client_id' in data and data['client_id'] == 0:
+        data['client_id'] = None
+
+    lot.update_from_dict(data, ['id', 'area', 'date_modified', 'date_created', 'deceased', 'client', 'block'])
 
     # Update Area
     if 'area' in data:

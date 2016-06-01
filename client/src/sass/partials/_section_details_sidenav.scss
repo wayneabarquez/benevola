@@ -35,6 +35,15 @@
         font-size: 90%;
       }
     }
+
+    md-content.index-sidenav-content {
+      height: 75%;
+
+      md-tabs {
+        height: 100%;
+      }
+    }
+
   }
 
 }
