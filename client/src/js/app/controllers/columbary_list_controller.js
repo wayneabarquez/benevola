@@ -121,9 +121,9 @@ angular.module('demoApp')
         function removeFilter() {
             vm.query.filter = '';
 
-            if (vm.filter.form.$dirty) {
-                vm.filter.form.$setPristine();
-            }
+            //if (vm.filter.form && vm.filter.form.$dirty) {
+            //    vm.filter.form.$setPristine();
+            //}
 
             $scope.showFilterColumbary = false
 
