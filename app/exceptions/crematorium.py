@@ -1,0 +1,2 @@
+class CrematoriumNotFoundError(ValueError):
+    pass

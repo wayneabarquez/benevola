@@ -12,7 +12,7 @@
                         <md-tooltip md-direction="left">Filter List</md-tooltip>
                         <md-icon>filter_list</md-icon>
                     </md-button>
-                    <md-button class="md-icon-button" ng-click="cremListCtl.newCremation()">
+                    <md-button class="md-icon-button" ng-click="cremListCtl.newCremation($event)">
                         <md-tooltip md-direction="left">New Cremation</md-tooltip>
                         <md-icon>add</md-icon>
                     </md-button>
@@ -56,21 +56,16 @@
                     <!-- TABLE BODY -->
                     <tbody md-body>
                         <tr md-row
-                            ng-repeat="c in cremListCtl.cremateItems
+                            ng-repeat="c in cremListCtl.cremations
                             | orderBy: cremListCtl.query.order
-                            | limitTo: cremListCtl.query.max_per_page : (cremListCtl.query.page - 1) * cremListCtl.query.max_per_page"
-                            >
+                            | limitTo: cremListCtl.query.max_per_page : (cremListCtl.query.page - 1) * cremListCtl.query.max_per_page">
 
-                            <td md-cell>{{ c.date_cremated }}</td>
-
-                            <td md-cell>{{ c.deceased.firstname }}</td>
-
-                            <td md-cell>{{ c.gender }}</td>
-
-                            <td md-cell>{{ c.age }}</td>
-
-                            <td md-cell>{{ c.datetime_started }}</td>
-                            <td md-cell>{{ c.datetime_finished }}</td>
+                            <td md-cell width="20%">{{ c.date_cremated | amDateFormat:'MMMM DD YYYY' }}</td>
+                            <td md-cell>{{ c.deceased.first_name }} {{ c.deceased.last_name }}</td>
+                            <td md-cell>{{ c.deceased.gender }}</td>
+                            <td md-cell>{{ c.deceased.age }}</td>
+                            <td md-cell>{{ c.time_started }}</td>
+                            <td md-cell>{{ c.time_finished }}</td>
                             <td md-cell>{{ c.gas_consumed }}</td>
 
                             <td md-cell style="text-align:center;">

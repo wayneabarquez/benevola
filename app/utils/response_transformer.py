@@ -14,3 +14,10 @@ def convert_bounds_to_gmap_bounds_literal(bounds):
             'east': float(bounds_arr[2])
         }
     return None
+
+
+def merge_two_dicts(x, y):
+    '''Given two dicts, merge them into a new dict as a shallow copy.'''
+    z = x.copy()
+    z.update(y)
+    return z

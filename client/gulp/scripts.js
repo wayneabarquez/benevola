@@ -25,8 +25,9 @@ gulp.task('vendor-scripts', function () {
         paths.bower + '/angular-material-data-table/dist/md-data-table.min.js',
         paths.bower + '/moment/min/moment.min.js',
         paths.bower + '/angular-moment/angular-moment.min.js',
-        paths.bower + '/ng-inline-edit/dist/ng-inline-edit.min.js'
-        //paths.bower + '/angular-ui-mask/dist/mask.js'
+        paths.bower + '/ng-inline-edit/dist/ng-inline-edit.min.js',
+        paths.bower + '/angular-material-datetimepicker/beautifier.js',
+        paths.bower + '/angular-material-datetimepicker/js/angular-material-datetimepicker.min.js'
     ])
         .pipe($.concat('vendor.min.js'))
         .pipe($.uglify({mangle: false}).on('error', $.util.log))

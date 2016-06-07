@@ -2,12 +2,13 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('crematoriumListController', ['$scope', '$mdDialog', 'crematoriumServices', 'modalServices', crematoriumListController]);
+    .controller('crematoriumListController', ['$rootScope', '$scope', '$mdDialog', 'Crematorium', 'modalServices', crematoriumListController]);
 
-    function crematoriumListController ($scope, $mdDialog, crematoriumServices, modalServices) {
+    function crematoriumListController ($rootScope, $scope, $mdDialog, Crematorium, modalServices) {
         var vm = this;
 
-        vm.cremateItems = [];
+        $rootScope.cremations = [];
+        vm.cremations = [];
 
         vm.query = {
             order: 'date_cremated',
@@ -56,19 +57,26 @@ angular.module('demoApp')
         /* Controller Functions here */
 
         function initialize () {
-            //getData();
+            getData();
+
+            $rootScope.$watchCollection('cremations', function(newCollection){
+                if(newCollection.length <= 0) return;
+
+                vm.cremations = newCollection;
+            });
 
             //$scope.$watch(angular.bind(vm, function () {
             //    return vm.query.filter;
             //}), startFilter);
         }
 
-        //function getData() {
-        //    columbaryServices.getAllData()
-        //        .then(function (columbaryList) {
-        //            vm.columbaryItems = filterByBlock(columbaryList, vm.query.block);
-        //        }, function (error) { console.log('error getting columbary: ', error); });
-        //}
+        function getData() {
+            Crematorium.getList()
+                .then(function (list) {
+                    console.log('cremations: ', list);
+                    $rootScope.cremations = angular.copy(list);
+                }, function (error) { console.log('error getting cremations list: ', error); });
+        }
 
         //function startFilter() {
         //    vm.query.filter = vm.query.filter.toLowerCase();
@@ -129,7 +137,8 @@ angular.module('demoApp')
         }
 
         function newCremation () {
-
+            close();
+            $rootScope.showNewCremationFormPanel = true;
         }
 
         function close() {
