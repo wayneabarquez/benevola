@@ -4,7 +4,7 @@
     angular
         .module('demoApp', ['ngMaterial', 'ngMessages', 'ngAnimate', 'restangular',
             'oitozero.ngSweetAlert', 'treasure-overlay-spinner', 'md.data.table',
-            'angularMoment', 'angularInlineEdit'
+            'angularMoment', 'angularInlineEdit', 'ngMaterialDatePicker'
         ])
 
         .constant('BASE_URL', window.location.origin)

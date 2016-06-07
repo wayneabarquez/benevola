@@ -31,9 +31,6 @@ class AddLotForm(ModelForm):
     block_id = StringField(validators=[validators.required()])
     area = TextAreaField(validators=[validators.required()])
     dimension = StringField(validators=[validators.required()])
-    # dimension_width = IntegerField(validators=[validators.required()])
-    # dimension_height = IntegerField(validators=[validators.required()])
-    # lot_area = IntegerField(validators=[validators.required()])
 
 
 class AddClientForm(ModelForm):
@@ -50,5 +47,6 @@ class AddDeceasedForm(ModelForm):
 
     first_name = StringField(validators=[validators.required()])
     last_name = StringField(validators=[validators.required()])
+    date_of_birth = StringField(validators=[validators.required()])
     date_of_death = StringField(validators=[validators.required()])
 

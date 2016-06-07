@@ -9,6 +9,8 @@
 
         vm.showList = false;
 
+        $rootScope.showNewCremationFormPanel = false;
+
         // complete list of Solars from the server
         $rootScope.lotList = [];
 

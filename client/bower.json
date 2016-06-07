@@ -35,6 +35,7 @@
     "ng-inline-edit": "~0.7.0",
     "angular-local-storage": "~0.2.7",
     "ng-pattern-restrict": "~0.2.1",
-    "jquery.inputmask": "~3.3.1"
+    "jquery.inputmask": "~3.3.1",
+    "angular-material-datetimepicker": "~1.4.0"
   }
 }

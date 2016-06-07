@@ -46,6 +46,9 @@ angular.module('demoApp')
         var showCrematoriumModal = null;
         service.showCrematorium = showCrematorium;
 
+        //var showNewCremationModal = null;
+        //service.showNewCremation = showNewCremation;
+
         function showModal(modalObj, modalParams) {
             var dfd = $q.defer();
             if (modalObj) {
@@ -262,6 +265,19 @@ angular.module('demoApp')
 
             return showModal(showCrematoriumModal, opts);
         }
+
+        //function showNewCremation (event) {
+        //    var opts = {
+        //        controller: 'newCremationController',
+        //        controllerAs: 'newCremCtl',
+        //        templateUrl: 'partials/modals/new_cremation.tmpl.html',
+        //        parent: angular.element(document.body),
+        //        fullscreen: service.customFullscreen,
+        //        targetEvent: event
+        //    };
+        //
+        //    return showModal(showNewCremationModal, opts);
+        //}
 
         function closeModal() {
             $mdDialog.cancel();

@@ -71,3 +71,7 @@ app.register_blueprint(auth_blueprint)
 # Register Columbary Blueprint
 from .columbary import columbary as columbary_blueprint
 app.register_blueprint(columbary_blueprint)
+
+# Register Crematorium Blueprint
+from .crematorium import crematorium as crematorium_blueprint
+app.register_blueprint(crematorium_blueprint)
