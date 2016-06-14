@@ -52,17 +52,37 @@
                             </div>
 
                             <div layout="row" layout-align="center center">
-                                <!-- Date of Death -->
-                                <h4>Date of Death</h4>
-                                <md-datepicker required name="date_of_death"
-                                               md-max-date="maxDate"
-                                               ng-model="addLotOcptCtl.occupant.date_of_death"
-                                               md-placeholder="Select Date">
-                                </md-datepicker>
-                                <div class="validation-messages" ng-messages="newForm.date_of_death.$error"
-                                     style="color: red;">
-                                    <div ng-message="required">This is required.</div>
-                                    <div ng-message="maxDate">Date is invalid.</div>
+                                <div flex>
+                                    <!-- Date of Birth -->
+                                    <h4>Date of Birth</h4>
+                                    <!--<md-datepicker required name="date_of_birth"
+                                                   md-max-date="maxDate"
+                                                   ng-model="addLotOcptCtl.occupant.date_of_birth"
+                                                   md-placeholder="Select Date">
+                                    </md-datepicker>-->
+                                    <md-input-container md-no-float class="md-block">
+                                        <input type="date" max="{{maxDate}}" ng-model="addLotOcptCtl.occupant.date_of_birth"
+                                               placeholder="Select Date">
+                                        <div class="validation-messages" ng-messages="newForm.date_of_birth.$error"
+                                             style="color: red;">
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="maxDate">Date is invalid.</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div flex>
+                                    <!-- Date of Death -->
+                                    <h4>Date of Death</h4>
+                                    <md-datepicker required name="date_of_death"
+                                                   md-max-date="maxDate"
+                                                   ng-model="addLotOcptCtl.occupant.date_of_death"
+                                                   md-placeholder="Select Date">
+                                    </md-datepicker>
+                                    <div class="validation-messages" ng-messages="newForm.date_of_death.$error"
+                                         style="color: red;">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="maxDate">Date is invalid.</div>
+                                    </div>
                                 </div>
                             </div>
                         </form>

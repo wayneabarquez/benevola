@@ -41,6 +41,6 @@ columbary_paginated_fields = dict(
 )
 
 columbary_complete_fields = copy(columbary_fields)
-# columbary_complete_fields['deceased'] = fields.Nested(deceased_fields)
+columbary_complete_fields['deceased'] = fields.Nested(deceased_fields)
 columbary_complete_fields['client'] = fields.Nested(client_fields)
 columbary_complete_fields['client_name'] = fields.String

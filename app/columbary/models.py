@@ -1,7 +1,6 @@
 from app import db
 from app.models import BaseModel
-from app.home.models import Client
-from geoalchemy2 import Geometry
+from app.home.models import Client, DeceasedOccupancy
 
 
 class ColumbaryBlockType:
@@ -25,8 +24,14 @@ class Columbary(BaseModel):
     def client_name(self):
         return '' if self.client is None else self.client.last_name + ', ' + self.client.first_name
 
-    # def get_deceased(self):
-    #     deceased = []
-    #     for d in self.deceased:
-    #         deceased.append(d.to_dict())
-    #     return deceased
+    def get_deceased(self):
+        # deceased = []
+        result = DeceasedOccupancy.query.filter_by(ref_table='columbary', ref_id=self.id).first()
+
+        if result is not None:
+            return result.deceased.to_dict()
+
+        return result
+        # for d in result:
+        #     deceased.append(d.deceased.to_dict())
+        # return deceased

@@ -179,12 +179,10 @@
                 <md-tab label="Occupants/Deceased" ng-if="cDetsCtl.columbary.status == 'occupied'">
                     <md-content>
                         <md-list flex>
-                            <md-subheader class="md-no-sticky">{{ lotDetsCtl.columbary.deceased.length }} occupants
-                            </md-subheader>
-                            <md-list-item class="md-2-line" ng-repeat="dead in cDetsCtl.columbary.deceased">
+                            <md-list-item class="md-2-line" ng-if="cDetsCtl.columbary.deceased">
                                 <div class="md-list-item-text" layout="column">
-                                    <h4>{{ dead.first_name + ' ' + dead.last_name }}</h4>
-                                    <p>{{ dead.date_of_death }}</p>
+                                    <h4>{{ cDetsCtl.columbary.deceased.first_name + ' ' + cDetsCtl.columbary.deceased.last_name }}</h4>
+                                    <p>{{ cDetsCtl.columbary.deceased.date_of_birth ? cDetsCtl.columbary.deceased.date_of_birth : 'undefined' }} - {{ cDetsCtl.columbary.deceased.date_of_death }}</p>
                                 </div>
                             </md-list-item>
                         </md-list>
