@@ -5,6 +5,8 @@ from .fields import *
 from .services import *
 from .exceptions import ColumbaryNotFoundError
 from ..decorators import paginate
+from app.home.forms import AddDeceasedForm
+from app.fields.deceased_fields import deceased_create_fields
 import logging
 
 log = logging.getLogger(__name__)
@@ -73,7 +75,26 @@ class MarkSoldColumbaryResource(Resource):
             abort(404, message=err.message)
 
 
+class ColumbaryDeceasedResource(Resource):
+    """
+    Resource for Deceased Columbary
+    """
+
+    def post(self, c_id):
+        """ POST /api/columbary/<c_id>/deceased """
+        form_data = request.json
+        log.debug('Add Deceased for Columbary id={0} request: {1}'.format(c_id, form_data))
+        # TODO check authenticated user
+        form = AddDeceasedForm.from_json(form_data)
+        if form.validate():
+            data = add_occupant(c_id, form_data)
+            result = dict(status=200, message='OK', deceased=data)
+            return marshal(result, deceased_create_fields)
+        else:
+            abort(400, message="Invalid Parameters", errors=form.errors)
+
 rest_api.add_resource(ColumbaryResource, '/api/columbary')
 rest_api.add_resource(ColumbaryAllResource, '/api/columbary/all')
 rest_api.add_resource(ColumbaryDetailResource, '/api/columbary/<int:c_id>')
 rest_api.add_resource(MarkSoldColumbaryResource, '/api/columbary/<int:c_id>/mark_sold')
+rest_api.add_resource(ColumbaryDeceasedResource, '/api/columbary/<int:c_id>/deceased')

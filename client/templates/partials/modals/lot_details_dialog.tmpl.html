@@ -358,7 +358,7 @@
                             <md-list-item class="md-2-line" ng-repeat="dead in lotDetsCtl.lot.deceased">
                                 <div class="md-list-item-text" layout="column">
                                     <h4>{{ dead.first_name + ' ' + dead.last_name }}</h4>
-                                    <p>{{ dead.date_of_death }}</p>
+                                    <p>{{ dead.date_of_birth ? dead.date_of_birth : 'undefined' }} - {{ dead.date_of_death }}</p>
                                 </div>
                             </md-list-item>
                         </md-list>

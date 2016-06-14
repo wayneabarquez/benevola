@@ -1,4 +1,5 @@
 from app.columbary.models import *
+from app.home.models import Deceased, DeceasedOccupancy
 from .exceptions import ColumbaryNotFoundError
 from app import db
 import datetime
@@ -32,7 +33,7 @@ def get_details(c_id):
     if columbary.client is not None:
         data['client'] = columbary.client.to_dict()
 
-    # data['deceased'] = columbary.get_deceased()
+    data['deceased'] = columbary.get_deceased()
     log.debug("Columbary Details: {0}".format(data))
 
     return data
@@ -82,3 +83,25 @@ def sold_columbary(c_id, form_data):
     db.session.commit()
 
     return columbary
+
+
+def add_occupant(c_id, data):
+    columbary = Columbary.query.get(c_id)
+
+    if columbary is None:
+        raise ColumbaryNotFoundError("Columbary id={0} not found".format(c_id))
+
+    # TODO get from constant
+    columbary.status = 'occupied'
+
+    # Prepare Data
+    deceased = Deceased.from_dict(data)
+    db.session.add(deceased)
+    db.session.commit()
+
+    deceased_occupancy = DeceasedOccupancy(deceased_id=deceased.id, ref_id=columbary.id, ref_table='columbary')
+    db.session.add(deceased_occupancy)
+
+    db.session.commit()
+
+    return deceased
