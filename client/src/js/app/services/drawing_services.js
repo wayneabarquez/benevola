@@ -16,6 +16,10 @@
 
         service.strokeColor = '';
 
+        service.duplicateLotPolygon = null;
+
+        service.updateLotPolygon = null;
+
         /**
          * Functions
          */
@@ -33,6 +37,9 @@
         service.getPolygonCoords = getPolygonCoords;
         service.getRectangleCorners = getRectangleCorners;
         service.getRectangleCoords = getRectangleCoords;
+        service.duplicateLot = duplicateLot;
+        service.destroyDuplicateLot = destroyDuplicateLot;
+        service.destroyUpdateLotPolygon = destroyUpdateLotPolygon;
 
 
         function initDrawingManager() {
@@ -217,6 +224,41 @@
             data.push({lat: max.lat(), lng: max.lng()});
 
             return data;
+        }
+
+        service.editablePolyOpts = {
+            clickable: true,
+            draggable: true,
+            editable: true,
+            geodesic: false,
+            fillColor: '#ffffff',
+            fillOpacity: 0,
+            strokeColor: service.strokeColor,
+            strokeOpacity: 0.9,
+            strokeWeight: 2,
+            zIndex: 99999
+        };
+
+        function duplicateLot (lot) {
+            if (!lot.polygon) return;
+            var path = angular.copy(lot.polygon.getPath());
+
+            if (!service.duplicateLotPolygon)  service.duplicateLotPolygon = gmapServices.createCustomPolygon(path, service.editablePolyOpts);
+            else service.duplicateLotPolygon.setPath(path);
+
+            // broadcast here
+            $rootScope.$broadcast('duplicate-complete');
+        }
+
+        function destroyDuplicateLot () {
+            if(!service.duplicateLotPolygon) return;
+
+            service.duplicateLotPolygon.setMap(null);
+            service.duplicateLotPolygon = null;
+        }
+
+        function destroyUpdateLotPolygon () {
+            service.updateLotPolygon = null;
         }
 
         return service;
