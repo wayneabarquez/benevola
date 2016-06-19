@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('lotList', ['$rootScope', 'gmapServices', 'LOT_COLORS', 'Lots', 'modalServices', lotList]);
+    .factory('lotList', ['$rootScope', 'gmapServices', 'LOT_COLORS', 'drawingServices', 'modalServices', 'Blocks', 'Lots', 'alertServices', lotList]);
 
-    function lotList ($rootScope, gmapServices, LOT_COLORS, Lots, modalServices) {
+    function lotList ($rootScope, gmapServices, LOT_COLORS, drawingServices, modalServices, Blocks, Lots, alertServices) {
         var service = {};
 
         service.selectedLotInfowindow = gmapServices.createInfoWindow('');
@@ -102,14 +102,14 @@ angular.module('demoApp')
             });
             var polygon = gmapServices.createCustomPolygon(lot.area, polygonOpts);
 
-            var restangularizedLot = Lots.cast(lot);
-
+            Lots.cast(lot);
 
             var adminHandler = function (_lot) {
-                //console.log('admin handler for polygon click lot');
-                //console.log('lot: ', lot);
-
-                var content = '<button data-lot-id="'+_lot.id+'" class="md-raised md-button md-ink-ripple" id="admin-delete-lot-button" type="button">Delete Lot</button>';
+                var content = '<div style="min-height: 45px;">';
+                content += '<button data-lot-id="' + _lot.id + '" class="md-raised md-button md-primary md-hue-2 md-icon-button md-ink-ripple" id="admin-duplicate-lot-button" type="button"><i class="material-icons">content_copy</i></button>';
+                content += '<button data-lot-id="' + _lot.id + '" class="md-raised md-button md-primary md-icon-button md-ink-ripple" id="admin-update-lot-polygon-button" type="button"><i class="material-icons">format_shapes</i></button>';
+                content += '<button data-lot-id="'+_lot.id+'" class="md-raised md-button md-warn md-icon-button md-ink-ripple" id="admin-delete-lot-button" type="button"><i class="material-icons">delete</i></button>';
+                content += '</div>';
 
                 var center = gmapServices.getPolygonCenter(lot.polygon);
                 gmapServices.showInfoWindow(service.selectedLotInfowindow);
@@ -117,9 +117,6 @@ angular.module('demoApp')
                 service.selectedLotInfowindow.setContent(content);
 
                 $('#admin-delete-lot-button').click(function () {
-                    //var lotId = $(this).data('lot-id');
-                    //console.log('delete lot with id = ', lotId);
-
                     var polygonTemp = _lot.polygon;
 
                     _lot.polygon = null;
@@ -128,15 +125,94 @@ angular.module('demoApp')
                         .then(function(s){
                             gmapServices.hidePolygon(polygonTemp);
                             polygonTemp = null;
-                            //console.log('success deleting lot: ', s);
                         },function(e){
-                           //console.log('failed to delete lot: ',e);
                            _lot.polygon = polygonTemp;
-                           alert('Failed to Delete Lot');
+                           alertServices.showErrorMessage('Failed to Delete Lot');
                         })
                         .finally(function(){
                             gmapServices.hideInfoWindow(service.selectedLotInfowindow);
                         });
+                });
+
+                 $('#admin-duplicate-lot-button').click(function () {
+                     // terminate infowindow
+                     service.selectedLotInfowindow.close();
+
+                    drawingServices.duplicateLot(_lot);
+
+                     var duplicateListener = $rootScope.$on('save-duplicate', function (event, params) {
+                        modalServices.showAddLot(event, null, params.path)
+                            .then(function (result) {
+                                //console.log('success: ', result);
+
+                                var block = Blocks.cast(result.lot.block);
+                                service.add(block, result.lot);
+
+                                // todo
+                                //block.lots.push(result.lot);
+                            }, function (reason) {
+                                console.log('failed: ', reason);
+                            })
+                            .finally(function () {
+                                // destroy listener
+                                duplicateListener();
+                                duplicateListener = null;
+                            });
+                    });
+                });
+
+                $('#admin-update-lot-polygon-button').click(function () {
+                    // terminate infowindow
+                    service.selectedLotInfowindow.close();
+
+                    var oldPath = angular.copy(_lot.polygon.getPath());
+
+                    _lot.polygon.setOptions({
+                        draggable: true,
+                        editable: true
+                    });
+
+                    drawingServices.updateLotPolygon = _lot.polygon;
+
+                    $rootScope.$broadcast('duplicate-complete');
+
+                    var updateListener = $rootScope.$on('save-lot-polygon', function(e, params){
+                        var path = params.path;
+                        var tempPolygon = _lot.polygon;
+                        _lot.polygon = null;
+                        _lot.area = path;
+
+                        _lot.put()
+                            .then(function(response){
+                                //console.log('response: ', response);
+                                _lot.polygon = tempPolygon;
+                                tempPolygon = null;
+                                var opts = angular.merge({
+                                    draggable: false,
+                                    editable: false,
+                                    path: response.lot.area
+                                }, service.polygonOptions);
+                                _lot.polygon.setOptions(opts);
+
+                                $rootScope.$broadcast('end-drawing');
+
+                            },function(error){
+                               console.log('error: ',error);
+                            })
+                            .finally(function(){
+                                updateListener();
+                                updateListener = null;
+                            });
+                    });
+
+                    $rootScope.$on('stop-drawing', function(){
+                        var oldOpts = angular.merge({
+                            draggable: false,
+                            editable: false,
+                            path: oldPath
+                        }, service.polygonOptions);
+                        _lot.polygon.setOptions(oldOpts);
+                    });
                 });
             };
 
@@ -190,8 +266,6 @@ angular.module('demoApp')
         var lotInfowindow = gmapServices.createInfoWindow('');
 
         function showLotInfowindow(lot) {
-            //console.log('show lot infowindow: ', lot);
-
             var info = '<b>Lot:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
             info += '<b>Section:</b> ' + lot.block.section.name + ' <br>';
             info += '<b>Block:</b> ' + lot.block.name + ' <br>';

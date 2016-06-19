@@ -9,32 +9,45 @@
                </md-button>
            </div>
         </md-toolbar>
-        <md-dialog-content class="md-padding">
+        <md-dialog-content layout="column" class="md-padding">
 
-            <div layout="row">
-                <md-input-container>
+            <md-input-container ng-if="!addLotCtl.block || addLotCtl.sectionBlocks.length" flex>
+                <label>Section</label>
+                <md-select ng-model="addLotCtl.selectedSectionId">
+                    <md-option ng-repeat="section in addLotCtl.sections" value="{{ section.id }}">
+                        {{ section.name }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container ng-if="addLotCtl.sectionBlocks.length" flex>
+                <label>Block</label>
+                <md-select ng-model="addLotCtl.selectedBlockId">
+                    <md-option ng-repeat="block in addLotCtl.sectionBlocks" value="{{ block.id }}">
+                        {{ block.name }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+
+                <md-input-container flex>
                     <label>Lot No.</label>
                     <input type="text" name="name" ng-model="addLotCtl.lot.name" placeholder="Lot No." required>
                 </md-input-container>
-            </div>
 
-            <div layout="row">
                 <!-- Lot Dimension -->
-                <md-input-container>
+                <md-input-container flex>
                     <label>Dimension</label>
                     <input type="text" name="dimension" ng-model="addLotCtl.lot.dimension"
                            ng-model-options="{ debounce: 150 }" placeholder="Dimension"
                            allow-pattern="[Xx0-9.]"/>
                 </md-input-container>
-            </div>
 
-            <div layout="row">
                 <!-- Lot Area -->
-                <md-input-container>
+                <md-input-container flex>
                     <label>Lot Area</label>
                     <input type="number" name="lot_area" ng-model="addLotCtl.lot.lot_area" placeholder="Lot Area"/>
                 </md-input-container>
-            </div>
 
             <!--<p style="margin-top:5px;" ng-show="addLotCtl.lot.lot_area"><b>Lot Area: </b> {{ addLotCtl.lot.lot_area }} sq.meters</p>-->
 

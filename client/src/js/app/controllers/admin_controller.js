@@ -46,6 +46,17 @@ angular.module('demoApp')
                     vm.drawBtn.delete = true;
                 });
             });
+
+            $rootScope.$on('duplicate-complete', function () {
+                $scope.$apply(function () {
+                    vm.drawBtn.cancel = true;
+                    vm.drawBtn.save = true;
+                });
+            });
+
+            $rootScope.$on('end-drawing', function(){
+                terminateButtonsAndListeners();
+            });
         }
 
         function addSection (ev) {
@@ -70,6 +81,20 @@ angular.module('demoApp')
         }
 
         function saveArea() {
+            if (drawingServices.duplicateLotPolygon) {
+                var _path = drawingServices.getPolygonCoords(drawingServices.duplicateLotPolygon);
+                $rootScope.$broadcast('save-duplicate', {path: _path});
+                vm.stopDrawing();
+                return;
+            }
+
+            if (drawingServices.updateLotPolygon) {
+                var _path = drawingServices.getPolygonCoords(drawingServices.updateLotPolygon);
+                $rootScope.$broadcast('save-lot-polygon', {path: _path});
+                //vm.stopDrawing();
+                return;
+            }
+
             if (!drawingServices.overlay) {
                 alert('Cannot proceed. No Overlay Drawn.')
                 return;
@@ -89,19 +114,27 @@ angular.module('demoApp')
             }
         }
 
-        function stopDrawing () {
+        function terminateButtonsAndListeners () {
+            drawingServices.destroyUpdateLotPolygon();
+            drawingServices.destroyDuplicateLot();
             drawingServices.stopDrawingMode();
 
             // hide draw buttons
-            for(var key in vm.drawBtn) vm.drawBtn[key] = false;
+            for (var key in vm.drawBtn) vm.drawBtn[key] = false;
 
             // destroy save listeners
             for (var key in saveListeners) {
-                if(saveListeners[key]) {
+                if (saveListeners[key]) {
                     saveListeners[key]();
                     saveListeners[key] = null;
                 }
             }
+        }
+
+        function stopDrawing () {
+            $rootScope.$broadcast('stop-drawing');
+
+            terminateButtonsAndListeners();
         }
 
         /* Non Scope Functions here */
