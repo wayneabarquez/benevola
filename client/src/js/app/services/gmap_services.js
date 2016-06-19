@@ -139,7 +139,7 @@
 
             var mapOptions = {
                 zoom: service.defaultZoom,
-                minZoom: 2,
+                minZoom: 18,
                 center: service.centerLatLng,
                 mapTypeControl: false,
                 mapTypeId: google.maps.MapTypeId.HYBRID,
