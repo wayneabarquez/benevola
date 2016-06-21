@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', 'Clients', modalServices]);
+    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', 'Clients', 'Sections', modalServices]);
 
-    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings, Clients) {
+    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings, Clients, Sections) {
         var service = {};
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
@@ -125,6 +125,11 @@ angular.module('demoApp')
                 templateUrl: 'partials/modals/add_lot_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 locals: {block: block, area: area},
+                resolve: {
+                    sections: function(){
+                        return Sections.getList();
+                    }
+                },
                 targetEvent: event,
                 fullscreen: service.customFullscreen
             };
@@ -144,6 +149,7 @@ angular.module('demoApp')
                         templateUrl: 'partials/modals/lot_details_dialog.tmpl.html',
                         parent: angular.element(document.body),
                         locals: {lot: result},
+
                         fullscreen: service.customFullscreen
                     };
 

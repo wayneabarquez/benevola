@@ -51,8 +51,8 @@
 
         // Table Header
         vm.tableHeaderList = [
-            'Section No.',
-            'Block No.',
+            'Section',
+            'Block',
             'Lot No.',
             'Dimension',
             'Area',
