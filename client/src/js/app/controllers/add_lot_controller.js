@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', 'lotHelper', 'Sections', addLotController]);
+    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', 'lotHelper', 'sections', 'Sections', addLotController]);
 
-    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices, lotHelper, Sections) {
+    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices, lotHelper, sections, Sections) {
         var vm = this;
 
         vm.block = null;
@@ -17,7 +17,7 @@ angular.module('demoApp')
             lot_area: ''
         };
 
-        vm.sections = [];
+        vm.sections = sections;
         vm.sectionBlocks = [];
 
         vm.selectedSectionId = null;
@@ -36,11 +36,6 @@ angular.module('demoApp')
             if(block) {
                 vm.lot.block_id = block.id;
                 vm.block = Blocks.cast(block);
-            } else {
-                Sections.getList()
-                    .then(function(list){
-                        vm.sections = list;
-                    });
             }
 
             $scope.$watch(function () {
