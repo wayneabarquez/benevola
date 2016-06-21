@@ -127,7 +127,7 @@ angular.module('demoApp')
                 locals: {block: block, area: area},
                 resolve: {
                     sections: function(){
-                        return Sections.getList();
+                        return Sections.customGET('basic');
                     }
                 },
                 targetEvent: event,
