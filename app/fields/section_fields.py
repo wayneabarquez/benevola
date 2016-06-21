@@ -1,6 +1,6 @@
 from flask.ext.restful import fields
 from app.utils.gis_json_fields import PolygonToLatLng
-from app.fields.block_fields import block_fields
+from app.fields.block_fields import block_fields, block_simple_fields
 from copy import copy
 
 success_fields = dict(
@@ -24,3 +24,6 @@ section_create_fields = dict(
 
 section_complete_fields = copy(section_fields)
 section_complete_fields['blocks'] = fields.Nested(block_fields)
+
+section_basic_fields = copy(section_fields)
+section_basic_fields['blocks'] = fields.Nested(block_simple_fields)

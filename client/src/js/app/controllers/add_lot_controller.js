@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', 'lotHelper', 'sections', 'Sections', addLotController]);
+    .controller('addLotController', ['$scope', '$mdDialog', 'block', 'area', 'Blocks', 'alertServices', 'lotHelper', 'sections', addLotController]);
 
-    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices, lotHelper, sections, Sections) {
+    function addLotController ($scope, $mdDialog, block, area, Blocks, alertServices, lotHelper, sections) {
         var vm = this;
 
         vm.block = null;

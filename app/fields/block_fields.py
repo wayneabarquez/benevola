@@ -15,6 +15,13 @@ section_basic_fields = dict(
     date_modified=fields.DateTime("iso8601")
 )
 
+block_simple_fields = dict(
+    id=fields.Integer,
+    section_id=fields.Integer,
+    name=fields.String,
+    area=PolygonToLatLng(attribute='area')
+)
+
 block_basic_fields = dict(
     id=fields.Integer,
     section_id=fields.Integer,

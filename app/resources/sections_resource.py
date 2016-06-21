@@ -38,6 +38,21 @@ class SectionsResource(Resource):
             abort(400, message="Invalid Parameters", errors=form.errors)
 
 
+class SectionsBasicResource(Resource):
+    """
+    Resource for Section Basic Fields
+    """
+
+    @marshal_with(section_basic_fields)
+    def get(self):
+        """ GET /api/sections """
+        # TODO check authenticated user
+        # TODO: Handle logins for 401s
+        sections = section_service.get_sections()
+        log.debug("Sections Basic Resource Data: {0}".format(sections))
+        return sections
+
+
 class SectionDetailResource(Resource):
     """
     Resource for Section Detail
@@ -74,4 +89,5 @@ class SectionDetailResource(Resource):
 
 
 rest_api.add_resource(SectionsResource, '/api/sections')
+rest_api.add_resource(SectionsBasicResource, '/api/sections/basic')
 rest_api.add_resource(SectionDetailResource, '/api/sections/<int:section_id>')
