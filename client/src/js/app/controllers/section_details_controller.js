@@ -46,6 +46,8 @@ angular.module('demoApp')
 
         function initialize () {
             $rootScope.$on('show-section-details', function(event, params){
+                console.log('show-section-details');
+
                 vm.editMode = false;
                 vm.section = params.section;
                 vm.tempSection.name = params.section.name;
@@ -67,6 +69,7 @@ angular.module('demoApp')
                 }
 
                 vm.tempSection.polygon = tempSectionPolygon;
+                console.log('vm.tempSection.polygon: ', vm.tempSection.polygon);
                 //vm.tempSection.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
             });
         }
@@ -79,7 +82,8 @@ angular.module('demoApp')
 
         function saveChanges () {
             toggle(false);
-            vm.tempSection.area = drawingServices.getPolygonCoords(vm.tempSection.polygon);
+            vm.tempSection.area = drawingServices.getPolygonCoords(vm.section.polygon);
+            //vm.tempSection.area = drawingServices.getPolygonCoords(vm.tempSection.polygon);
 
 
             console.log('vm.section: ', vm.section);
@@ -93,8 +97,11 @@ angular.module('demoApp')
 
             vm.section.put()
                 .then(function(response){
-                    gmapServices.hidePolygon(vm.tempSection.polygon);
-                    vm.tempSection.polygon = null;
+                    //gmapServices.hidePolygon(vm.tempSection.polygon);
+                    //vm.tempSection.polygon = null;
+                    //vm.lastPolygon = null;
+                    gmapServices.hidePolygon(vm.section.polygon);
+                    vm.section.polygon = null;
                     vm.lastPolygon = null;
 
                     vm.section.polygon = gmapServices.createCustomPolygon(vm.section.area, sectionList.polygonOptions);
@@ -167,7 +174,8 @@ angular.module('demoApp')
 
         function toggle(flag) {
             vm.editMode = flag;
-            gmapServices.setEditablePolygon(vm.tempSection.polygon, flag);
+            gmapServices.setEditablePolygon(vm.section.polygon, flag);
+            //gmapServices.setEditablePolygon(vm.tempSection.polygon, flag);
         }
 
         vm.openBlockMenu = openBlockMenu;
