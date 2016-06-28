@@ -139,7 +139,7 @@
 
             var mapOptions = {
                 zoom: service.defaultZoom,
-                minZoom: 18,
+                minZoom: 2,
                 center: service.centerLatLng,
                 mapTypeControl: false,
                 mapTypeId: google.maps.MapTypeId.HYBRID,
@@ -694,6 +694,8 @@
 
         function setEditablePolygon (polygon, flag) {
             var isEditable = flag !== false;
+
+            console.log('polygon: ',polygon);
 
             polygon.setOptions({editable: isEditable, draggable: isEditable});
         }
