@@ -39,3 +39,18 @@ def generate_sales_report():
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-disposition": "attachment; filename=" + file_dict['name']}
     )
+
+
+@home.route('/reports/cremation_list', methods=['GET'])
+def generate_cremation_list_report():
+    start_date = request.args['start']
+    end_date = request.args['end']
+
+    file_dict = reports_service.generate_cremation_list_report(start_date, end_date)
+
+    excel_download = open(file_dict['dir'], 'rb').read()
+    return Response(
+        excel_download,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-disposition": "attachment; filename=" + file_dict['name']}
+    )

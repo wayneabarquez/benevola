@@ -2,6 +2,7 @@ from openpyxl import Workbook
 from openpyxl.cell import Cell
 from openpyxl.styles import Style, Font, Alignment
 from openpyxl.styles.borders import Border, Side
+from app.utils.date_utils import convert_24_hour_to_12_hour, convert_date_to_human_readable
 from app import app
 from app.services import section_service
 import logging
@@ -12,6 +13,7 @@ log = logging.getLogger(__name__)
 LOT_LIST_FOLDER = app.config['LOT_LIST_REPORTS_FOLDER']
 CEMETERY_NAME = app.config['CEMETERY_NAME']
 CEMETERY_LOCATION = app.config['CEMETERY_LOCATION']
+CREMATION_LIST_FOLDER = app.config['CREMATION_LIST_REPORTS_FOLDER']
 
 thin_border = Border(left=Side(style='thin'),
                      right=Side(style='thin'),
@@ -173,6 +175,8 @@ def print_sales_content(collection, ws):
     for item in collection:
         if item.label == 'Cemetery Lot':
             amount = item.lot_area * item.price_per_sq_mtr
+        # elif item.label == 'Cremation': # todo no amount for cremation yet
+        #     amount = 0
         elif item.label == 'Columbary':
             amount = item.price if item.price is not None else 0
 
@@ -196,6 +200,24 @@ def print_sales_content(collection, ws):
     ws.append(['', '', '', total_label_cell, total_cell])
 
 
+def print_cremation_list_content(collection, ws):
+    # Table Header
+    table_headers = ['DATE', 'NAME OF DECEASED CREMATED', 'SEX', 'AGE', 'TIME STARTED', 'TIME FINISHED', 'GAS (liters)']
+    table_header_cells = []
+
+    for h in table_headers:
+        c = underline_border_cell(h, ws)
+        table_header_cells.append(c)
+    r = [''] + table_header_cells
+    ws.append(r)
+
+    for item in collection:
+        client = item.funeral_homes.name if item.funeral_homes is not None else item.deceased.full_name.upper()
+        ws.append(['', convert_date_to_human_readable(item.date_cremated), client,
+                   item.deceased.gender[0].upper(), item.deceased.age, convert_24_hour_to_12_hour(item.time_started),
+                   convert_24_hour_to_12_hour(item.time_finished), item.gas_consumed])
+
+
 def generate_sales_report(start_date, end_date):
     from app.services import lot_service
     collection = lot_service.get_sales_data_by_date(start_date, end_date)
@@ -210,6 +232,26 @@ def generate_sales_report(start_date, end_date):
 
     filename = generate_sales_file_name() + ".xlsx"
     file_dict = {'name': filename, 'dir': LOT_LIST_FOLDER + filename}
+    # Save the file
+    wb.save(file_dict['dir'])
+
+    return file_dict
+
+
+def generate_cremation_list_report(start_date, end_date):
+    from app.crematorium.services import get_cremation_list_by_date
+    collection = get_cremation_list_by_date(start_date, end_date)
+
+    wb = Workbook()
+    # grab the active worksheet
+    ws = wb.active
+    print_worksheet_header(ws)
+
+    # print_sales_content(lots, ws)
+    print_cremation_list_content(collection, ws)
+
+    filename = generate_file_name('CREMATION_LIST_') + ".xlsx"
+    file_dict = {'name': filename, 'dir': CREMATION_LIST_FOLDER + filename}
     # Save the file
     wb.save(file_dict['dir'])
 

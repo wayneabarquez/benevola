@@ -355,10 +355,19 @@
                     <md-content>
                         <md-list flex>
                             <md-subheader class="md-no-sticky">{{ lotDetsCtl.lot.deceased.length }} occupants</md-subheader>
-                            <md-list-item class="md-2-line" ng-repeat="dead in lotDetsCtl.lot.deceased">
+                            <md-list-item class="md-2-line" layout="row" ng-repeat="dead in lotDetsCtl.lot.deceased">
                                 <div class="md-list-item-text" layout="column">
                                     <h4>{{ dead.first_name + ' ' + dead.last_name }}</h4>
                                     <p>{{ dead.date_of_birth ? dead.date_of_birth : 'undefined' }} - {{ dead.date_of_death }}</p>
+                                </div>
+                                <span flex></span>
+                                <div layout-padding>
+                                    <md-button class="padding-0 margin-0 md-icon-button" ng-click="lotDetsCtl.showUpdateDeceased(dead)">
+                                        <md-icon>mode_edit</md-icon>
+                                    </md-button>
+                                    <md-button class="padding-0 margin-0 md-icon-button" ng-click="lotDetsCtl.deleteDeceased(dead)">
+                                        <md-icon>delete</md-icon>
+                                    </md-button>
                                 </div>
                             </md-list-item>
                         </md-list>

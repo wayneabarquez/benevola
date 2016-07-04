@@ -36,7 +36,7 @@ angular.module('demoApp')
         // Table Header
         vm.tableHeaderList = [
             'Date',
-            'Name of Deceased Cremated',
+            'Name',
             'Sex',
             'Age',
             'Time Started',

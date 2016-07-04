@@ -1,0 +1,116 @@
+<md-dialog id="lot-client-select-modal" class="form-modal" aria-label="Update Deceased" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h4>Update Deceased Record</h4>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <md-icon aria-label="Close dialog">clear</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
+
+            <md-card>
+                <md-card-content>
+
+                    <div layout-gt-sm="row">
+                        <form name="updateDeceasedForm">
+                            <div>
+                                <!-- Firstname -->
+                                <md-input-container>
+                                    <label>Firstname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="firstname"
+                                           ng-model="vm.deceased.first_name">
+                                    <div ng-messages="updateDeceasedForm.firstname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Lastname -->
+                                <md-input-container>
+                                    <label>Lastname</label>
+                                    <input md-minlength="2" required md-no-asterisk name="lastname"
+                                           ng-model="vm.deceased.last_name">
+
+                                    <div ng-messages="updateDeceasedForm.lastname.$error">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <!-- Middlename -->
+                                <md-input-container>
+                                    <label>Middlename</label>
+                                    <input md-minlength="2" md-no-asterisk name="middlename"
+                                           ng-model="vm.deceased.middle_name">
+
+                                    <div ng-messages="updateDeceasedForm.middlename.$error">
+                                        <div ng-message="md-minlength">Must be atleast 2 characters long.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex>
+                                    <label>Gender</label>
+                                    <md-select ng-model="vm.deceased.gender">
+                                        <md-option ng-repeat="s in ['male', 'female']" value="{{ s }}">
+                                            {{ s }}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row" layout-align="center center">
+                                <div flex>
+                                    <!-- Date of Birth -->
+                                    <h4>Date of Birth</h4>
+                                    <!--<md-datepicker required name="date_of_birth"
+                                                   md-max-date="maxDate"
+                                                   ng-model="vm.deceased.date_of_birth"
+                                                   md-placeholder="Select Date">
+                                    </md-datepicker>-->
+                                    <md-input-container md-no-float class="md-block">
+                                        <input type="date" max="{{maxDate}}" ng-model="vm.deceased.date_of_birth"
+                                               placeholder="Select Date">
+                                        <div class="validation-messages" ng-messages="updateDeceasedForm.date_of_birth.$error"
+                                             style="color: red;">
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="maxDate">Date is invalid.</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div flex>
+                                    <!-- Date of Death -->
+                                    <h4>Date of Death</h4>
+                                    <md-datepicker required name="date_of_death"
+                                                   md-max-date="maxDate"
+                                                   ng-model="vm.deceased.date_of_death"
+                                                   md-placeholder="Select Date">
+                                    </md-datepicker>
+                                    <div class="validation-messages" ng-messages="updateDeceasedForm.date_of_death.$error"
+                                         style="color: red;">
+                                        <div ng-message="required">This is required.</div>
+                                        <div ng-message="maxDate">Date is invalid.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </md-card-content>
+            </md-card>
+
+            <span layout="row" layout-align="end center">
+                <span flex></span>
+
+                <md-button ng-click="vm.clearForm()">
+                    <md-icon>clear</md-icon>
+                    Clear Form
+                </md-button>
+
+                <md-button class="md-primary" ng-click="vm.save()">Save</md-button>
+            </span>
+        </md-dialog-content>
+</md-dialog>
