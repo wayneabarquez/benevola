@@ -5,7 +5,7 @@
                    ng-mouseenter="mainCtl.isFabOpen=true" ng-mouseleave="mainCtl.isFabOpen=false">
     <md-fab-trigger>
         <md-button aria-label="menu" class="md-primary md-icon-button md-raised">
-            <md-tooltip md-direction="top">Generate Report</md-tooltip>
+            <!--<md-tooltip md-direction="top">Generate Report</md-tooltip>-->
             <md-icon>assignment</md-icon>
         </md-button>
     </md-fab-trigger>
@@ -13,6 +13,10 @@
         <md-button class="md-fab md-raised md-mini" ng-click="mainCtl.generateLotListReport()">
             <md-tooltip md-direction="top" md-visible="mainCtl.tooltipVisible">Lot List</md-tooltip>
             <md-icon>description</md-icon>
+        </md-button>
+        <md-button class="md-fab md-raised md-mini" ng-click="mainCtl.generateCremationListReport()">
+            <md-tooltip md-direction="bottom" md-visible="mainCtl.tooltipVisible">Cremation List</md-tooltip>
+            <md-icon>whatshot</md-icon>
         </md-button>
         <md-button class="md-fab md-raised md-mini" ng-click="mainCtl.generateSalesReport()">
             <md-tooltip md-direction="left" md-visible="mainCtl.tooltipVisible">Cremation & Lot Sales</md-tooltip>

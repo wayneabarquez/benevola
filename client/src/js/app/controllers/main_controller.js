@@ -42,6 +42,7 @@ angular.module('demoApp')
 
         vm.generateLotListReport = generateLotListReport;
         vm.generateSalesReport = generateSalesReport;
+        vm.generateCremationListReport = generateCremationListReport;
 
         vm.initialize();
 
@@ -79,8 +80,11 @@ angular.module('demoApp')
         }
 
         function generateSalesReport () {
-            console.log('generate sales report');
             modalServices.showSalesReport();
+        }
+
+        function generateCremationListReport () {
+            modalServices.showCremationListReport();
         }
 
     }

@@ -3,3 +3,4 @@ from sections_resource import *
 from blocks_resource import *
 from lots_resource import *
 from clients_resource import *
+from deceased_resource import *

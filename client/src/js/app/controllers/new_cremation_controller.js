@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('newCremationController', ['$scope', '$rootScope', 'Crematorium', newCremationController]);
+    .controller('newCremationController', ['$scope', '$rootScope', 'Crematorium', 'modalServices', newCremationController]);
 
-    function newCremationController ($scope, $rootScope, Crematorium) {
+    function newCremationController ($scope, $rootScope, Crematorium, modalServices) {
         var vm = this;
 
         vm.currentDate = new Date();
@@ -24,12 +24,16 @@ angular.module('demoApp')
             gas_consumed: ''
         };
 
+        vm.cremationClear = angular.copy(vm.cremation);
+
         vm.cremationDates = {
             date_of_birth: '',
             date_of_death: '',
             time_started: '',
             time_finished: '',
         };
+
+        vm.cremationDatesClear = angular.copy(vm.cremationDates);
 
         vm.initialize = initialize;
         vm.save = save;
@@ -80,6 +84,12 @@ angular.module('demoApp')
                 if (!newDate || newDate === oldDate) return;
                 vm.cremation.time_finished = newDate.getHours() + ':' + newDate.getMinutes();
             });
+
+            $rootScope.$watch('showNewCremationFormPanel', function(newValue, oldValue){
+                //console.log('scope destroyed');
+                if(newValue === oldValue) return;
+                if(!newValue) modalServices.showCrematorium(null);
+            });
         }
 
         function save () {
@@ -91,6 +101,10 @@ angular.module('demoApp')
                     close();
                 },function(error){
                     console.log('error saving cremation: ', error);
+                }).finally( function(){
+                    vm.cremation = angular.copy(vm.cremationClear);
+                    vm.cremationDates = angular.copy(vm.cremationDatesClear);
+                    $scope.newCremationForm.$setPristine();
                 });
         }
 

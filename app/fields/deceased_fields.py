@@ -6,6 +6,7 @@ deceased_fields = dict(
     first_name=fields.String,
     last_name=fields.String,
     middle_name=fields.String,
+    full_name=fields.String,
     gender=fields.String,
     date_of_birth=fields.DateTime("iso8601"),
     age=fields.String,

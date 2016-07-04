@@ -61,7 +61,7 @@
                             | limitTo: cremListCtl.query.max_per_page : (cremListCtl.query.page - 1) * cremListCtl.query.max_per_page">
 
                             <td md-cell width="20%">{{ c.date_cremated | amDateFormat:'MMMM DD YYYY' }}</td>
-                            <td md-cell>{{ c.deceased.first_name }} {{ c.deceased.last_name }}</td>
+                            <td md-cell>{{ (c.deceased && c.deceased.first_name ? c.deceased.full_name : c.funeral_homes.name) }}</td>
                             <td md-cell>{{ c.deceased.gender }}</td>
                             <td md-cell>{{ c.deceased.age }}</td>
                             <td md-cell>{{ c.time_started }}</td>

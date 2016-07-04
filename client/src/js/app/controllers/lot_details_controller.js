@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', 'Restangular', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', 'Restangular', 'alertServices', 'Deceased', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper, Restangular) {
+    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper, Restangular, alertServices, Deceased) {
         var vm = this;
 
         $scope.showEditLotNameForm = false;
@@ -31,6 +31,10 @@ angular.module('demoApp')
         vm.updateLotName = updateLotName;
         vm.updateLotArea = updateLotArea;
         vm.updateLotBlockNo = updateLotBlockNo;
+
+        vm.showUpdateDeceased = showUpdateDeceased;
+        vm.deleteDeceased = deleteDeceased;
+
         vm.cancel = cancel;
 
         vm.initialize();
@@ -174,11 +178,37 @@ angular.module('demoApp')
         function updateLotBlockNo () {
             updateLot()
                 .then(function (response) {
-                    console.log('update lot block no response: ',response);
                     vm.lot.block_id = response.lot.block_id;
                     vm.lot.block = response.lot.block;
                     $scope.showEditLotBlockNoForm = false;
                 });
+        }
+
+        function showUpdateDeceased (deceased) {
+            // show modal
+            modalServices.showUpdateDeceased(Deceased.cast(deceased))
+                .then(function (response) {
+                });
+        }
+
+        function deleteDeceased (deceased) {
+            var callback = function (isConfirm) {
+              if (isConfirm) {
+                  var deceasedRest = Deceased.cast(deceased);
+                  deceasedRest.remove()
+                      .then(function(response){
+                          if (response.status == 200) {
+                              var index = _.findIndex(vm.lot.deceased, {id: parseInt(deceased.id)});
+                              if(index > -1) {
+                                  vm.lot.deceased.splice(index, 1);
+                                  alertServices.showMessage('Deceased/Occupant Removed.', 'success');
+                              }
+                          }
+                      });
+              } else alertServices.showMessage('Cancelled', 'error');
+            };
+
+            alertServices.showPrompt('Deceased/Occupant', callback);
         }
 
         function cancel () {

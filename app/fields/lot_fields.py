@@ -59,7 +59,7 @@ lot_client_create_fields = dict(
 )
 
 lot_complete_fields = copy(lot_fields)
-lot_complete_fields['deceased'] = fields.Nested(deceased_fields)
+lot_complete_fields['deceased'] = fields.List(fields.Nested(deceased_fields))
 lot_complete_fields['client'] = fields.Nested(client_fields)
 
 

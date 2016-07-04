@@ -6,6 +6,7 @@ from app.home.models import Lot, Deceased, Client, DeceasedOccupancy
 from app.columbary.models import Columbary
 from app.home.forms import AddClientForm
 from app.constants.lot_constants import SOLD
+from app.crematorium.services import get_cremation_by_date
 import datetime
 import logging
 
@@ -167,12 +168,14 @@ def get_columbary_by_date(start_date, end_date):
     return list
 
 
-# Consolidated Data from lot, columbary
+# Consolidated Data from lot, cremation
 def get_sales_data_by_date(start_date, end_date):
     result = get_lot_by_date(start_date, end_date) + get_columbary_by_date(start_date, end_date)
+    # result = get_lot_by_date(start_date, end_date) + get_cremation_by_date(start_date, end_date)
 
     # sort by date_purchased
     result.sort(key=lambda item: item.date_purchased)
+    # result.sort(key=lambda item: item.date_purchased if item.date_purchased is not None else item.date_cremated)
 
     return result
 

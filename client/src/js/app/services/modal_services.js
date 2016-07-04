@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', 'Clients', 'Sections', modalServices]);
+    .factory('modalServices', ['$mdDialog', '$mdMedia', '$rootScope', '$q', 'Settings', 'Clients', modalServices]);
 
-    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings, Clients, Sections) {
+    function modalServices ($mdDialog, $mdMedia, $rootScope, $q, Settings, Clients) {
         var service = {};
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
@@ -37,6 +37,9 @@ angular.module('demoApp')
         service.salesReportModal = null;
         service.showSalesReport = showSalesReport;
 
+        service.cremationListReportModal = null;
+        service.showCremationListReport = showCremationListReport;
+
         service.showColumbaryListModal = null;
         service.showColumbaryList = showColumbaryList;
 
@@ -45,6 +48,9 @@ angular.module('demoApp')
 
         var showCrematoriumModal = null;
         service.showCrematorium = showCrematorium;
+
+        var showUpdateDeceasedModal = null;
+        service.showUpdateDeceased = showUpdateDeceased;
 
         //var showNewCremationModal = null;
         //service.showNewCremation = showNewCremation;
@@ -125,11 +131,6 @@ angular.module('demoApp')
                 templateUrl: 'partials/modals/add_lot_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 locals: {block: block, area: area},
-                resolve: {
-                    sections: function(){
-                        return Sections.customGET('basic');
-                    }
-                },
                 targetEvent: event,
                 fullscreen: service.customFullscreen
             };
@@ -149,7 +150,6 @@ angular.module('demoApp')
                         templateUrl: 'partials/modals/lot_details_dialog.tmpl.html',
                         parent: angular.element(document.body),
                         locals: {lot: result},
-
                         fullscreen: service.customFullscreen
                     };
 
@@ -211,6 +211,18 @@ angular.module('demoApp')
             return showModal(service.salesReportModal, opts);
         }
 
+        function showCremationListReport () {
+            var opts = {
+                controller: 'cremationListReportController',
+                controllerAs: 'clr',
+                templateUrl: 'partials/modals/cremation_list_report_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(service.cremationListReportModal, opts);
+        }
+
         function showColumbaryList(event) {
             var opts = {
                 controller: 'columbaryListController',
@@ -267,8 +279,6 @@ angular.module('demoApp')
                 fullscreen: service.customFullscreen
             };
 
-            console.log('show crem modal');
-
             return showModal(showCrematoriumModal, opts);
         }
 
@@ -284,6 +294,19 @@ angular.module('demoApp')
         //
         //    return showModal(showNewCremationModal, opts);
         //}
+
+        function showUpdateDeceased (deceased) {
+            var opts = {
+                controller: 'updateDeceasedController',
+                controllerAs: 'vm',
+                templateUrl: 'partials/modals/update_deceased.tmpl.html',
+                parent: angular.element(document.body),
+                locals: {deceased: deceased},
+                fullscreen: service.customFullscreen
+            };
+
+            return showModal(showUpdateDeceasedModal, opts);
+        }
 
         function closeModal() {
             $mdDialog.cancel();

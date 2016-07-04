@@ -13,6 +13,10 @@ class Person(BaseModel):
     date_of_birth = db.Column(db.Date)
 
     @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
+    @property
     def age(self):
         if self.date_of_birth is None:
             return ''

@@ -2,9 +2,16 @@ from flask.ext.restful import fields
 from app.fields.deceased_fields import deceased_fields
 from copy import copy
 
+funeral_homes_fields = dict(
+    id=fields.Integer,
+    name=fields.String,
+    address=fields.String
+)
+
 cremation_fields = dict(
     id=fields.Integer,
     deceased=fields.Nested(deceased_fields),
+    funeral_homes=fields.Nested(funeral_homes_fields),
     date_cremated=fields.DateTime("iso8601"),
     time_started=fields.String,
     time_finished=fields.String,

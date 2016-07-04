@@ -2,8 +2,8 @@
 <div ng-controller="newCremationController as newCremCtl"
      ng-show="showNewCremationFormPanel"
      class="md-whiteframe-2dp"
-     style="position:absolute;    top: calc(50% - 250px);
-    left: calc(50% - 300px);"
+     style="position:absolute; top: calc(50% - 300px);
+    left: calc(50% - 350px);"
      flex>
         <form name="newCremationForm">
             <md-toolbar>
@@ -20,17 +20,24 @@
                 <div layout="column" layout-margin>
 
                     <div layout="row">
-                        <md-input-container>
+                        <md-input-container flex>
+                            <label>Funeral Homes</label>
+                            <input type="text" name="funeral_homes" ng-model="newCremCtl.cremation.funeral_homes.name">
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row">
+                        <md-input-container flex>
                             <label>Firstname</label>
-                            <input type="text" name="first_name" ng-model="newCremCtl.cremation.deceased.first_name" required>
+                            <input type="text" name="first_name" ng-model="newCremCtl.cremation.deceased.first_name"> <!-- TODO: make a directive, required if funeral_homes is null -->
                         </md-input-container>
 
-                        <md-input-container>
+                        <md-input-container flex>
                             <label>Lastname</label>
-                            <input type="text" name="last_name" ng-model="newCremCtl.cremation.deceased.last_name" required>
+                            <input type="text" name="last_name" ng-model="newCremCtl.cremation.deceased.last_name"> <!-- TODO: make a directive, required if funeral_homes is null -->
                         </md-input-container>
 
-                        <md-input-container>
+                        <md-input-container flex>
                             <label>Middlename</label>
                             <input type="text" name="middle_name" ng-model="newCremCtl.cremation.deceased.middle_name">
                         </md-input-container>
