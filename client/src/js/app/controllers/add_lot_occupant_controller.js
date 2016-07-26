@@ -2,29 +2,22 @@
     'use strict';
 
     angular.module('demoApp')
-        .controller('addLotOccupantController', ['$rootScope', '$scope', '$mdDialog', 'lot', 'modalServices', addLotOccupantController]);
+        .controller('addLotOccupantController', ['$rootScope', '$scope', '$mdDialog', 'lot', 'dateUtils', 'modalServices', addLotOccupantController]);
 
-    function addLotOccupantController($rootScope, $scope, $mdDialog, lot, modalServices) {
+    function addLotOccupantController($rootScope, $scope, $mdDialog, lot, dateUtils, modalServices) {
         var vm = this;
 
         vm.lot = null;
         vm.occupant = {};
 
-        vm.initialize = initialize;
         vm.save = save;
         vm.cancel = cancel;
         vm.clearForm = clearForm;
 
-        vm.initialize();
 
         $scope.maxDate = new Date();
 
         /* Controller Functions here */
-
-        function initialize() {
-            vm.lot = lot;
-            console.log('lot details: ', vm.lot);
-        }
 
         function save() {
             if($scope.newForm.$valid) {
@@ -54,5 +47,24 @@
             $scope.newForm.$setPristine();
         }
 
+        function initialize() {
+            vm.lot = lot;
+
+            $scope.$watch(function () {
+                return vm.occupant.date_of_birth_obj;
+            }, function (newValue) {
+                if (!newValue || !newValue instanceof Date) return;
+                vm.occupant.date_of_birth = dateUtils.parseDateToISOString(newValue);
+            });
+
+            $scope.$watch(function () {
+                return vm.occupant.date_of_death_obj;
+            }, function (newValue) {
+                if (!newValue || !newValue instanceof Date) return;
+                vm.occupant.date_of_death = dateUtils.parseDateToISOString(newValue);
+            });
+        }
+
+        initialize();
     }
 }());
