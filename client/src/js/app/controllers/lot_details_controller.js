@@ -32,6 +32,8 @@ angular.module('demoApp')
         vm.updateLotArea = updateLotArea;
         vm.updateLotBlockNo = updateLotBlockNo;
 
+        vm.showUpdateClient = showUpdateClient;
+
         vm.showUpdateDeceased = showUpdateDeceased;
         vm.deleteDeceased = deleteDeceased;
 
@@ -209,6 +211,14 @@ angular.module('demoApp')
             };
 
             alertServices.showPrompt('Deceased/Occupant', callback);
+        }
+
+        function showUpdateClient () { // todo
+            console.log('update owner');
+            modalServices.updateLotOwner(vm.lot)
+                .then(function(response){
+
+                });
         }
 
         function cancel () {

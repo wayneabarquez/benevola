@@ -9,6 +9,7 @@ angular.module('demoApp')
 
         service.customFullscreen = $mdMedia('sm') || $mdMedia('xs');
 
+        service.hideResolve = hideResolve;
         service.closeModal = closeModal;
 
         service.settingsModal = null;
@@ -30,6 +31,9 @@ angular.module('demoApp')
 
         service.showClientSelectionModal = null;
         service.showClientSelection = showClientSelection;
+
+        var updateLotOwnerModal;
+        service.updateLotOwner = updateLotOwner;
 
         service.showAddOccupantModal = null;
         service.showAddOccupant = showAddOccupant;
@@ -186,6 +190,33 @@ angular.module('demoApp')
             return dfd.promise;
         }
 
+        function updateLotOwner (lot) {
+            var dfd = $q.defer();
+
+            Clients.getList()
+                .then(function (resp) {
+                    var clients = [];
+                    resp.forEach(function (cl) {
+                        clients.push(cl);
+                    });
+
+                    var opts = {
+                        controller: 'updateLotOwnerController',
+                        controllerAs: 'clientSelectCtl',
+                        templateUrl: 'partials/modals/lot_client_select_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        locals: {lot: lot, clients: clients},
+                        fullscreen: service.customFullscreen
+                    };
+
+                    dfd.resolve(showModal(updateLotOwnerModal, opts));
+                }, function (error) {
+                    dfd.reject(error);
+                });
+
+            return dfd.promise;
+        }
+
         function showAddOccupant (lot) {
             var opts = {
                 controller: 'addLotOccupantController',
@@ -306,6 +337,10 @@ angular.module('demoApp')
             };
 
             return showModal(showUpdateDeceasedModal, opts);
+        }
+
+        function hideResolve (data) {
+            $mdDialog.hide(data);
         }
 
         function closeModal() {

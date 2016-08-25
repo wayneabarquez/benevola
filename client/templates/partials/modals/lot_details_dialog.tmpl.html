@@ -169,8 +169,18 @@
                                 </p>
 
                                 <!-- LOT OWNER -->
-                                <p ng-if="lotDetsCtl.lot.status != 'vacant'">Owner:
-                                    <span>{{ lotDetsCtl.lot.client.last_name + ', ' + lotDetsCtl.lot.client.first_name }}</span>
+                                <p ng-if="lotDetsCtl.lot.status != 'vacant'"
+                                   ng-mouseenter="showEditLotOwnerBtn = true"
+                                   ng-mouseleave="showEditLotOwnerBtn = false">
+                                    Owner:
+                                    <span>
+                                        <md-button class="md-icon-button small-icon-button"
+                                                   ng-show="showEditLotOwnerBtn"
+                                                   ng-click="lotDetsCtl.showUpdateClient()">
+                                            <md-icon>edit</md-icon>
+                                        </md-button>
+                                         {{ lotDetsCtl.lot.client.last_name + ', ' + lotDetsCtl.lot.client.first_name }}
+                                    </span>
                                 </p>
 
                                 <!-- LOT DIMENSION -->
