@@ -46,8 +46,6 @@ angular.module('demoApp')
 
         function initialize () {
             $rootScope.$on('show-section-details', function(event, params){
-                console.log('show-section-details');
-
                 vm.editMode = false;
                 vm.section = params.section;
                 vm.tempSection.name = params.section.name;
