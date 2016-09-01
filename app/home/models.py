@@ -33,12 +33,14 @@ class Section(BaseModel):
         blocks = []
         for blk in self.blocks:
             blocks.append(blk.to_dict())
+        # return sorted(blocks, key=lambda k: k['name'])
         return blocks
 
     def get_lots(self):
         lots = []
         for blk in self.blocks:
             lots = lots + blk.get_lots()
+        # return sorted(lots, key=lambda k: k['name'])
         return lots
 
 

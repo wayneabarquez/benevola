@@ -24,7 +24,7 @@
         };
 
         vm.query = {
-            order: 'status',
+            order: '',
             limit: 10,
             page: 1,
             filter: ''
@@ -32,7 +32,12 @@
 
         vm.filter = {
             show: false,
-            form: null
+            form: null,
+            column: {
+                section: '',
+                block: '',
+                lot: ''
+            }
         };
 
         vm.searchFilters = {
@@ -93,7 +98,27 @@
 
             $scope.$watch(angular.bind(vm, function () {
                 return vm.query.filter;
-            }), startFilter);
+            }), function(newValue){
+                startFilter(newValue, vm.searchFilters);
+            });
+
+            $scope.$watch(function(){
+                return vm.filter.column.section;
+            }, function (newValue) {
+                filterBySection(newValue);
+            });
+
+            $scope.$watch(function () {
+                return vm.filter.column.block;
+            }, function (newValue) {
+                filterByBlock(newValue);
+            });
+
+            $scope.$watch(function () {
+                return vm.filter.column.lot;
+            }, function (newValue) {
+                filterByLot(newValue);
+            });
 
             $rootScope.$watchCollection('lotList', updateLotsDetail);
 
@@ -147,54 +172,99 @@
 
         function loadLots() {
             $rootScope.lotList = lotList.lots;
-            filterList();
-
-            console.log('lots: ',$rootScope.lots);
+            filterList('');
         }
 
-        function startFilter() {
-            vm.query.filter = vm.query.filter.toLowerCase();
+        function filterBySection (keyword) {
+            keyword = keyword.trim().toLowerCase();
 
-            for (var key in vm.searchFilters) {
-                if (vm.searchFilters.hasOwnProperty(key)) {
-                    vm.searchFilters[key] = vm.query.filter;
+            if (keyword === '') {
+                $rootScope.lots = lotList.lots;
+            } else {
+                var result = [];
+                $rootScope.lotList.forEach(function (lot) {
+                    if (lot.block.section.name.toLowerCase().indexOf(keyword) !== -1) {
+                        result.push(lot);
+                        return;
+                    }
+                });
+                $rootScope.lots = result;
+            }
+        }
+
+        function filterByBlock(keyword) {
+            keyword = keyword.trim().toLowerCase();
+
+            if (keyword === '') {
+                $rootScope.lots = lotList.lots;
+            } else {
+                var result = [];
+                $rootScope.lotList.forEach(function (lot) {
+                    if (lot.block.name.toLowerCase().indexOf(keyword) !== -1) {
+                        result.push(lot);
+                        return;
+                    }
+                });
+                $rootScope.lots = result;
+            }
+        }
+
+        function filterByLot(keyword) {
+            keyword = keyword.trim().toLowerCase();
+
+            if (keyword === '') {
+                $rootScope.lots = lotList.lots;
+            } else {
+                var result = [];
+                $rootScope.lotList.forEach(function (lot) {
+                    if (lot.name.toLowerCase().indexOf(keyword) !== -1) {
+                        result.push(lot);
+                        return;
+                    }
+                });
+                $rootScope.lots = result;
+            }
+        }
+
+        function startFilter(keyword, searchFilters) {
+            keyword = keyword.toLowerCase();
+
+            for (var key in searchFilters) {
+                if (searchFilters.hasOwnProperty(key)) {
+                    searchFilters[key] = keyword;
                 }
             }
 
-            filterList();
+            filterList(keyword, searchFilters);
         }
 
-        function filterList() {
-            if (isEmptyFilter()) {
+        function filterList(keyword, searchFilters) {
+            if (keyword === '') {
                 $rootScope.lots = lotList.lots;
             } else {
-                var filtered = manualFilter(vm.searchFilters);
-                $rootScope.lots = filtered;
+                $rootScope.lots = manualFilter(keyword, searchFilters);
             }
         }
 
-        function manualFilter (searchFilters) {
+        function manualFilter (keyword, searchFilters) {
             var result = [];
+
             $rootScope.lotList.forEach(function(lot){
                 for (var key in searchFilters) {
                     var lotData = String(lot[key]).toLowerCase();
-                    if(lotData.indexOf(vm.query.filter) !== -1) {
+                    if(lotData.indexOf(keyword) !== -1) {
                         result.push(lot);
                         return;
                     }
                 }
             });
-            return result;
-        }
 
-        function isEmptyFilter() {
-            return vm.query.filter === '';
+            return result;
         }
 
         function close() {
             $mdDialog.hide();
         }
-
 
         /* Columbary Functions */
 

@@ -7,6 +7,7 @@ from app import app
 from app.services import section_service
 import logging
 import datetime
+from operator import itemgetter
 
 log = logging.getLogger(__name__)
 
@@ -122,12 +123,14 @@ def print_lot_list_sections_data(ws):
         ws.append(r)
 
         # TABLE BODY - LOTS
+        # sorted_blocks = sorted(section.blocks, key=lambda block: block.name)
         for b in section.blocks:
-            for l in b.lots:
+            sorted_lots = sorted(b.lots, key=lambda lot: lot.name)
+            for l in sorted_lots:
                 client_name = l.client.get_full_name() if l.client is not None else ''
                 price_formatted = '{:20,.2f}'.format(l.price_per_sq_mtr)
                 amount = '{:20,.2f}'.format(l.lot_area * l.price_per_sq_mtr)
-                row_val = [b.id, l.id, l.dimension, l.lot_area, price_formatted, amount, l.remarks, client_name,
+                row_val = [b.name, l.name, l.dimension, l.lot_area, price_formatted, amount, l.remarks, client_name,
                            l.date_purchased]
                 row_cells = []
                 for rv in row_val:

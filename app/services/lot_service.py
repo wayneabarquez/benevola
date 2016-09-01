@@ -97,8 +97,6 @@ def sold_lot(lot_id, form_data):
         if form.validate():
             client = client_service.create_from_dict(client_data)
             lot.client_id = client.id
-            # else:
-            #     raise ValueError(form.errors)
     else:
         lot.client_id = form_data['client_id']
 
@@ -188,3 +186,28 @@ def delete_lot(lot_id):
 
     db.session.delete(lot)
     db.session.commit()
+
+
+def update_lot_client(lot_id, form_data):
+    lot = Lot.query.get(lot_id)
+
+    if lot is None:
+        raise LotNotFoundError("Lot id={0} not found".format(lot_id))
+
+    client_data = form_data['client']
+
+    if 'id' not in client_data:
+        client_data = form_data['client']
+        form = AddClientForm.from_json(client_data)
+        if form.validate():
+            client = client_service.create_from_dict(client_data)
+            lot.client_id = client.id
+    else:
+        lot.client_id = form_data['client_id']
+
+    if 'date_purchased' in form_data:
+        lot.date_purchased = form_data['date_purchased']
+
+    db.session.commit()
+
+    return lot
