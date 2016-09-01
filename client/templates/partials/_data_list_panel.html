@@ -29,7 +29,7 @@
             <div class="md-toolbar-tools">
                 <md-icon>search</md-icon>
                 <form flex name="listCtl.filter.form">
-                    <md-input-container md-no-float class="md-block" style="max-height: 30px; margin-top: 25px;">
+                    <md-input-container md-no-float class="md-block">
                         <input type="text" ng-model="listCtl.query.filter" placeholder="search">
                     </md-input-container>
                 </form>
@@ -49,13 +49,31 @@
                     <tr md-row>
                         <th md-column ng-repeat="col in listCtl.tableHeaderList">{{col}}</th>
                     </tr>
+                    <tr md-row>
+                        <th>
+                            <md-input-container md-no-float class="md-block">
+                                <input type="text" placeholder="Filter Section" ng-model="listCtl.filter.column.section">
+                            </md-input-container>
+                        </th>
+                        <th>
+                            <md-input-container md-no-float class="md-block">
+                                <input type="text" placeholder="Filter Block" ng-model="listCtl.filter.column.block">
+                            </md-input-container>
+                        </th>
+                        <th>
+                            <md-input-container md-no-float class="md-block">
+                                <input type="text" placeholder="Filter Lot" ng-model="listCtl.filter.column.lot">
+                            </md-input-container>
+                        </th>
+                        <th colspan="8"></th>
+                    </tr>
                 </thead>
 
                 <!-- TABLE BODY -->
                 <tbody md-body>
                     <tr md-row
                         ng-repeat="lot in lots
-                        | orderBy: listCtl.query.order
+                        | orderBy:['block.section.name', 'block.name', 'name']
                         | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit"
                         ng-click="listCtl.onClickRow(lot)">
 
@@ -82,7 +100,7 @@
                             ng-class="{'vacant': lot.status == 'vacant',
                                        'sold': lot.status == 'sold',
                                        'occupied': lot.status == 'occupied'}">
-                            <b>{{lot.status}}</b>
+                            <b>{{lot.status | uppercase}}</b>
                         </td>
 
                         <!-- OR # -->

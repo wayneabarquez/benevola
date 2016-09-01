@@ -1,4 +1,4 @@
-$bottom-list-panel-height: 50%;
+$bottom-list-panel-height: 55%;
 $bottom-list-panel-width: 100%;
 
 $container-height: calc(100% - 10px);
@@ -43,7 +43,6 @@ $list-footer-height: 43px;
     border-radius: 4px;
 
     md-content {
-      //height: $list-content-height;
       height: 100%;
 
       md-table-container {
@@ -57,13 +56,32 @@ $list-footer-height: 43px;
 
           thead  {
             tr {
-              height: 40px;
+              min-height: 0;
+              height: 30px;
               text-align: center;
-              border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
 
-              //th {
-              //  height: 20px !important;
-              //}
+              th {
+                min-height: 0;
+                height: 30px;
+                border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
+
+                md-input-container {
+                  height: 30px;
+                  margin: 0;
+
+                  ::-webkit-input-placeholder {
+                    font-size: 1.2rem;
+                  }
+
+                  .md-errors-spacer {
+                    display:none !important;
+                  }
+                }
+              }
+            }
+
+            tr:nth-child(2) {
+              border-bottom: none;
             }
           }
 
@@ -103,8 +121,9 @@ $list-footer-height: 43px;
     }
 
     md-toolbar, .md-toolbar-tools {
-      min-height: 50px;
-      height: 50px;
+      font-size: 1.7rem;
+      min-height: 0;
+      height: 38px;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
     }
@@ -114,6 +133,7 @@ $list-footer-height: 43px;
       color: $primary-font-color;
 
       md-icon {
+        font-size: 2rem;
         color: $primary-font-color;
       }
     }
@@ -126,18 +146,36 @@ $list-footer-height: 43px;
 
     md-toolbar.toolbar-search {
       background-color: white !important;
-      button span {
-        color: #888;
+
+      button {
+        min-height: 0;
+        height: 30px;
+        line-height: 30px;
+
+        span {
+          color: #888;
+        }
       }
+
       .md-toolbar-tools, md-icon, h3 {
         color: #888 !important;
       }
-      md-input-container {
-        input {
-          color: #888;
-          border: none !important;
+
+      .md-toolbar-tools {
+        form {
+          height: 30px;
+
+          md-input-container {
+            margin: 0 !important;
+
+            input {
+              color: #888;
+              border: none !important;
+            }
+          }
         }
       }
+
     }
 
   }

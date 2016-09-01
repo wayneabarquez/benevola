@@ -266,13 +266,17 @@ angular.module('demoApp')
         var lotInfowindow = gmapServices.createInfoWindow('');
 
         function showLotInfowindow(lot) {
-            var info = '<b>Lot:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
-            info += '<b>Section:</b> ' + lot.block.section.name + ' <br>';
+            var info = '<b>Section:</b> ' + lot.block.section.name + ' <br>';
             info += '<b>Block:</b> ' + lot.block.name + ' <br>';
+            info += '<b>Lot:</b> ' + (lot.name ? lot.name : 'undefined') + ' <br>';
             info += '<b>Area:</b> ' + lot.lot_area + ' <br>';
             info += '<b>Amount:</b> ' + lot.amount + ' <br>';
-            info += '<b>Status:</b> <span class="' + lot.status + '">' + lot.status + '</span> <br>';
-            info += '<b>Date Purchased:</b> ' + lot.date_purchased_formatted + ' <br>';
+            info += '<b>Status:</b> <span class="' + lot.status + '">' + lot.status.toUpperCase() + '</span> <br>';
+
+            if(lot.status != 'vacant') {
+                info += '<b>Date Purchased:</b> ' + lot.date_purchased_formatted + ' <br>';
+            }
+
             info += '<button data-lot-id="' + lot.id + '" data-block-id="' + lot.block_id + '" class="show-lot-detail-button md-primary md-button md-raised">Show Details</button>';
 
             var center = gmapServices.getPolygonCenter(lot.polygon);
