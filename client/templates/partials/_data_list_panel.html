@@ -69,11 +69,11 @@
                     </tr>
                 </thead>
 
-                <!-- TABLE BODY -->
+                <!-- TABLE BODY --> <!-- | orderBy:['block.section.name', 'block.name', 'name'] -->
                 <tbody md-body>
                     <tr md-row
                         ng-repeat="lot in lots
-                        | orderBy:['block.section.name', 'block.name', 'name']
+                        | orderBy: listCtl.orderLot | orderBy:'block.name' | orderBy:'block.section.name'
                         | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit"
                         ng-click="listCtl.onClickRow(lot)">
 

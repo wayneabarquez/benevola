@@ -144,6 +144,10 @@
 
         /* Table Functions */
 
+        vm.orderLot = function (lot) {
+          return parseInt(lot.name);
+        };
+
         function onReorder() {}
 
         function removeFilter() {
