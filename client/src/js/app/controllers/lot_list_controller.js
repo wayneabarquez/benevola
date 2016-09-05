@@ -91,7 +91,7 @@
                 var foundLot = lotList.findLot(blockId, lotId);
 
                 if(foundLot) {
-                    vm.searchInfowindow.close();
+                    gmapServices.hideInfoWindow(vm.searchInfowindow);
                     gmapServices.triggerEvent(foundLot.polygon, 'click');
                 }
             });
@@ -128,6 +128,13 @@
                 ;
 
                 lotList.togglePolygonByStatus(status, value);
+            });
+
+
+            $rootScope.$on('update-lot-status', function (event, params) {
+                var lot = params.lot;
+                var index = _.findIndex($rootScope.lotList, {id: parseInt(lot.id)});
+                if(index > -1) $rootScope.lotList[index] = angular.copy(lot);
             });
         }
 

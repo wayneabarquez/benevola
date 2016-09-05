@@ -21,14 +21,27 @@
 
                     <form name="selectClientForm">
                         <div>
-                            <md-input-container class="md-block">
+                            <!--<md-input-container class="md-block">
                                 <label>Select Client</label>
                                 <md-select ng-model="clientSelectCtl.selectedClient.client_id">
                                     <md-option ng-repeat="client in clientSelectCtl.clients" value="{{ client.id }}">
                                         {{ client.last_name + ', ' + client.first_name}}
                                     </md-option>
                                 </md-select>
-                            </md-input-container>
+                            </md-input-container>-->
+                            <md-autocomplete
+                                    md-min-length="0"
+                                    placeholder="Select Client"
+                                    md-selected-item="clientSelectCtl.selectedClient"
+                                    md-search-text="clientSelectCtl.searchText"
+                                    md-item-text="client.last_name + ', ' +client.first_name"
+                                    md-items="client in clientSelectCtl.querySearch(clientSelectCtl.searchText)">
+                                <md-item-template>
+                                    <span md-highlight-text="clientSelectCtl.searchText" md-highlight-flags="^i">
+                                        {{ client.last_name + ', ' + client.first_name }}
+                                    </span>
+                                </md-item-template>
+                            </md-autocomplete>
                         </div>
                     </form>
 
@@ -116,7 +129,7 @@
                 </md-button>
 
                 <md-button class="md-primary"
-                           ng-disabled="selectClientDateForm.$invalid"
+                           ng-disabled="selectClientDateForm.$invalid" <!-- todo: add validation for select client and add new client -->
                            ng-click="clientSelectCtl.save()">
                     Save
                 </md-button>

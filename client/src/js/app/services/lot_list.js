@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('lotList', ['$rootScope', 'gmapServices', 'LOT_COLORS', 'drawingServices', 'modalServices', 'Blocks', 'Lots', 'alertServices', lotList]);
+    .factory('lotList', ['$rootScope', '$timeout', 'gmapServices', 'LOT_COLORS', 'drawingServices', 'modalServices', 'Blocks', 'Lots', 'alertServices', lotList]);
 
-    function lotList ($rootScope, gmapServices, LOT_COLORS, drawingServices, modalServices, Blocks, Lots, alertServices) {
+    function lotList ($rootScope, $timeout, gmapServices, LOT_COLORS, drawingServices, modalServices, Blocks, Lots, alertServices) {
         var service = {};
 
         service.selectedLotInfowindow = gmapServices.createInfoWindow('');
@@ -26,13 +26,12 @@ angular.module('demoApp')
         service.findLot = findLot;
         service.togglePolygonByStatus = togglePolygonByStatus;
         service.showLotDetailsModal = showLotDetailsModal;
+        service.hideLotInfowindow = hideLotInfowindow;
 
         function initialize() {
 
             $rootScope.$on('update-lot-detail', function(event, params) {
                var lot = params.lot;
-
-                console.log('Update Lot Detail Event: ', lot);
 
                 var foundLot = service.findLot(lot.block_id, lot.id);
                 foundLot.status = lot.status;
@@ -57,6 +56,9 @@ angular.module('demoApp')
 
                 if (foundLot) {
                     service.showLotDetailsModal(foundLot);
+                    $timeout(function(){
+                        service.hideLotInfowindow();
+                    });
                 }
             });
         }
@@ -287,6 +289,9 @@ angular.module('demoApp')
             lotInfowindow.setContent(info);
         }
 
+        function hideLotInfowindow () {
+            gmapServices.hideInfoWindow(lotInfowindow);
+        }
 
         return service;
     }

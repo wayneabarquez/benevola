@@ -35,7 +35,7 @@
                               ng-style="{'background-color': colorHex}">&nbsp;</span>
                         <md-checkbox class="md-primary" ng-model="gmapCtl.lotStatusFilters[lotStatus]"></md-checkbox>
                         <span>{{ lotStatus }}</span>
-                        <span class="lot-count">{{ gmapCtl.getLotsCountByStatus(lotStatus) }}</span>
+                        <span class="lot-count">{{ lotsDetail.count[lotStatus] }}</span>
                     </p>
                 </li>
             </ul>

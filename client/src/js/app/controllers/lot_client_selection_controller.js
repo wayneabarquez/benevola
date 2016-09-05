@@ -12,6 +12,7 @@
         vm.clients = clients;
         vm.client = {};
         vm.selectedClient = null;
+        vm.searchText = '';
 
         vm.lotParam = {
             status: {
@@ -26,6 +27,9 @@
         vm.cancel = cancel;
         vm.clearForm = clearForm;
 
+        /* Autocomplete functions */
+        vm.querySearch = querySearch;
+
         vm.initialize();
 
         /* Controller Functions here */
@@ -37,8 +41,6 @@
             vm.rawClient = angular.copy(vm.client);
 
             vm.lot = lot;
-
-            console.log('lot details: ', vm.lot);
 
             $scope.$watch(function(){
                 return vm.dateSold;
@@ -54,7 +56,7 @@
         }
 
         function save() {
-            console.log('Select Client: ',vm.selectedClient);
+            //console.log('Select Client: ',vm.selectedClient);
 
             var promise = null;
 
@@ -63,7 +65,8 @@
             } else {
                 if (vm.selectedClient) {
                     // update lot with this client id
-                    vm.lot.client_id = vm.selectedClient.client_id;
+                    //vm.lot.client_id = vm.selectedClient.client_id;
+                    vm.lot.client_id = vm.selectedClient.id;
                     vm.lot.status = 'sold';
                 } else {
                     if ($scope.newClientForm.$valid) {
@@ -75,7 +78,6 @@
                 promise = vm.lot.customPUT(null, 'mark_sold');
 
                 promise.then(function (response) {
-                    console.log('Select Client: ', response);
                     $mdDialog.hide();
                     // TODO fetch new lot info via http request
                     if(!vm.lot.c_no)
@@ -93,9 +95,21 @@
         }
 
         function clearForm() {
-            console.log('clear form');
             vm.client = angular.copy(vm.rawClient);
             $scope.newClientForm.$setPristine();
+        }
+
+        function querySearch (searchText) {
+            var results = [];
+
+            vm.clients.forEach(function(client){
+               if (client.first_name.toLowerCase().indexOf(searchText) !== -1
+                  || client.last_name.toLowerCase().indexOf(searchText) !== -1) {
+                   results.push(client);
+               }
+            });
+
+            return results;
         }
 
     }

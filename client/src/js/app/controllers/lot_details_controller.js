@@ -2,9 +2,9 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('lotDetailsController', ['$scope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', 'Restangular', 'alertServices', 'Deceased', lotDetailsController]);
+    .controller('lotDetailsController', ['$scope', '$rootScope', '$mdDialog', 'lot', 'modalServices', '$q', 'lotHelper', 'Restangular', 'alertServices', 'Deceased', lotDetailsController]);
 
-    function lotDetailsController ($scope, $mdDialog, lot, modalServices, $q, lotHelper, Restangular, alertServices, Deceased) {
+    function lotDetailsController ($scope, $rootScope, $mdDialog, lot, modalServices, $q, lotHelper, Restangular, alertServices, Deceased) {
         var vm = this;
 
         $scope.showEditLotNameForm = false;
@@ -92,25 +92,20 @@ angular.module('demoApp')
         }
 
         function markSold () {
-            // TODO show modal to select or add new client and a datepicker to select date sold
-            // add functionality to update database
-            console.log('mark sold lot');
-
             modalServices.showClientSelection(vm.lot)
                 .then(function(success){
-                    console.log('ShowClientSelection: ',success);
                     vm.lot.status = 'sold';
+                    $rootScope.$broadcast('update-lot-status', {lot: vm.lot});
                 },function(err){
                     console.log('ShowClientSelection: ', err);
                 });
         }
 
         function addOccupant () {
-            console.log('add occupant');
             // add functionality to update database
             modalServices.showAddOccupant(vm.lot)
                 .then(function (success) {
-                    console.log('Show Add Occupant: ', success);
+                    $rootScope.$broadcast('update-lot-status', {lot: vm.lot});
                 }, function (err) {
                     console.log('Show Add Occupant: ', err);
                 });
