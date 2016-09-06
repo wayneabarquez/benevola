@@ -152,7 +152,18 @@
         /* Table Functions */
 
         vm.orderLot = function (lot) {
-          return parseInt(lot.name);
+            var lotChars = lot.name.match(/[a-zA-Z]/);
+            return lotChars
+                ? lotChars.valueOf()
+                : parseInt(lot.name.match(/\d+/)[0]);
+        };
+
+        vm.sortBlock = function (lot) {
+            return parseInt(lot.block.name.match(/\d+/)[0]);
+        };
+
+        vm.sortSection = function (lot) {
+            return parseInt(lot.block.section.name.match(/\d+/)[0]);
         };
 
         function onReorder() {}
@@ -273,6 +284,12 @@
             return result;
         }
 
+        vm.sortList = sortList;
+
+        function sortList (lot) {
+
+        }
+
         function close() {
             $mdDialog.hide();
         }
@@ -293,4 +310,13 @@
             modalServices.showCrematorium(e);
         }
     }
+
+
+    angular.module('demoApp')
+        .filter('stripLotLabel', function () {
+            return function (input, column) {
+                return input.trim().toUpperCase().replace(column.toUpperCase(), '');
+            }
+        });
+
 }());

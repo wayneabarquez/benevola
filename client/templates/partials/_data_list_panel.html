@@ -34,8 +34,7 @@
                     </md-input-container>
                 </form>
                 <md-button ng-click="listCtl.removeFilter()">
-                    Back
-                    <md-icon>arrow_forward</md-icon>
+                    Back <md-icon>arrow_forward</md-icon>
                 </md-button>
             </div>
         </md-toolbar>
@@ -73,18 +72,18 @@
                 <tbody md-body>
                     <tr md-row
                         ng-repeat="lot in lots
-                        | orderBy: listCtl.orderLot | orderBy:'block.name' | orderBy:'block.section.name'
+                        | orderBy: listCtl.orderLot | orderBy: listCtl.sortBlock | orderBy: listCtl.sortSection
                         | limitTo: listCtl.query.limit : (listCtl.query.page - 1) * listCtl.query.limit"
                         ng-click="listCtl.onClickRow(lot)">
 
                         <!-- Section No. -->
-                        <td md-cell>{{lot.block.section.name}}</td>
+                        <td md-cell>{{lot.block.section.name | stripLotLabel:'SECTION'}}</td>
 
                         <!-- Block No. -->
-                        <td md-cell>{{lot.block.name}}</td>
+                        <td md-cell>{{lot.block.name | stripLotLabel:'BLOCK'}}</td>
 
                         <!-- Lot No. -->
-                        <td md-cell>{{lot.name}}</td>
+                        <td md-cell>{{lot.name | stripLotLabel:'LOT'}}</td>
 
                         <!-- Dimension -->
                         <td md-cell>{{lot.dimension}}</td>
