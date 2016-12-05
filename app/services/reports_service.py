@@ -78,8 +78,8 @@ def print_lot_list_sections_data(ws):
 
     for section in sections:
         lots = section.get_lots()
-        sold_lots = filter(lambda lot: lot['status'] == 'sold', lots)
-        unsold_lots = filter(lambda lot: lot['status'] != 'sold', lots)
+        sold_lots = filter(lambda lot: lot['status'] == 'sold' or lot['status'] == 'occupied', lots)
+        unsold_lots = filter(lambda lot: lot['status'] != 'sold' and lot['status'] != 'occupied', lots)
 
         # SECTION NAME ROW
         section_name = 'SECTION ' + section.name
