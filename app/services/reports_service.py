@@ -148,6 +148,11 @@ def generate_lotlist_report():
     # grab the active worksheet
     ws = wb.active
     ws.column_dimensions['C'].width = 15
+    ws.column_dimensions['F'].width = 15
+    ws.column_dimensions['G'].width = 15
+    ws.column_dimensions['H'].width = 15
+    ws.column_dimensions['I'].width = 20
+    ws.column_dimensions['J'].width = 15
 
     print_worksheet_header(ws)
 
