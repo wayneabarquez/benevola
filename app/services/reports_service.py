@@ -150,7 +150,7 @@ def generate_lotlist_report():
     ws.column_dimensions['C'].width = 15
     ws.column_dimensions['F'].width = 15
     ws.column_dimensions['G'].width = 15
-    ws.column_dimensions['H'].width = 15
+    ws.column_dimensions['H'].width = 20
     ws.column_dimensions['I'].width = 20
     ws.column_dimensions['J'].width = 15
 
